@@ -23,13 +23,15 @@ public class First extends LinearOpMode {
 
     public double Limit = 0.3;
 
-    public double forward;
-    public double reverse;
+    public double Rotate_Right;
+    public double Rotate_Left;
 
     public boolean Chose;
     public boolean Chose2;
 
     public boolean turns;
+
+    public double Power_Front = 0.5;
 
     public ChasisInit chasis = new ChasisInit();
     public Slider slider = new Slider();
@@ -51,13 +53,32 @@ public class First extends LinearOpMode {
             //Initiallizam variabilele
             double Front, Turn, Sum, Diff, Side, Drive1, Drive2, Drive3, Drive4;
 
-            if(forward!=0 && reverse==0) Front=-forward;
-            else if(forward==0 && reverse!=0) Front=reverse;
-            else Front = Range.clip(gamepad1.left_stick_y, -Limit, Limit);
+            Rotate_Right = Range.clip(gamepad1.right_trigger,0,Limit);
+            Rotate_Left = Range.clip(gamepad1.left_trigger, 0, Limit);
 
-            Turn = Range.clip(gamepad1.right_stick_x, -Limit, Limit);
+            if (Rotation() == 2) {
+                Turn = Rotate_Right;
+            }
+            else if(Rotation() ==1) {
+                Turn = -Rotate_Left;
+            }
+            else {
+                Turn = Range.clip(gamepad1.left_stick_x, -Limit, Limit);
+            }
 
-            Side = Range.clip(gamepad1.left_stick_x, -Limit, Limit);
+
+            if(Front() == 1) {
+                Front = Power_Front;
+            }
+            else if(Front() == 2) {
+                Front = -Power_Front;
+            }
+            else {
+                Front = Range.clip(gamepad1.right_stick_y, -Limit, Limit);
+            }
+
+
+            Side = Range.clip(gamepad1.left_stick_y, -Limit, Limit);
 
             //Speed Modes
        /*     if(gamepad1.right_bumper) {
@@ -89,9 +110,6 @@ public class First extends LinearOpMode {
             }else if(gamepad1.dpad_down){
                 Limit = 0.3;
             }
-
-            forward = gamepad1.right_trigger;
-            reverse = Range.clip(gamepad1.left_trigger, 0, 0.5);
 
             //Calcularea puterii redate motoarelor
             Sum = Range.clip(Front + Side, -1.0, 1.0);
@@ -179,6 +197,18 @@ public class First extends LinearOpMode {
             }
         }
         turns=false;
+    }
+
+    public int Rotation(){
+        if(gamepad1.left_trigger !=0 && gamepad1.right_trigger==0) return 1;
+        else if(gamepad1.right_trigger !=0 && gamepad1.left_trigger==0) return 2;
+        else return 3;
+    }
+
+    public int Front() {
+        if(gamepad1.dpad_up && !gamepad1.dpad_down) return 1;
+        else if(gamepad1.dpad_down && !gamepad1.dpad_up) return 2;
+        else return 3;
     }
 
 
