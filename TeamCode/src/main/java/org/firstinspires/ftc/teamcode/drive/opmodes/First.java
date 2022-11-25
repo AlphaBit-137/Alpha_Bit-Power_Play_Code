@@ -7,10 +7,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.structure.Arm;
 import org.firstinspires.ftc.teamcode.drive.structure.ChasisInit;
+//import org.firstinspires.ftc.teamcode.drive.structure.ServoClaw;
 import org.firstinspires.ftc.teamcode.drive.structure.ServoClaw;
 import org.firstinspires.ftc.teamcode.drive.structure.Slider;
+import org.firstinspires.ftc.teamcode.drive.structure.assistv2;
 
 @TeleOp
 public class First extends LinearOpMode {
@@ -29,7 +32,7 @@ public class First extends LinearOpMode {
     public boolean Chose;
     public boolean Chose2;
 
-    public boolean turns;
+    public boolean turns = false;
 
     public double Power_Front = 0.5;
 
@@ -37,6 +40,9 @@ public class First extends LinearOpMode {
     public Slider slider = new Slider();
     public Arm arm = new Arm();
     public ServoClaw claw = new ServoClaw();
+    public assistv2 assist = new assistv2();
+
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,6 +51,7 @@ public class First extends LinearOpMode {
         slider.init(hardwareMap);
         arm.init(hardwareMap);
         claw.init(hardwareMap);
+        assist.init(hardwareMap);
 
         waitForStart();
 
@@ -66,12 +73,11 @@ public class First extends LinearOpMode {
                 Turn = Range.clip(gamepad1.left_stick_x, -Limit, Limit);
             }
 
-
             if(Front() == 1) {
-                Front = Power_Front;
+                Front = -Power_Front;
             }
             else if(Front() == 2) {
-                Front = -Power_Front;
+                Front = Power_Front;
             }
             else {
                 Front = Range.clip(gamepad1.right_stick_y, -Limit, Limit);
@@ -81,7 +87,7 @@ public class First extends LinearOpMode {
             Side = Range.clip(gamepad1.left_stick_y, -Limit, Limit);
 
             //Speed Modes
-       /*     if(gamepad1.right_bumper) {
+            if(gamepad1.right_bumper) {
                 if(Chose)Limit=Limit+0.1;
                 if(Limit>1)Limit=1;
                 Chose = false;
@@ -91,23 +97,23 @@ public class First extends LinearOpMode {
                 if(Chose2)Limit=Limit-0.1;
                 if(Limit<0.1)Limit=0.1;
                 Chose2 = false;
-            } else Chose2=true; */
+            } else Chose2=true;
 
             //Assist pentru viteze treptat
-            if(gamepad1.right_bumper){
+           /* if(gamepad1.right_bumper){
                 Sped(1);
-            }else Chose2 = true;
+            }else Chose2 = true; */
 
-            if(gamepad1.left_bumper){
+           /* if(gamepad1.left_bumper){
                 Sped(-1);
-            }else Chose = true;
+            }else Chose = true; */
 
             //Asist pt viteze direct
-            if(gamepad1.dpad_up){
+            if(gamepad1.x){
                 Limit = 1;
-            }else if(gamepad1.dpad_right){
+            }else if(gamepad1.y){
                 Limit = 0.6;
-            }else if(gamepad1.dpad_down){
+            }else if(gamepad1.a){
                 Limit = 0.3;
             }
 
@@ -121,10 +127,10 @@ public class First extends LinearOpMode {
             Drive4 = Range.clip(Diff + 2*Turn, -1.0, 1.0);
 
             //Ridicarea sliderului manual sau daca motorul este setat sa se duca undeva
-            if((gamepad2.right_bumper && Check()!=1) || slider.SliderBUSY()){
+            if((gamepad2.right_bumper /*&& Check()!=1*/) || slider.SliderBUSY()){
                slider.switchToSliderUp();
             }else {
-                if (gamepad2.left_bumper && Check()!=2) {
+                if (gamepad2.left_bumper /*&& Check()!=2*/) {
                     slider.switchToSliderDown();
                 } else {
                     slider.switchToSliderSTOP();
@@ -144,8 +150,23 @@ public class First extends LinearOpMode {
 
           //Prinderea conului folosind clestele
             if(gamepad2.y){
-               SwitchClaw();
+                    if(poz == 2 && turns){
+                        claw.Closed();
+                        poz=1;
+                    }else if(poz == 1 && turns){
+                        claw.Open();
+                        poz=2;
+                    }
+                turns=false;
             }else turns=true;
+
+            if(gamepad2.dpad_right) {
+                assist.SwitchToLvl1();
+            }
+
+            if(gamepad2.dpad_up) {
+                assist.SwitchToLvl2();
+            }
 
 
             //Updatarea tuturor functiolor.
@@ -153,6 +174,10 @@ public class First extends LinearOpMode {
 
             slider.update();
             arm.update();
+            assist.update();
+            telemetry.addData("speed", Limit);
+            telemetry.addData("Pozitia curenta slider", slider.Slider_getCurrentPos());
+            telemetry.addData("turns", turns);
 
             telemetry.update();
         }
@@ -185,20 +210,6 @@ public class First extends LinearOpMode {
         }
     }
 
-    //Functie doar pt cleste, nu intreba de ce am fcto doar pt cleste
-    void SwitchClaw(){
-        if(turns){
-            if(poz == 2){
-                claw.Closed();
-                poz=1;
-            }else{
-                claw.Open();
-                poz=2;
-            }
-        }
-        turns=false;
-    }
-
     public int Rotation(){
         if(gamepad1.left_trigger !=0 && gamepad1.right_trigger==0) return 1;
         else if(gamepad1.right_trigger !=0 && gamepad1.left_trigger==0) return 2;
@@ -210,6 +221,4 @@ public class First extends LinearOpMode {
         else if(gamepad1.dpad_down && !gamepad1.dpad_up) return 2;
         else return 3;
     }
-
-
 }

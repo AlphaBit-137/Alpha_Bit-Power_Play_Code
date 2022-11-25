@@ -36,6 +36,10 @@ public class Slider {
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public int Slider_getCurrentPos() {
+        return slider.getCurrentPosition();
+    }
+
     public void update(){
         switch (SliderPosition){
             case UP:{
@@ -53,6 +57,10 @@ public class Slider {
         }
     }
 
+    public void Slider_Reset() {
+        slider.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
     public void switchToSliderUp() {SliderPosition = Positions.UP;}
 
     public void switchToSliderDown() {SliderPosition = Positions.DOWN;}
@@ -60,5 +68,6 @@ public class Slider {
     public void switchToSliderSTOP() {SliderPosition = Positions.STOP;}
 
     public boolean SliderBUSY() {return slider.isBusy();}
+
 
 }
