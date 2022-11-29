@@ -19,8 +19,8 @@ import org.firstinspires.ftc.teamcode.drive.structure.assistv2;
 public class First extends LinearOpMode {
 
     //Pozitii Hipotetice
-    final int max = 3250;
-    final int min = -3250;
+    final int max = 7680;
+    final int min = 10;
 
     public int poz = 2;
 
@@ -32,7 +32,7 @@ public class First extends LinearOpMode {
     public boolean Chose;
     public boolean Chose2;
 
-    public boolean turns = false;
+    public boolean turns = true;
 
     public double Power_Front = 0.5;
 
@@ -127,10 +127,10 @@ public class First extends LinearOpMode {
             Drive4 = Range.clip(Diff + 2*Turn, -1.0, 1.0);
 
             //Ridicarea sliderului manual sau daca motorul este setat sa se duca undeva
-            if((gamepad2.right_bumper /*&& Check()!=1*/) || slider.SliderBUSY()){
+            if((gamepad2.right_bumper && Check()!=1) || slider.SliderBUSY()){
                slider.switchToSliderUp();
             }else {
-                if (gamepad2.left_bumper /*&& Check()!=2*/) {
+                if (gamepad2.left_bumper && Check()!=2) {
                     slider.switchToSliderDown();
                 } else {
                     slider.switchToSliderSTOP();
@@ -160,12 +160,17 @@ public class First extends LinearOpMode {
                 turns=false;
             }else turns=true;
 
+
             if(gamepad2.dpad_right) {
                 assist.SwitchToLvl1();
             }
 
             if(gamepad2.dpad_up) {
                 assist.SwitchToLvl2();
+            }
+
+            if(gamepad2.dpad_down){
+
             }
 
 
@@ -199,16 +204,7 @@ public class First extends LinearOpMode {
         else return 3;
     }
 
-    //Functie pentru modificarea vitezelor
-    void Sped(int i){
-        if(i > 0) {
-            if (Chose && Limit > 0.3) Limit += i;
-            Chose = false;
-        }else if(i < 0){
-            if(Chose2 && Limit < 1)Limit += i;
-            Chose2 = false;
-        }
-    }
+    //Functie pentru modificarea viteze
 
     public int Rotation(){
         if(gamepad1.left_trigger !=0 && gamepad1.right_trigger==0) return 1;

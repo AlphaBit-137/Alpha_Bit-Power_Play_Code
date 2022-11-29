@@ -6,8 +6,9 @@ public class assistv2 {
 
     Slider slider = new Slider();
 
-    public final int Medium_Pole = 3232;
-    public final int High_Pole = 1534;
+    public final int Ground_Junction = 150;
+    public final int Medium_Pole = 4232;
+    public final int High_Pole = 7650;
 
     public void init(HardwareMap ahwMap){
         slider.init(ahwMap);
@@ -18,6 +19,7 @@ public class assistv2 {
     enum LVLS{
         LVL1,
         LVL2,
+        BACK,
         RESET
     }
 
@@ -29,11 +31,13 @@ public class assistv2 {
             case LVL2:
                 GoToLvl(High_Pole);
                 break;
+            case BACK:
+                GoToLvl(Ground_Junction);
+                break;
             case RESET:
                 slider.Slider_Reset();
                 break;
         }
-
     }
 
     public void GoToLvl( int pos){
@@ -50,4 +54,5 @@ public class assistv2 {
     public void SwitchToReset() {
         lvls = LVLS.RESET;
     }
+    public void SwitchToBACK(){lvls = LVLS.BACK;}
 }

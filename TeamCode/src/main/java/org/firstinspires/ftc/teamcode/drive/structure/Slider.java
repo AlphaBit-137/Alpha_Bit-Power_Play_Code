@@ -43,11 +43,11 @@ public class Slider {
     public void update(){
         switch (SliderPosition){
             case UP:{
-                slider.setPower(-0.5);
+                slider.setPower(0.85);
                 break;
             }
             case DOWN:{
-                slider.setPower(0.5);
+                slider.setPower(-0.85);
                 break;
             }
             case STOP:{
