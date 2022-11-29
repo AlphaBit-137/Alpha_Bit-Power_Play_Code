@@ -16,18 +16,16 @@ public class ServoClaw {
         hwMap = ahwMap;
         // Define and Initialize Motors
         servo1 = hwMap.get(Servo.class, "Servo1");
-        servo1.setPosition(0);
         servo2 = hwMap.get(Servo.class, "Servo2");
-        servo2.setPosition(0);
     }
 
     public void Closed(){
-        servo1.setPosition(0.33);
-       // servo2.setPosition(0.33);
+        servo1.setPosition(-0.2);
+        servo2.setPosition(0.13);
     }
 
     public void Open(){
-        servo1.setPosition(0);
-       // servo2.setPosition(0);
+        servo1.setPosition(0.13);
+        servo2.setPosition(0);
     }
 }

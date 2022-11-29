@@ -39,11 +39,11 @@ public class Arm {
     public void update(){
         switch (ArmPosition){
             case UP:{
-                arm.setPower(-0.5);
+                arm.setPower(0.5);
                 break;
             }
             case DOWN:{
-                arm.setPower(0.5);
+                arm.setPower(-0.5);
                 break;
             }
             case STOP:{
