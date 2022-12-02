@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.RoadRunner.drive;
 
-import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.MAX_ANG_VEL;
 import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.MAX_ACCEL;
 import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.MAX_ANG_ACCEL;
 import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.MAX_ANG_VEL;
@@ -10,6 +8,9 @@ import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.MOT
 import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.RUN_USING_ENCODER;
 import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.TRACK_WIDTH;
 import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.kV;
 
 import androidx.annotation.NonNull;
 
@@ -37,8 +38,8 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequenceRunner;
 import org.firstinspires.ftc.teamcode.RoadRunner.util.LynxModuleUtil;
 
