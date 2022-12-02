@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.drive.Skeletal_Structures;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -13,7 +15,7 @@ import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 *
  */
 
-@TeleOp
+@Config
 public class Pid_Motor extends LinearOpMode {
 
     public DcMotor TestMotor;
@@ -27,17 +29,19 @@ public class Pid_Motor extends LinearOpMode {
    public static double Ki = 0.0;
    public static double Kd = 0.0;
 
+   public int targetPosition = 100;
 
-   //private final FtcDashboard dashboard = FtcDashboard.getInstance();
+
+   private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        //TelemetryPacket packet =new TelemetryPacket();
+        TelemetryPacket packet =new TelemetryPacket();
 
-        //dashboard.setTelemetryTransmissionInterval(25)
+        dashboard.setTelemetryTransmissionInterval(25);
         TestMotor = hardwareMap.get(DcMotor.class,"SliderPID");
 
         TestMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -46,19 +50,18 @@ public class Pid_Motor extends LinearOpMode {
         TestMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         waitForStart();
-        int targetPosition = 100;
 
         while (opModeIsActive()) {
            double power = returnPower(targetPosition,TestMotor.getCurrentPosition());
 
-         /*  packet.put("power",power);
+           packet.put("power",power);
            packet.put("position",TestMotor.getCurrentPosition());
-           packet.put("error",LastError); */
+           packet.put("error",LastError);
 
 
            TestMotor.setPower(power);
 
-         // dashboard.sendTelemetryPacket(packet);
+          dashboard.sendTelemetryPacket(packet);
         }
         }
 
