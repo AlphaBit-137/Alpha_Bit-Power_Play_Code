@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive.structure;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ChasisInit {
@@ -27,6 +26,7 @@ public class ChasisInit {
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
         BackRight.setDirection(DcMotor.Direction.REVERSE);
 
+
         BackLeft.setPower(0);
         FrontRight.setPower(0);
         FrontLeft.setPower(0);
@@ -43,4 +43,14 @@ public class ChasisInit {
         BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
+
+        public void  setMotortPower (double BackLeftPower ,double FrontRightPower,double FrontLeftPower,double BackRightPower)
+    {
+        BackLeft.setPower(BackLeftPower);
+        FrontRight.setPower(FrontRightPower);
+        FrontLeft.setPower(FrontLeftPower);
+        BackRight.setPower(BackRightPower);
+
+    }
+
 }

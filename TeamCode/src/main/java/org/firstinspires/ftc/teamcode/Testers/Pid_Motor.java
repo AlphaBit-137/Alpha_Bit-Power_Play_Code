@@ -1,9 +1,10 @@
-package org.firstinspires.ftc.teamcode.drive.Skeletal_Structures;
+package org.firstinspires.ftc.teamcode.Testers;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -16,6 +17,7 @@ import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
  */
 
 @Config
+@TeleOp
 public class Pid_Motor extends LinearOpMode {
 
     public DcMotor TestMotor;
@@ -29,7 +31,7 @@ public class Pid_Motor extends LinearOpMode {
    public static double Ki = 0.0;
    public static double Kd = 0.0;
 
-   public int targetPosition = 100;
+   public static int targetPosition = 100;
 
 
    private final FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -75,6 +77,8 @@ public class Pid_Motor extends LinearOpMode {
         LastError = error;
 
         double outpput = (error * Kp) + (derivative * Kd) + (IntegralSum * Ki);
+
+        timer.reset();
 
         return outpput;
         }

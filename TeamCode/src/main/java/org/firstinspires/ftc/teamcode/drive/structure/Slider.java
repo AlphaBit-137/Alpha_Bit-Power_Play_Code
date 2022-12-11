@@ -1,73 +1,42 @@
 package org.firstinspires.ftc.teamcode.drive.structure;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Motor_Skeleton;
 
 public class Slider {
 
+    Gamepad Slider_Gamepad;
+
+   public Slider(Gamepad Slider_Gamepad)
+   {
+       this.Slider_Gamepad = Slider_Gamepad;
+   }
+
     public DcMotor slider;
 
-    Positions SliderPosition = Positions.STOP;
-    HardwareMap hwMap = null;
+    Motor_Skeleton skelete = new Motor_Skeleton(slider);
 
-    public enum Positions{
-        UP,
-        DOWN,
-        STOP
-    }
 
     public void init(HardwareMap ahwMap) {
-        // Define and Initialize Motors
-
-        hwMap = ahwMap;
-        slider = hwMap.get(DcMotor.class,"Slider");
-        slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        slider.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        slider.setDirection(DcMotor.Direction.FORWARD);
-        slider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slider.setPower(0);
+      skelete.init(ahwMap,"Slider",false);
     }
 
-
-    public void Slider_GoToPos(int position)
-    {
-        slider.setTargetPosition(position);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
-    public int Slider_getCurrentPos() {
-        return slider.getCurrentPosition();
-    }
 
     public void update(){
-        switch (SliderPosition){
-            case UP:{
-                slider.setPower(0.85);
-                break;
-            }
-            case DOWN:{
-                slider.setPower(-0.85);
-                break;
-            }
-            case STOP:{
-                slider.setPower(0);
-                break;
-            }
-        }
+
+       if(Slider_Gamepad.right_bumper)
+       {
+           skelete.GoTo("up");
+       }else if(Slider_Gamepad.left_bumper){
+           skelete.GoTo("down");
+       }else skelete.GoTo("stop");
+
+       skelete.StateUpdate(0.5,-0.5);
     }
 
-    public void Slider_Reset() {
-        slider.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    public void switchToSliderUp() {SliderPosition = Positions.UP;}
-
-    public void switchToSliderDown() {SliderPosition = Positions.DOWN;}
-
-    public void switchToSliderSTOP() {SliderPosition = Positions.STOP;}
-
-    public boolean SliderBUSY() {return slider.isBusy();}
 
 
 }
