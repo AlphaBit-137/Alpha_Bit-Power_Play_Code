@@ -35,7 +35,6 @@ public class Pid_Controller {
         double outpput = (error * Kp) + (derivative * Kd) + (IntegralSum * Ki);
 
         Last_Reference = reference;
-        timer.reset();
 
         return outpput;
     }
