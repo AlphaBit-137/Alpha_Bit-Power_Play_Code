@@ -30,7 +30,17 @@ public class First extends LinearOpMode {
             CDrive.run(gamepad1.left_stick_x,gamepad1.right_stick_y,gamepad1.left_stick_y);
             slider.update();
 
+            if(gamepad2.y) {
+                if(claw.CheckStatusServo()){
+                    claw.Open();
+                }
+                else{
+                    claw.Closed();
+                }
+            }
 
+
+            claw.update();
             telemetry.update();
         }
     }
