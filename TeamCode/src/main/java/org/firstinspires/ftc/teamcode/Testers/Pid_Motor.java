@@ -75,7 +75,6 @@ public class Pid_Motor extends LinearOpMode {
 
         double outpput = (error * Kp) + (derivative * Kd) + (IntegralSum * Ki);
 
-        timer.reset();
 
         return outpput;
         }
