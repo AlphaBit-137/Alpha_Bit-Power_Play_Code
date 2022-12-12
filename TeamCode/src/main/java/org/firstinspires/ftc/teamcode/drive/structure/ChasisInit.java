@@ -1,14 +1,15 @@
 package org.firstinspires.ftc.teamcode.drive.structure;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ChasisInit {
 
-    public DcMotor BackLeft = null;
-    public DcMotor FrontRight = null;
-    public DcMotor FrontLeft = null;
-    public DcMotor BackRight = null;
+    public DcMotorEx BackLeft = null;
+    public DcMotorEx FrontRight = null;
+    public DcMotorEx FrontLeft = null;
+    public DcMotorEx BackRight = null;
 
     HardwareMap hwMap = null;
 
@@ -16,15 +17,15 @@ public class ChasisInit {
 
         hwMap = ahwMap;
 
-        BackLeft = hwMap.get(DcMotor.class, "Back_Left");
-        FrontRight = hwMap.get(DcMotor.class, "Front_Right");
-        FrontLeft = hwMap.get(DcMotor.class, "Front_Left");
-        BackRight = hwMap.get(DcMotor.class, "Back_Right");
+        BackLeft = hwMap.get(DcMotorEx.class, "Back_Left");
+        FrontRight = hwMap.get(DcMotorEx.class, "Front_Right");
+        FrontLeft = hwMap.get(DcMotorEx.class, "Front_Left");
+        BackRight = hwMap.get(DcMotorEx.class, "Back_Right");
 
-        BackLeft.setDirection(DcMotor.Direction.REVERSE);
-        FrontRight.setDirection(DcMotor.Direction.FORWARD);
-        FrontLeft.setDirection(DcMotor.Direction.REVERSE);
-        BackRight.setDirection(DcMotor.Direction.REVERSE);
+        BackLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        FrontRight.setDirection(DcMotorEx.Direction.FORWARD);
+        FrontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        BackRight.setDirection(DcMotorEx.Direction.REVERSE);
 
 
         BackLeft.setPower(0);
