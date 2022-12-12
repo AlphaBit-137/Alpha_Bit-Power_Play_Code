@@ -11,17 +11,20 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class Gyroscope {
-    BNO055IMU imu;
+
+    public BNO055IMU imu;
 
     public double firstHeading = 0;
     public double firstLateral = 0;
     public double firstForward = 0;
+
 
     boolean firstAngles = false;
 
     public void Init(HardwareMap hwmap) {
 
         imu = hwmap.get(BNO055IMU.class, "imu");
+
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         imu.initialize(parameters);
@@ -29,7 +32,9 @@ public class Gyroscope {
 
 
     Orientation angularOrientation;
+    
     AngularVelocity angularVelocity;
+
     double updateInterval = 1;
 
 

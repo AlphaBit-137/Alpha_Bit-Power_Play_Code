@@ -29,7 +29,9 @@ public class Pid_Motor extends LinearOpMode {
    public static double Ki = 0.0;
    public static double Kd = 0.0001;
 
-   public static int targetPosition = 100;
+   public double encoder_direction = 1;
+
+   public static int targetPosition = -1000;
 
 
    private final FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -37,21 +39,27 @@ public class Pid_Motor extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-
         TelemetryPacket packet =new TelemetryPacket();
 
         dashboard.setTelemetryTransmissionInterval(25);
-        TestMotor = hardwareMap.get(DcMotor.class,"SliderPID");
+        TestMotor = hardwareMap.get(DcMotor.class,"Slider");
 
         TestMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         TestMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         TestMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        encoder_direction = GetEncoderDirection(targetPosition);
+
+        telemetry.addData("Encoder_Direction",encoder_direction);
+
         waitForStart();
 
         while (opModeIsActive()) {
-           double power = returnPower(targetPosition,TestMotor.getCurrentPosition());
+
+            double reference = targetPosition * encoder_direction;
+            double state = TestMotor.getCurrentPosition() * encoder_direction;
+            double power = encoder_direction * returnPower(reference,state);
 
            packet.put("power",power);
            packet.put("position",TestMotor.getCurrentPosition());
@@ -65,6 +73,7 @@ public class Pid_Motor extends LinearOpMode {
         }
 
         public double returnPower(double reference, double state){
+
         double error = reference - state;
 
         IntegralSum += error * timer.seconds();
@@ -75,8 +84,14 @@ public class Pid_Motor extends LinearOpMode {
 
         double outpput = (error * Kp) + (derivative * Kd) + (IntegralSum * Ki);
 
-
         return outpput;
+        }
+
+        public double GetEncoderDirection(int TargetPosition)
+        {
+            if(TargetPosition < 0){
+                return -1;
+            }else return 1;
         }
 
     }

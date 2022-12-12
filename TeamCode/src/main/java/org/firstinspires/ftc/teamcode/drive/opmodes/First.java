@@ -12,7 +12,6 @@ public class First extends LinearOpMode {
 
 
     Centric_Drive CDrive = new Centric_Drive();
-    Slider slider = new Slider(gamepad2);
     ServoClaw claw = new ServoClaw();
 
 
@@ -20,7 +19,11 @@ public class First extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         CDrive.Init(hardwareMap);
+
+        Slider slider = new Slider(gamepad2);
         slider.init(hardwareMap);
+
+
         claw.init(hardwareMap);
 
         waitForStart();

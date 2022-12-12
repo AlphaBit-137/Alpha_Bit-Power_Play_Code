@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Motor_Skeleton;
 
 public class Slider {
 
-    Gamepad Slider_Gamepad;
+    Gamepad Slider_Gamepad = new Gamepad();
 
    public Slider(Gamepad Slider_Gamepad)
    {

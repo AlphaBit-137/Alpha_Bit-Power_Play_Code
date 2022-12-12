@@ -6,8 +6,8 @@ import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Gyroscope;
 
 public class Centric_Drive {
 
-    ChasisInit chasis;
-    Gyroscope gyroscope;
+    ChasisInit chasis = new ChasisInit();
+    Gyroscope gyroscope= new Gyroscope();
 
     public void Init(HardwareMap hwmap)
     {
@@ -17,6 +17,7 @@ public class Centric_Drive {
 
 
     double speed = 1.0;
+
     final double controllerDeadzone = 0.15;
 
     double rotatedX = 0;
