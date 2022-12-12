@@ -8,8 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
-
 /*
 *
 *Experimental class used to calculate the power returned to the motor using PID
@@ -27,9 +25,9 @@ public class Pid_Motor extends LinearOpMode {
    private double LastError = 0;
    private double IntegralSum = 0;
 
-   public static double Kp = 0.0;
+   public static double Kp = 0.005;
    public static double Ki = 0.0;
-   public static double Kd = 0.0;
+   public static double Kd = 0.0001;
 
    public static int targetPosition = 100;
 
@@ -39,7 +37,6 @@ public class Pid_Motor extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         TelemetryPacket packet =new TelemetryPacket();
 
