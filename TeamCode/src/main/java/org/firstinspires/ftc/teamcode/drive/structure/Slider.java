@@ -17,11 +17,13 @@ public class Slider {
 
     public DcMotor slider;
 
+   ServoClaw claw = new ServoClaw();
+
     Motor_Skeleton skelete = new Motor_Skeleton(slider);
 
 
     public void init(HardwareMap ahwMap) {
-      skelete.init(ahwMap,"Slider",false);
+      skelete.init(ahwMap,"Slider",true);
     }
 
 

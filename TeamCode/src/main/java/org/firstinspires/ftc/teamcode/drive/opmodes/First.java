@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.structure.Centric_Drive;
 import org.firstinspires.ftc.teamcode.drive.structure.ServoClaw;
@@ -26,25 +27,12 @@ public class First extends LinearOpMode {
 
         claw.init(hardwareMap);
 
+
+
         waitForStart();
 
         while(opModeIsActive()){
 
-            CDrive.run(gamepad1.left_stick_x,gamepad1.right_stick_y,gamepad1.left_stick_y);
-            slider.update();
-
-            if(gamepad2.y) {
-                if(claw.CheckStatusServo()){
-                    claw.Open();
-                }
-                else{
-                    claw.Closed();
-                }
-            }
-
-
-            claw.update();
-            telemetry.update();
         }
     }
 
