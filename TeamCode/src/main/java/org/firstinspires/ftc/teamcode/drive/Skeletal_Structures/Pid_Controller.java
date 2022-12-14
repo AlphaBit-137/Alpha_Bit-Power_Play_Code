@@ -14,7 +14,7 @@ public class Pid_Controller {
     public double Ki = 0.0;
     public double Kd = 0.0;
 
-   Pid_Controller(double Kp, double Ki, double Kd)
+  public Pid_Controller(double Kp, double Ki, double Kd)
    {
        this.Kp = Kp;
        this.Ki = Ki;
@@ -39,11 +39,18 @@ public class Pid_Controller {
         return outpput;
     }
 
+
+
     public double GetIntegralSum(double Current_Reference,double IT)
     {
         if(Current_Reference != Last_Reference)
             return 0;
         else return IT;
+    }
+
+    public void InitTimer()
+    {
+        timer.reset();
     }
 
 }

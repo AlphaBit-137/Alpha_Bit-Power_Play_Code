@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Testers;
+package org.firstinspires.ftc.teamcode.RoadRunner.util.Testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -20,6 +20,7 @@ public class Gyro_Angle_Test extends LinearOpMode {
         public void runOpMode() throws InterruptedException {
 
             CSI.init(hardwareMap);
+            gyros.Init(hardwareMap);
 
             waitForStart();
 

@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.drive.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.drive.structure.Centric_Drive;
+import org.firstinspires.ftc.teamcode.drive.structure.Robot_Drive;
 import org.firstinspires.ftc.teamcode.drive.structure.ServoClaw;
 import org.firstinspires.ftc.teamcode.drive.structure.Slider;
 
@@ -11,29 +11,35 @@ import org.firstinspires.ftc.teamcode.drive.structure.Slider;
 public class First extends LinearOpMode {
 
 
-    Centric_Drive CDrive = new Centric_Drive();
+  //  Centric_Drive CDrive = new Centric_Drive();
+    Robot_Drive RD = new Robot_Drive();
     ServoClaw claw = new ServoClaw();
+    Slider slider = new Slider();
 
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        CDrive.Init(hardwareMap);
+       // CDrive.Init(hardwareMap);
 
-        Slider slider = new Slider(gamepad2);
-        slider.init(hardwareMap);
+        RD.Init(hardwareMap,gamepad1);
+
+        slider.init(hardwareMap,gamepad2);
 
 
-        claw.init(hardwareMap);
+        claw.init(hardwareMap,gamepad2);
 
         waitForStart();
 
         while(opModeIsActive()){
 
-            CDrive.run(gamepad1.left_stick_x,gamepad1.right_stick_y,gamepad1.left_stick_y);
+         //   CDrive.run(gamepad1.left_stick_x,gamepad1.right_stick_y,gamepad1.left_stick_y);
+            RD.run();
             slider.update();
+            claw.run();
 
-
+            telemetry.addData("Slider",slider.GetSliderPosition());
+            telemetry.addData("Slider",slider.SliderBusy());
             telemetry.update();
         }
     }

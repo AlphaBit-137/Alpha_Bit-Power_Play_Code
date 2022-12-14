@@ -7,7 +7,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Motor_Skeleton {
 
     DcMotor ThisMotor;
-    STATES MotorState = STATES.STOP;
+
+    STATES MotorState = STATES.RESET;
+
+    public boolean GoPos = false;
+
+    int Target;
+
     HardwareMap hwMap = null;
 
    public Motor_Skeleton(DcMotor ThisMotor){
@@ -17,63 +23,68 @@ public class Motor_Skeleton {
     public void init(HardwareMap ahwMap,String MotorName,boolean IsReversed) {
 
         hwMap = ahwMap;
+
         ThisMotor = hwMap.get(DcMotor.class, MotorName);
+
         ThisMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         ThisMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         IsReversed(IsReversed);
+
         ThisMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         ThisMotor.setPower(0);
     }
 
+    public double MotorCurrentPosition()
+    {
+        return ThisMotor.getCurrentPosition();
+    }
+
+    public void SetTargetPosition(int poz){
+        ThisMotor.setTargetPosition(poz);
+        ThisMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void Reset(){
+       ThisMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public boolean isBusy(){return ThisMotor.isBusy();}
+
+    public void SetPower(double power)
+    {
+        ThisMotor.setPower(power);
+    }
+
+
     enum STATES{
-
-        UP{
-            STATES GoTo(STATES goining_state){
-                return goining_state;
-            }
-        },
-        DOWN{
-            STATES GoTo(STATES goining_state){
-                return goining_state;
-            }
-        },
-        STOP{
-            STATES GoTo(STATES goining_state){
-                return goining_state;
-            }
-        };
-
-        abstract STATES GoTo(STATES going_state);
-
+        LVL,
+        RESET
     }
 
-    public void StateUpdate(double powerDOWN, double powerUP){
+    public void StateUpdate(){
         switch (MotorState){
-            case UP:
-                ThisMotor.setPower(powerUP);
+            case LVL:
+                Position_Lvl(Target);
                 break;
-            case DOWN:
-                ThisMotor.setPower(powerDOWN);
+            case RESET:
+                Reset();
                 break;
-            case STOP:
-                ThisMotor.setPower(0);
-                break;
+        }
+        if(!GoPos)switchToReset();
+    }
+
+    public void Position_Lvl(int poz2){
+        SetTargetPosition(poz2);
+         if(!isBusy()){
+           GoPos = false;
         }
     }
 
-    public void GoTo(String State_String){
-        switch(State_String) {
-            case "up":
-                MotorState = STATES.UP;
-                break;
-            case "down":
-                MotorState = STATES.DOWN;
-                break;
-            case "stop":
-                MotorState = STATES.STOP;
-                break;
-        }
-    }
+  public void switchToLevel(int Target){MotorState = STATES.LVL; this.Target = Target; GoPos=true;}
+  public void switchToReset(){MotorState = STATES.RESET;}
 
     public void IsReversed(boolean isreversed)
     {
@@ -81,7 +92,5 @@ public class Motor_Skeleton {
             ThisMotor.setDirection(DcMotor.Direction.REVERSE);
         }else ThisMotor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
-
-
 
 }
