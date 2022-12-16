@@ -41,10 +41,7 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigu
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequenceRunner;
-import org.firstinspires.ftc.teamcode.RoadRunner.util.AxisDirection;
-import org.firstinspires.ftc.teamcode.RoadRunner.util.BNO055IMUUtil;
 import org.firstinspires.ftc.teamcode.RoadRunner.util.LynxModuleUtil;
-import org.firstinspires.ftc.teamcode.drive.structure.ChasisInit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,7 +61,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     public static double VY_WEIGHT = 1;
     public static double OMEGA_WEIGHT = 1;
 
-    ChasisInit cs = new ChasisInit();
+
 
     private TrajectorySequenceRunner trajectorySequenceRunner;
 
@@ -119,13 +116,14 @@ public class SampleMecanumDrive extends MecanumDrive {
         // and the placement of the dot/orientation from https://docs.revrobotics.com/rev-control-system/control-system-overview/dimensions#imu-location
         //
         // For example, if +Y in this diagram faces downwards, you would use AxisDirection.NEG_Y.
-         BNO055IMUUtil.remapZAxis(imu, AxisDirection.NEG_Y);
+        // BNO055IMUUtil.remapZAxis(imu, AxisDirection.NEG_Y);
 
 
-        leftFront = cs.FrontLeft;
-        leftRear = cs.BackLeft;
-        rightRear = cs.BackRight;
-        rightFront = cs.FrontRight;
+        leftFront = hardwareMap.get(DcMotorEx.class, "Back_Left");
+        leftRear = hardwareMap.get(DcMotorEx.class, "Front_Right");
+        rightRear =  hardwareMap.get(DcMotorEx.class, "Front_Left");
+        rightFront = hardwareMap.get(DcMotorEx.class, "Back_Right");
+
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -146,8 +144,26 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
-        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
+     //   rightFront.setDirection(DcMotorEx.Direction.REVERSE);
+      //  rightRear.setDirection(DcMotorEx.Direction.REVERSE);
+
+
+     //   rightFront.setDirection(DcMotorEx.Direction.REVERSE);
+      //  leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+
+//        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+  //      leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+
+       // leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+       // leftRear  .setDirection(DcMotorEx.Direction.REVERSE);
+
+       // leftRear.setDirection(DcMotorEx.Direction.REVERSE);
+       // rightFront.setDirection(DcMotorEx.Direction.REVERSE);
+
+        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
         rightRear.setDirection(DcMotorEx.Direction.REVERSE);
+
+        //leftRear is FrontRight
 
         // TODO: if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
@@ -257,7 +273,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         if (Math.abs(drivePower.getX()) + Math.abs(drivePower.getY())
                 + Math.abs(drivePower.getHeading()) > 1) {
-            // re-normalize the powers according to the weights
+
             double denom = VX_WEIGHT * Math.abs(drivePower.getX())
                     + VY_WEIGHT * Math.abs(drivePower.getY())
                     + OMEGA_WEIGHT * Math.abs(drivePower.getHeading());
@@ -306,7 +322,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public Double getExternalHeadingVelocity() {
-        return (double) imu.getAngularVelocity().xRotationRate;
+        return (double) imu.getAngularVelocity().zRotationRate;
     }
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {
@@ -319,4 +335,5 @@ public class SampleMecanumDrive extends MecanumDrive {
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
     }
+
 }

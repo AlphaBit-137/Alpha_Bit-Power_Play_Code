@@ -1,12 +1,14 @@
-package org.firstinspires.ftc.teamcode.RoadRunner.util.Testers;
+package org.firstinspires.ftc.teamcode.drive.Testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Gyroscope;
 import org.firstinspires.ftc.teamcode.drive.structure.ChasisInit;
 
+@TeleOp
 public class Gyro_Angle_Test extends LinearOpMode {
 
 
@@ -22,13 +24,17 @@ public class Gyro_Angle_Test extends LinearOpMode {
             CSI.init(hardwareMap);
             gyros.Init(hardwareMap);
 
+          //  BNO055IMUUtil.remapZAxis(gyros.imu, AxisDirection.POS_X);
+
+
+
             waitForStart();
 
             Turn(90);
 
-            sleep(10000);
+         //   sleep(10000);
 
-            TurnTo(-90);
+           // TurnTo(-90);
 
         }
 

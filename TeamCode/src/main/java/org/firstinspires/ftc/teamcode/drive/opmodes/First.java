@@ -26,7 +26,6 @@ public class First extends LinearOpMode {
 
         slider.init(hardwareMap,gamepad2);
 
-
         claw.init(hardwareMap,gamepad2);
 
         waitForStart();
@@ -39,7 +38,12 @@ public class First extends LinearOpMode {
             claw.run();
 
             telemetry.addData("Slider",slider.GetSliderPosition());
+            telemetry.addData("ClawS1",claw.servo1.getPosition());
+            telemetry.addData("ClawS2",claw.servo2.getPosition());
             telemetry.addData("Slider",slider.SliderBusy());
+
+
+
             telemetry.update();
         }
     }

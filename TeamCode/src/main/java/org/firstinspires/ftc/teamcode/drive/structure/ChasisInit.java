@@ -40,9 +40,9 @@ public class ChasisInit {
           motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
-        BackLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        BackLeft.setDirection(DcMotorEx.Direction.FORWARD);
         FrontRight.setDirection(DcMotorEx.Direction.REVERSE);
-        FrontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        FrontLeft.setDirection(DcMotorEx.Direction.FORWARD);
         BackRight.setDirection(DcMotorEx.Direction.REVERSE);
 
     }

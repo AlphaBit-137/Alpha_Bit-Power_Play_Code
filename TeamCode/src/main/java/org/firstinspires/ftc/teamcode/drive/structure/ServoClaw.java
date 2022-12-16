@@ -20,33 +20,28 @@ public class ServoClaw {
         hwMap = ahwMap;
         servo1 = hwMap.get(Servo.class, "Servo1");
         servo2 = hwMap.get(Servo.class, "Servo2");
-        Init();
-        Open();
-    }
+      //  Init();
+     //  Open();
 
-    public void Init()
-    {
-        servo1.setPosition(0.1);
-        servo2.setPosition(0.1);
-    }
-
-    public void Closed(){
-        servo1.setPosition(-0.2);
-        servo2.setPosition(0.13);
     }
 
     public void Open(){
-        servo1.setPosition(0.13);
-        servo2.setPosition(0);
+        servo1.setPosition(0);
+        servo2.setPosition(0.2);
+    }
+
+    public void Closed(){
+        servo1.setPosition(0.4);
+        servo2.setPosition(-0.2);
     }
 
     public void run()
     {
         if(gamepad.b){
-            if(poz==1 && turns==true){
+            if(poz==1 && turns){
                 Open();
                 poz=2;
-            }else if(poz==2 && turns==true){
+            }else if(poz==2 && turns){
                 Closed();
                 poz=1;
             }

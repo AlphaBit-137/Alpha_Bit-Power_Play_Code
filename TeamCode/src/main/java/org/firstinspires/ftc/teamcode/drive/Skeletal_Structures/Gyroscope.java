@@ -9,8 +9,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.RoadRunner.util.AxisDirection;
-import org.firstinspires.ftc.teamcode.RoadRunner.util.BNO055IMUUtil;
 
 public class Gyroscope {
 
@@ -31,7 +29,7 @@ public class Gyroscope {
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         imu.initialize(parameters);
 
-        BNO055IMUUtil.remapZAxis(imu, AxisDirection.NEG_Y);
+     //   BNO055IMUUtil.remapZAxis(imu, AxisDirection.NEG_Y);
     }
 
 
@@ -50,6 +48,8 @@ public class Gyroscope {
             oriUpdateTimer.reset();
         }
     }
+
+
 
     ElapsedTime velUpdateTimer = new ElapsedTime();
 

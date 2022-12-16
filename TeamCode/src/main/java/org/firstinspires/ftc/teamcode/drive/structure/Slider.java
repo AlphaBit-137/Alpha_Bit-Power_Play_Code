@@ -14,7 +14,7 @@ public class Slider {
 
     public enum Junctions{
 
-        High(13600),
+        High(14000),
         Medium(7000),
         Low(4000),
         Ground(1000),
@@ -33,7 +33,7 @@ public class Slider {
  //   Pid_Controller PC = new Pid_Controller(0.0085,0.00002,0.0);
 
 
-    Motor_Skeleton sliderMotor = new Motor_Skeleton(slider);
+  public Motor_Skeleton sliderMotor = new Motor_Skeleton(slider);
 
 
     public void init(HardwareMap ahwMap,Gamepad Slider_Gamepad) {
@@ -51,9 +51,9 @@ public class Slider {
 
     public void update() {
 
-        if ((Slider_Gamepad.right_bumper || sliderMotor.isBusy()) && Check() != 1) {
+        if ((Slider_Gamepad.right_bumper /*&& Check() != 1*/) || sliderMotor.isBusy()) {
             sliderMotor.SetPower(1);
-        } else if (Slider_Gamepad.left_bumper && Check() != 2) {
+        } else if (Slider_Gamepad.left_bumper /*&& Check() != 2*/) {
             sliderMotor.SetPower(-1);
         } else sliderMotor.SetPower(0);
 
@@ -88,7 +88,7 @@ public class Slider {
 
     public int Check()
     {
-        if(sliderMotor.MotorCurrentPosition() >= 13650)return 1;
+        if(sliderMotor.MotorCurrentPosition() >= 16000)return 1;
         else if(sliderMotor.MotorCurrentPosition() <= 0)return 2;
         else return 3;
     }
