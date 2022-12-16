@@ -14,8 +14,8 @@ public class Slider {
 
     public enum Junctions{
 
-        High(14000),
-        Medium(7000),
+        High(10677),
+        Medium(7821),
         Low(4000),
         Ground(1000),
         Default(0);
@@ -47,7 +47,7 @@ public class Slider {
         return sliderMotor.MotorCurrentPosition();
     }
 
-    public boolean SliderBusy(){return sliderMotor.isBusy();}
+    //public boolean SliderBusy(){return sliderMotor.isBusy();}
 
     public void update() {
 
@@ -82,7 +82,7 @@ public class Slider {
         }
 
 
-       sliderMotor.StateUpdate();
+       sliderMotor.StateUpdate(false);
     }
 
 

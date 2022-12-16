@@ -26,7 +26,7 @@ public class Motor_Skeleton {
 
         ThisMotor = hwMap.get(DcMotor.class, MotorName);
 
-    //    ThisMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ThisMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         ThisMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -64,12 +64,13 @@ public class Motor_Skeleton {
         RESET
     }
 
-    public void StateUpdate(){
+    public void StateUpdate(boolean IsAuto){
         switch (MotorState){
             case LVL:
                 Position_Lvl(Target);
                 break;
             case RESET:
+                if(IsAuto)ThisMotor.setPower(0);
                 Reset();
                 break;
         }
@@ -77,7 +78,9 @@ public class Motor_Skeleton {
     }
 
     public void Position_Lvl(int poz2){
+
         SetTargetPosition(poz2);
+
          if(!isBusy()){
            GoPos = false;
         }
