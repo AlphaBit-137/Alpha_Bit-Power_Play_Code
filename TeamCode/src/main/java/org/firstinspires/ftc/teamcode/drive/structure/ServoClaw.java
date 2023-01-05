@@ -10,7 +10,7 @@ public class ServoClaw {
     public Servo servo2;
 
     Gamepad gamepad;
-    int poz = 1;
+    int poz = 2;
     public boolean turns = false;
 
     HardwareMap hwMap = null;
@@ -21,7 +21,7 @@ public class ServoClaw {
         servo1 = hwMap.get(Servo.class, "Servo1");
         servo2 = hwMap.get(Servo.class, "Servo2");
       //  Init();
-     //  Open();
+       //Open();
 
     }
 

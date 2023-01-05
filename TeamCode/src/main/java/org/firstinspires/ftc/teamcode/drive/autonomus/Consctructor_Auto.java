@@ -6,15 +6,27 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.structure.ServoClaw;
 import org.firstinspires.ftc.teamcode.drive.structure.Slider;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous
 public class Consctructor_Auto extends LinearOpMode {
 
+    private Sleeve_Detection sleeveDetection = new Sleeve_Detection();
+    private OpenCvCamera camera;
+
+    // Name of the Webcam to be set in the config
+    private String webcamName = "Webcam 1";
+
 
     Slider sd = new Slider();
+
+    int caz = 2;
 
     ServoClaw sclaw = new ServoClaw();
 
@@ -27,6 +39,7 @@ public class Consctructor_Auto extends LinearOpMode {
         TRAJECTORY_3,
         WAIT_1,
         TURN_2,
+        DECIDE,
         IDLE
     }
 
@@ -38,10 +51,28 @@ public class Consctructor_Auto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Initialize our lift
 
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
+        sleeveDetection = new Sleeve_Detection();
+        camera.setPipeline(sleeveDetection);
+
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                camera.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+            }
+
+            @Override
+            public void onError(int errorCode) {}
+        });
+
+
         sd.init(hardwareMap,null);
         sclaw.init(hardwareMap,null);
 
-       // sclaw.Closed();
+        sclaw.Open();
 
         // Initialize SampleMecanumDrive
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -62,7 +93,7 @@ public class Consctructor_Auto extends LinearOpMode {
 
 
         Trajectory trajectory3 = drive.trajectoryBuilder(trajectory2.end())
-                .forward(15)
+                .forward(15.5)
                 .build();
 
         Trajectory trajectory4 = drive.trajectoryBuilder(trajectory3.end())
@@ -74,7 +105,19 @@ public class Consctructor_Auto extends LinearOpMode {
                 .build();
 
         Trajectory trajectory6 = drive.trajectoryBuilder(trajectory5.end())
+                .back(30)
+                .build();
+
+        Trajectory trajectory7 = drive.trajectoryBuilder(trajectory6.end())
+                .strafeLeft(40)
+                .build();
+
+        Trajectory trajectory8A = drive.trajectoryBuilder(trajectory7.end())
                 .back(25)
+                .build();
+
+        Trajectory trajectory8B = drive.trajectoryBuilder(trajectory7.end())
+                .forward(25)
                 .build();
 
         double turnAngle1 = Math.toRadians(-270);
@@ -86,9 +129,26 @@ public class Consctructor_Auto extends LinearOpMode {
 
         double turnAngle2 = Math.toRadians(720);
 
+
+
+        while(!isStarted()){
+
+            if(sleeveDetection.getPosition() == Sleeve_Detection.ParkingPosition.LEFT)
+            {
+                caz = 1;
+            }else if(sleeveDetection.getPosition() == Sleeve_Detection.ParkingPosition.CENTER)
+            {
+                caz = 2;
+            }else caz = 3;
+
+
+            telemetry.addData("caz",caz);
+            telemetry.update();
+
+        }
+
         waitForStart();
 
-        if (isStopRequested()) return;
 
         currentState = State.TRAJECTORY_1;
         drive.followTrajectoryAsync(trajectory1);
@@ -97,7 +157,7 @@ public class Consctructor_Auto extends LinearOpMode {
 
             switch (currentState) {
                 case TRAJECTORY_1:
-                  //  Target = 10500;
+                    Target = 10500;
                     if (!drive.isBusy()) {
                         currentState = State.TRAJECTORY_2;
                         drive.followTrajectoryAsync(trajectory2);
@@ -112,11 +172,12 @@ public class Consctructor_Auto extends LinearOpMode {
                 case TURN_1:
                     if (!drive.isBusy()) {
                         currentState = State.TRAJECTORY_3;
-                      //  sclaw.Open();
+                        sclaw.Closed();
 
                         sleep(500);
 
                         drive.followTrajectoryAsync(trajectory4);
+                        Target = 0;
                     }
                     break;
                case TRAJECTORY_3:
@@ -138,19 +199,31 @@ public class Consctructor_Auto extends LinearOpMode {
                     // Check if the timer has exceeded the specified wait time
                     // If so, move on to the TURN_2 state
                   if(!drive.isBusy()){
-                      currentState = State.IDLE;
                       drive.followTrajectory(trajectory6);
+                      currentState = State.TURN_2;
                   }
                     break;
-            /*    case TURN_2:
+                case TURN_2:
                     // Check if the drive class is busy turning
                     // If not, move onto the next state, IDLE
                     // We are done with the program
                     if (!drive.isBusy()) {
-                        currentState = State.IDLE;
+                        drive.followTrajectory(trajectory7);
+                        currentState = State.DECIDE;
                     }
                     break;
-                case IDLE:
+                 case DECIDE:
+                   if(!drive.isBusy()){
+                       if(caz == 1)
+                       {
+                           drive.followTrajectory(trajectory8A);
+                       }else if(caz == 3){
+                           drive.followTrajectory(trajectory8B);
+                       }
+
+                       currentState = State.IDLE;
+                   }
+            /*    case IDLE:
                     // Do nothing in IDLE
                     // currentState does not change once in IDLE
                     // This concludes the autonomous program

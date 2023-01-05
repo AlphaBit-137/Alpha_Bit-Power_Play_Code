@@ -6,6 +6,8 @@ public class Pid_Controller {
 
     ElapsedTime timer = new ElapsedTime();
 
+    boolean IsStarted = false;
+
     public double LastError = 0;
     public double IntegralSum = 0;
     public double Last_Reference = 0;
@@ -14,18 +16,22 @@ public class Pid_Controller {
     public double Ki = 0.0;
     public double Kd = 0.0;
 
-  public Pid_Controller(double Kp, double Ki, double Kd)
-   {
-       this.Kp = Kp;
-       this.Ki = Ki;
-       this.Kd = Kd;
-   }
+    public Pid_Controller(double Kp, double Ki, double Kd)
+    {
+        this.Kp = Kp;
+        this.Ki = Ki;
+        this.Kd = Kd;
+    }
 
     public double returnPower(double reference, double state){
 
         double error = reference - state;
 
-        IntegralSum = GetIntegralSum(reference,IntegralSum);
+        if(Last_Reference != reference)
+        {
+            IntegralSum = 0;
+        }
+
         IntegralSum += error * timer.seconds();
 
         double derivative = (error - LastError) / timer.seconds();
@@ -34,23 +40,10 @@ public class Pid_Controller {
 
         double outpput = (error * Kp) + (derivative * Kd) + (IntegralSum * Ki);
 
+        timer.reset();
         Last_Reference = reference;
 
         return outpput;
-    }
-
-
-
-    public double GetIntegralSum(double Current_Reference,double IT)
-    {
-        if(Current_Reference != Last_Reference)
-            return 0;
-        else return IT;
-    }
-
-    public void InitTimer()
-    {
-        timer.reset();
     }
 
 }
