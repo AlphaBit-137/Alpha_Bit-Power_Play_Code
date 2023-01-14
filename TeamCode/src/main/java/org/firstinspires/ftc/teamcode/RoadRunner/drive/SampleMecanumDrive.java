@@ -42,6 +42,7 @@ import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySe
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequenceRunner;
 import org.firstinspires.ftc.teamcode.RoadRunner.util.LynxModuleUtil;
+import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Voltage_Sensor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,7 +62,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     public static double VY_WEIGHT = 1;
     public static double OMEGA_WEIGHT = 1;
 
-
+    Voltage_Sensor VS = new Voltage_Sensor();
 
     private TrajectorySequenceRunner trajectorySequenceRunner;
 
@@ -77,6 +78,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private VoltageSensor batteryVoltageSensor;
 
     public SampleMecanumDrive(HardwareMap hardwareMap) {
+
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
@@ -95,6 +97,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
+
+        VS.init(hardwareMap);
 
         // TODO: If the hub containing the IMU you are using is mounted so that the "REV" logo does
         // not face up, remap the IMU axes so that the z-axis points upward (normal to the floor.)
@@ -309,10 +313,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public void setMotorPowers(double v, double v1, double v2, double v3) {
-        leftFront.setPower(v);
-        leftRear.setPower(v1);
-        rightRear.setPower(v2);
-        rightFront.setPower(v3);
+        leftFront.setPower(v * VS.GetCompensation());
+        leftRear.setPower(v1 * VS.GetCompensation());
+        rightRear.setPower(v2 * VS.GetCompensation());
+        rightFront.setPower(v3 * VS.GetCompensation());
     }
 
     @Override

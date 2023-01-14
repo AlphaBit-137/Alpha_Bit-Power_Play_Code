@@ -49,7 +49,7 @@ public class Pid_MotorV2 extends LinearOpMode {
 
         encoder_direction = GetEncoderDirection(targetPosition);
 
-        PD.InitTimer();
+     //   PD.InitTimer();
 
         telemetry.addData("Encoder_Direction",encoder_direction);
 

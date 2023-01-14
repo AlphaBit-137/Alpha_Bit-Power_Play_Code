@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive.structure;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -17,8 +17,8 @@ public class Slider {
 
     Pid_Controller PID = new Pid_Controller(Kp,Ki,Kd);
 
-    public DcMotor slider;
-    public DcMotor slider2;
+    public DcMotorEx slider;
+    public DcMotorEx slider2;
 
     public double positionSlider1;
     public double positionSlider2;
@@ -70,63 +70,33 @@ public class Slider {
 
     public void update() {
 
-      /*  if ((Slider_Gamepad.right_bumper && Check() != 1) || (sliderMotor.isBusy() && sliderMotor2.isBusy())) {
-           // sliderMotor.SetPower(1);
-            SetBothPower(1);
-            //RegulateSliderPositions();
 
-        } else if (Slider_Gamepad.left_bumper && Check() != 2) {
-            //sliderMotor.SetPower(-1);
-            SetBothPower(-1);
-
-        } else  SetBothPower(0);// sliderMotor.SetPower(0);
-
-
-        if(Slider_Gamepad.dpad_up){
-            current_junction = Junctions.High;
-            sliderMotor.switchToLevel(current_junction.ThisPosition);
-            sliderMotor2.switchToLevel(current_junction.ThisPosition);
-        }
-
-        if(Slider_Gamepad.dpad_right)
+        if(Slider_Gamepad.right_bumper)
         {
-            current_junction = Junctions.Medium;
-            sliderMotor.switchToLevel(current_junction.ThisPosition);
-        }
-
-        if(Slider_Gamepad.dpad_down)
+            Reference = sliderMotor.MotorCurrentPosition();
+            SetSliderPower(1);
+        }else if(Slider_Gamepad.left_bumper)
         {
-            current_junction = Junctions.Low;
-            sliderMotor.switchToLevel(current_junction.ThisPosition);
-        }
-
-        if(Slider_Gamepad.dpad_left)
-        {
-            current_junction = Junctions.Default;
-            sliderMotor.switchToLevel(current_junction.ThisPosition);
-        }
-
-
-       sliderMotor.StateUpdate();
-       sliderMotor2.StateUpdate();*/
+            Reference = sliderMotor.MotorCurrentPosition();
+            SetSliderPower(-1);
+        }else SetPidPower(Reference);
 
         if(Slider_Gamepad.dpad_up)
         {
-            Reference = 1000;
+            Reference = 1500;
         }
+    }
 
-        if(Slider_Gamepad.dpad_down)
-        {
-            Reference = 2500;
-        }
-
-        SetPidPower(Reference);
+    public void SetSliderPower(double power)
+    {
+        sliderMotor.SetPower(power);
+        sliderMotor2.SetPower(-power);
     }
 
     public void SetPidPower(double current_Reference)
     {
         sliderMotor.SetPower(PID.returnPower(current_Reference,sliderMotor.MotorCurrentPosition()));
-        sliderMotor2.SetPower(PID.returnPower(current_Reference,sliderMotor2.MotorCurrentPosition()));
+        sliderMotor2.SetPower(sliderMotor.GetPower());
     }
 
 
