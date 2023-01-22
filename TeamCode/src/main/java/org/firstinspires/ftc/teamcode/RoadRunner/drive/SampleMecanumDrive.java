@@ -123,11 +123,10 @@ public class SampleMecanumDrive extends MecanumDrive {
         // BNO055IMUUtil.remapZAxis(imu, AxisDirection.NEG_Y);
 
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "Back_Left");
-        leftRear = hardwareMap.get(DcMotorEx.class, "Front_Right");
-        rightRear =  hardwareMap.get(DcMotorEx.class, "Front_Left");
-        rightFront = hardwareMap.get(DcMotorEx.class, "Back_Right");
-
+        leftFront = hardwareMap.get(DcMotorEx.class, "Front_Left");
+        leftRear = hardwareMap.get(DcMotorEx.class, "Back_Left");
+        rightRear =  hardwareMap.get(DcMotorEx.class, "Back_Right");
+        rightFront = hardwareMap.get(DcMotorEx.class, "Front_Right");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -148,24 +147,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
-     //   rightFront.setDirection(DcMotorEx.Direction.REVERSE);
-      //  rightRear.setDirection(DcMotorEx.Direction.REVERSE);
-
-
-     //   rightFront.setDirection(DcMotorEx.Direction.REVERSE);
-      //  leftFront.setDirection(DcMotorEx.Direction.REVERSE);
-
-//        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
-  //      leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
-
-       // leftFront.setDirection(DcMotorEx.Direction.REVERSE);
-       // leftRear  .setDirection(DcMotorEx.Direction.REVERSE);
-
-       // leftRear.setDirection(DcMotorEx.Direction.REVERSE);
-       // rightFront.setDirection(DcMotorEx.Direction.REVERSE);
-
         leftFront.setDirection(DcMotorEx.Direction.REVERSE);
-        rightRear.setDirection(DcMotorEx.Direction.REVERSE);
+        leftRear.setDirection(DcMotorEx.Direction.REVERSE);
 
         //leftRear is FrontRight
 

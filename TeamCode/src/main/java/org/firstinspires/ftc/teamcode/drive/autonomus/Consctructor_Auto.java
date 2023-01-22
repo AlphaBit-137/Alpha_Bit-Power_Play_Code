@@ -246,15 +246,6 @@ public class Consctructor_Auto extends LinearOpMode {
 
    public void Update(){
 
-            sd.sliderMotor.switchToLevel(Target);
-
-            sd.sliderMotor.SetPower(1);
-
-            sd.sliderMotor.StateUpdate(true);
-
-          //  sd.sliderMotor.SetPower(1);
-
-     //      if(!sd.sliderMotor.isBusy()) sd.sliderMotor.SetPower(0);
    }
 
 

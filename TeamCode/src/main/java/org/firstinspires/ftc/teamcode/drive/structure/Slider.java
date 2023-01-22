@@ -20,8 +20,6 @@ public class Slider {
     public DcMotorEx slider;
     public DcMotorEx slider2;
 
-    public double positionSlider1;
-    public double positionSlider2;
 
     Junctions current_junction = Junctions.Default;
 
@@ -43,8 +41,6 @@ public class Slider {
     }
 
     Gamepad Slider_Gamepad;
-    //   Pid_Controller PC = new Pid_Controller(0.0085,0.00002,0.0);
-
 
     public Motor_Skeleton sliderMotor = new Motor_Skeleton(slider);
     public Motor_Skeleton sliderMotor2 = new Motor_Skeleton(slider2);
@@ -63,10 +59,6 @@ public class Slider {
     }
 
     public double GetSlider2Position(){return sliderMotor2.MotorCurrentPosition();}
-
-    public boolean SliderBusy(){return sliderMotor.isBusy();}
-
-    public boolean Slider2Busy(){return sliderMotor2.isBusy();}
 
     public void update() {
 
