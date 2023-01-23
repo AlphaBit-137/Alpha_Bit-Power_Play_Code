@@ -43,13 +43,13 @@ public class Robot_Drive {
         MS(Drive1, Drive2, Drive3, Drive4);
 
         if(gamepad.right_bumper) {
-            if(Chose)Limit=Limit+0.1;
+            if(Chose)Limit+=0.1;
             if(Limit>1)Limit=1;
             Chose = false;
         } else Chose=true;
 
         if(gamepad.left_bumper) {
-            if(Chose2)Limit=Limit-0.1;
+            if(Chose2)Limit-=0.1;
             if(Limit<0.1)Limit=0.1;
             Chose2 = false;
         } else {Chose2=true; }
