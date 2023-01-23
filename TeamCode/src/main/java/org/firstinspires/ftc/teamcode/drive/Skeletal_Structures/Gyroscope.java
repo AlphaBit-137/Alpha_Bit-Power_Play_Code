@@ -29,7 +29,6 @@ public class Gyroscope {
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         imu.initialize(parameters);
 
-     //   BNO055IMUUtil.remapZAxis(imu, AxisDirection.NEG_Y);
     }
 
 
@@ -62,7 +61,7 @@ public class Gyroscope {
 
 
     public double getHeading() {
-        return angularOrientation.firstAngle - 10.00;
+        return angularOrientation.firstAngle;
     }
 
     public double getForwardAngle() {

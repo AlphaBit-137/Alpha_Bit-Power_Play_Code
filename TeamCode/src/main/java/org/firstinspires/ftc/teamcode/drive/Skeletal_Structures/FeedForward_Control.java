@@ -23,6 +23,7 @@ public class FeedForward_Control {
         return calculate(velocity, 0);
     }
 
+
     public double maxAchievableVelocity(double maxVoltage, double acceleration) {
 
         return (maxVoltage - ks - kg - acceleration * ka) / kv;

@@ -6,25 +6,15 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.structure.ServoClaw;
 import org.firstinspires.ftc.teamcode.drive.structure.Slider;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous
 public class Consctructor_Auto extends LinearOpMode {
 
-    private Sleeve_Detection sleeveDetection = new Sleeve_Detection();
-    private OpenCvCamera camera;
-
-    // Name of the Webcam to be set in the config
-    private String webcamName = "Webcam 1";
-
-
     Slider sd = new Slider();
+    GetDetection detection = new GetDetection();
 
     int caz = 2;
 
@@ -51,26 +41,9 @@ public class Consctructor_Auto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Initialize our lift
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
-        sleeveDetection = new Sleeve_Detection();
-        camera.setPipeline(sleeveDetection);
-
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                camera.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
-            }
-
-            @Override
-            public void onError(int errorCode) {}
-        });
-
-
         sd.init(hardwareMap,null);
         sclaw.init(hardwareMap,null);
+        detection.initCamera(hardwareMap);
 
         sclaw.Open();
 
@@ -129,21 +102,16 @@ public class Consctructor_Auto extends LinearOpMode {
 
         double turnAngle2 = Math.toRadians(720);
 
-
-
         while(!isStarted()){
 
-            if(sleeveDetection.getPosition() == Sleeve_Detection.ParkingPosition.LEFT)
-            {
-                caz = 1;
-            }else if(sleeveDetection.getPosition() == Sleeve_Detection.ParkingPosition.CENTER)
-            {
-                caz = 2;
-            }else caz = 3;
+            detection.Detect();
 
 
-            telemetry.addData("caz",caz);
+
+            telemetry.addData("caz",detection.getCase());
             telemetry.update();
+
+            caz = detection.getCase();
 
         }
 
