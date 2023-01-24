@@ -5,9 +5,10 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.MotionProfile;
 
 /*
 *
@@ -19,9 +20,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp
 public class Pid_Motor extends LinearOpMode {
 
-    public DcMotor TestMotor;
+    public DcMotorEx TestMotor;
 
     ElapsedTime timer = new ElapsedTime();
+    MotionProfile MP = new MotionProfile();
 
    private double LastError = 0;
    private double IntegralSum = 0;
@@ -43,14 +45,14 @@ public class Pid_Motor extends LinearOpMode {
         TelemetryPacket packet =new TelemetryPacket();
 
         dashboard.setTelemetryTransmissionInterval(25);
-        TestMotor = hardwareMap.get(DcMotor.class,"Slider");
+        TestMotor = hardwareMap.get(DcMotorEx.class,"Slider");
 
-        TestMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        TestMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        TestMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        TestMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        TestMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        TestMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        TestMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        TestMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
         encoder_direction = GetEncoderDirection(targetPosition);
 
@@ -70,13 +72,8 @@ public class Pid_Motor extends LinearOpMode {
             packet.put("position", state);
             packet.put("error", LastError);
 
-            if (TestMotor.getCurrentPosition() >= 0 && state != reference) {
                 TestMotor.setPower(power);
-            } else
-            {
-                reference = 500;
-                sleep(10000);
-            }
+
 
           dashboard.sendTelemetryPacket(packet);
         }
@@ -86,13 +83,17 @@ public class Pid_Motor extends LinearOpMode {
 
         double error = reference - state;
 
-        IntegralSum += error * timer.seconds();
+        double InstantErrror = MP.motion_profile(1240,3450,error,error/TestMotor.getVelocity());
 
-        double derivative = (error - LastError) / timer.seconds();
+        IntegralSum += InstantErrror * timer.seconds();
 
-        LastError = error;
+        double derivative = (InstantErrror - LastError) / timer.seconds();
 
-        double outpput = (error * Kp) + (derivative * Kd) + (IntegralSum * Ki);
+        LastError = InstantErrror;
+
+        double outpput = (InstantErrror * Kp) + (derivative * Kd) + (IntegralSum * Ki);
+
+        timer.reset();
 
         return outpput;
         }

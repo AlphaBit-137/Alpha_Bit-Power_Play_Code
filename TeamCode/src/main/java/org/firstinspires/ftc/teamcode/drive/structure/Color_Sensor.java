@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.drive.structure;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
@@ -16,52 +14,72 @@ public class Color_Sensor {
     DistanceSensor sensorDistance;
     float saturation;
 
-    float hsvValues[] = {0F, 0F, 0F};
-    final float values[] = hsvValues;
+    boolean active = false;
+
+
     final double SCALE_FACTOR = 255;
 
     int relativeLayoutId;
+
+    int green, red, blue;
+
+    int cas = 3;
+
     View relativeLayout;
 
-    public void init(HardwareMap hwmap) {
-        sensorColor = hwmap.get(ColorSensor.class, "sensor_color_distance");
+    public void init(HardwareMap hardmap) {
 
-        sensorDistance = hwmap.get(DistanceSensor.class, "sensor_color_distance");
+        sensorColor = hardmap.get(ColorSensor.class, "sensor_color_distance");
+
+        sensorDistance = hardmap.get(DistanceSensor.class, "sensor_color_distance");
+
+        relativeLayoutId = hardmap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardmap.appContext.getPackageName());
+        relativeLayout = ((Activity) hardmap.appContext).findViewById(relativeLayoutId);
+    }
+
+    float hsvValues[] = {0F, 0F, 0F};
+
+    float values[] = hsvValues;
 
 
-        relativeLayoutId = hwmap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-        relativeLayout = ((Activity) hwmap.appContext).findViewById(relativeLayoutId);
+    public void update() {
+        Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
+                (int) (sensorColor.green() * SCALE_FACTOR),
+                (int) (sensorColor.blue() * SCALE_FACTOR),
+                hsvValues);
+
+        relativeLayout.post(new Runnable() {
+            public void run() {
+                relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
+            }
+        });
+
+        saturation = hsvValues[1];
+
+        green=sensorColor.green();
+        red = sensorColor.red();
+        blue = sensorColor.blue();
+
 
     }
 
-
-        public void updateSensor() {
-
-            Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
-                    (int) (sensorColor.green() * SCALE_FACTOR),
-                    (int) (sensorColor.blue() * SCALE_FACTOR),
-                    hsvValues);
-
-
-            relativeLayout.post(new Runnable() {
-                public void run() {
-                    relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
-                }
-            });
-
-            saturation = hsvValues[1];
-
-        }
-
-
     public int whatColorIsIt() {
-        if (sensorColor.green() > (sensorColor.blue() + sensorColor.red()) / 1.42) {
+        if (green > (blue + red) / 1.40) {
             return 3; //Neither blue nor red
-        } else if (sensorColor.red() < sensorColor.blue() && saturation >= 0.30) {
+        } else if (red < blue && saturation >= 0.25) {
             return 2; //blue
         } else {
             return 1; //red
         }
+    }
+    public int whatColorIsIt2()
+    {
+        if(green < red || green < blue)
+        {
+            if(red>blue)return 1;
+            else if(blue>red)return 2;
+        }else return 3;
+        return 0;
     }
 
 }
