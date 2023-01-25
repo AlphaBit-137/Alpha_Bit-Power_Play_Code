@@ -48,7 +48,7 @@ public class MotionProfile {
                 deacceleration_time = current_dt - deacceleration_time;
 
 
-                return acceleration_distance + cruise_distance + max_velocity * Math.pow(deacceleration_time,2) - 0.5 * max_acceleration * deacceleration_time;
+                return acceleration_distance + cruise_distance + max_velocity * deacceleration_time - 0.5 * max_acceleration * Math.pow(deacceleration_time,2);
             }
         }
 
