@@ -22,6 +22,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.structure.Arm;
 
 import java.util.Objects;
 
@@ -44,6 +45,8 @@ import java.util.Objects;
 @TeleOp
 public class ManualFeedforwardTuner extends LinearOpMode {
     public static double DISTANCE = 72; // in
+
+    Arm arm = new Arm();
 
     private FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -142,6 +145,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
             }
 
             telemetry.update();
+            arm.update();
         }
     }
 }
