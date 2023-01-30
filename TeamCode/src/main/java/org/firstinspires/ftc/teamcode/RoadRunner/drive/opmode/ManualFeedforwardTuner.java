@@ -145,7 +145,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
             }
 
             telemetry.update();
-            arm.update();
+            //arm.update();
         }
     }
 }
