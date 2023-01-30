@@ -28,14 +28,20 @@ public class Pid_Motor extends LinearOpMode {
    private double LastError = 0;
    private double IntegralSum = 0;
 
-   public static double Kp = 0.0085;
-   public static double Ki = 0.00002;
+   public static double Kp = 0.035;
+   public static double Ki = 0.0;
    public static double Kd = 0.0;
+
+   public static double maxAccel = 300;
+   public static double maxVelocity = 300;
 
    public double encoder_direction = 1;
 
-   public static int targetPosition = 1000;
+   public static int targetPosition = 500;
 
+   public double getEror;
+
+   double time;
 
    private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -45,7 +51,7 @@ public class Pid_Motor extends LinearOpMode {
         TelemetryPacket packet =new TelemetryPacket();
 
         dashboard.setTelemetryTransmissionInterval(25);
-        TestMotor = hardwareMap.get(DcMotorEx.class,"Slider");
+        TestMotor = hardwareMap.get(DcMotorEx.class,"Arm");
 
         TestMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         TestMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -72,9 +78,15 @@ public class Pid_Motor extends LinearOpMode {
             packet.put("position", state);
             packet.put("error", LastError);
 
-                TestMotor.setPower(power);
+            telemetry.addData("state",TestMotor.getCurrentPosition());
+            telemetry.addData("error",getEror);
+            telemetry.addData("power",power);
+            telemetry.addData("time",time);
+            telemetry.addData("velocity",TestMotor.getVelocity());
 
+                TestMotor.setPower(-power);
 
+         telemetry.update();
           dashboard.sendTelemetryPacket(packet);
         }
         }
@@ -83,17 +95,26 @@ public class Pid_Motor extends LinearOpMode {
 
         double error = reference - state;
 
-        double InstantErrror = MP.motion_profile(1240,3450,error,error/TestMotor.getVelocity());
+        if(error == 0)error = 1;
+
+        double velocity = TestMotor.getVelocity();
+
+        if(velocity == 0)velocity = 1;
+
+        double InstantErrror = MP.motion_profile(maxAccel,maxVelocity,error,error/velocity);
+
+        time = error/velocity;
+
+        getEror = InstantErrror;
 
         IntegralSum += InstantErrror * timer.seconds();
 
         double derivative = (InstantErrror - LastError) / timer.seconds();
 
-        LastError = InstantErrror;
-
         double outpput = (InstantErrror * Kp) + (derivative * Kd) + (IntegralSum * Ki);
 
         timer.reset();
+        LastError = InstantErrror;
 
         return outpput;
         }

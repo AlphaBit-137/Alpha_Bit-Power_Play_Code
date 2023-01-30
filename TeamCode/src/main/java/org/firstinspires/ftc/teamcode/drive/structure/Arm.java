@@ -13,7 +13,7 @@ public class Arm {
     double Ki = 0.0;
     double Kd = 0.0;
 
-    double Reeference = 0;
+    double Reeference = 101;
 
     Pid_Controller PID = new Pid_Controller(Kp,Ki,Kd);
 
@@ -39,7 +39,7 @@ public class Arm {
         {
             SetPower(-0.3);
         }else{
-            SetPower(0);
+            SetPidPower(Reeference);
         }
 
     }
@@ -50,7 +50,7 @@ public class Arm {
 
     public void SetPidPower(double reference)
     {
-        ArmMotor.SetPower(PID.returnPower(reference,ArmMotor.MotorCurrentPosition()));
+        ArmMotor.SetPower(-PID.returnPower(reference,ArmMotor.MotorCurrentPosition()));
     }
 
 

@@ -6,17 +6,16 @@ public class MotionProfile {
 
         public double motion_profile(double max_acceleration, double max_velocity, double distance,double current_dt) {
 
-
            double acceleration_dt = max_velocity / max_acceleration;
 
-            double halfway_distance = distance / 2;
+          //  double halfway_distance = distance / 2;
 
-            double acceleration_distance = 0.5 * max_acceleration * Math.pow(acceleration_dt,2);
+            double acceleration_distance = 0.5 * max_acceleration * Math.pow(acceleration_dt, 2);
 
-            if (acceleration_distance > halfway_distance) ;
-            acceleration_dt = Math.sqrt(halfway_distance / (0.5 * max_acceleration));
+           // if (acceleration_distance > halfway_distance) ;
+           // acceleration_dt = Math.sqrt(halfway_distance / (0.5 * max_acceleration));
 
-            acceleration_distance = 0.5 * max_acceleration * Math.pow(acceleration_dt, 2);
+            acceleration_dt = Math.sqrt(distance/max_acceleration);
 
             max_velocity = max_acceleration * acceleration_dt;
 

@@ -17,9 +17,11 @@ public class Motor_Skeleton {
 
         ThisMotor = ahwMap.get(DcMotorEx.class, MotorName);
 
-    //    ThisMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ThisMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        ThisMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+      //  ThisMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        ThisMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         IsReversed(IsReversed);
 

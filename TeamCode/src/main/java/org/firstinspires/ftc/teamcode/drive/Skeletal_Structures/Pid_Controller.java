@@ -25,16 +25,20 @@ public class Pid_Controller {
 
     public double returnPower(double reference, double state){
 
+        double time = returnTimer();
+
         double error = reference - state;
+
 
         if(Last_Reference != reference)
         {
             IntegralSum = 0;
         }
 
-        IntegralSum += error * timer.seconds();
 
-        double derivative = (error - LastError) / timer.seconds();
+        IntegralSum += error * time;
+
+        double derivative = (error - LastError) / time;
 
         LastError = error;
 
@@ -44,6 +48,17 @@ public class Pid_Controller {
         Last_Reference = reference;
 
         return outpput;
+    }
+
+    public double returnTimer()
+    {
+        if(!IsStarted)
+        {
+            timer.reset();
+            IsStarted = true;
+        }
+        double time = timer.seconds();
+        return time;
     }
 
 }

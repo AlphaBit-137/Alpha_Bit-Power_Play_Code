@@ -11,6 +11,8 @@ public class MPid_Controller {
     double Kd = 0.0;
     double Ki = 0.0;
 
+    public boolean IsStarted = false;
+
     double maxAccel = 0.0;
     double maxVel = 0.0;
 
@@ -30,6 +32,8 @@ public class MPid_Controller {
 
     public double returnPower(double reference, double state , double velocity){
 
+        double time = getTime();
+
         double error = reference - state;
 
         velocity = normalize(velocity);
@@ -41,9 +45,9 @@ public class MPid_Controller {
             IntegralSum = 0;
         }
 
-        IntegralSum += InstantError * timer.seconds();
+        IntegralSum += InstantError * time;
 
-        double derivative = (InstantError - LastError) / timer.seconds();
+        double derivative = (InstantError - LastError) / time;
 
         LastError = InstantError;
         LastReference = reference;
@@ -57,8 +61,19 @@ public class MPid_Controller {
 
     double normalize(double vel)
     {
-        if(vel < 0 || vel == 0)return 1;
+        if(vel == 0)return 1;
         else return vel;
+    }
+
+    double getTime()
+    {
+        if(!IsStarted)
+        {
+            timer.reset();
+            IsStarted = true;
+        }
+        double time = timer.seconds();
+        return time;
     }
 
 }
