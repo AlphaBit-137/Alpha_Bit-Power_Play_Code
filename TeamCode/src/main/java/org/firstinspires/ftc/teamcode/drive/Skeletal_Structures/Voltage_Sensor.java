@@ -7,9 +7,12 @@ public class Voltage_Sensor {
 
     VoltageSensor Vsensor;
 
-    public void init(HardwareMap ahwmap)
+    public double normalizer;
+
+    public void init(HardwareMap ahwmap , double normalizer)
     {
         Vsensor = ahwmap.voltageSensor.iterator().next();
+        this.normalizer = normalizer;
     }
 
     public double GetCompensation()
