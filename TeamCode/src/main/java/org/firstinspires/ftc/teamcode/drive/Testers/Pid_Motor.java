@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.MotionProfile;
+import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.NoPermaMP;
 
 /*
 *
@@ -24,6 +25,7 @@ public class Pid_Motor extends LinearOpMode {
 
     ElapsedTime timer = new ElapsedTime();
     MotionProfile MP = new MotionProfile();
+    NoPermaMP nmp = new NoPermaMP();
 
    private double LastError = 0;
    private double IntegralSum = 0;
@@ -32,12 +34,12 @@ public class Pid_Motor extends LinearOpMode {
    public static double Ki = 0.0;
    public static double Kd = 0.0;
 
-   public static double maxAccel = 300;
-   public static double maxVelocity = 300;
+   public static double maxAccel = 100;
+   public static double maxVelocity = 100;
 
    public double encoder_direction = 1;
 
-   public static int targetPosition = 500;
+   public static int targetPosition = -500;
 
    public double getEror;
 
@@ -84,7 +86,7 @@ public class Pid_Motor extends LinearOpMode {
             telemetry.addData("time",time);
             telemetry.addData("velocity",TestMotor.getVelocity());
 
-                TestMotor.setPower(-power);
+            TestMotor.setPower(-power);
 
          telemetry.update();
           dashboard.sendTelemetryPacket(packet);
@@ -94,8 +96,6 @@ public class Pid_Motor extends LinearOpMode {
         public double returnPower(double reference, double state){
 
         double error = reference - state;
-
-        if(error == 0)error = 1;
 
         double velocity = TestMotor.getVelocity();
 
@@ -107,14 +107,18 @@ public class Pid_Motor extends LinearOpMode {
 
         getEror = InstantErrror;
 
-        IntegralSum += InstantErrror * timer.seconds();
+       /* if(state == reference || state > reference)IntegralSum = 0;
+        else{IntegralSum += InstantErrror * timer.seconds();}*/
 
-        double derivative = (InstantErrror - LastError) / timer.seconds();
 
-        double outpput = (InstantErrror * Kp) + (derivative * Kd) + (IntegralSum * Ki);
+
+        double derivative = (error - LastError) / timer.seconds();
+
+        double outpput = (error * Kp) + (derivative * Kd) + (IntegralSum * Ki);
+
 
         timer.reset();
-        LastError = InstantErrror;
+        LastError = error;
 
         return outpput;
         }

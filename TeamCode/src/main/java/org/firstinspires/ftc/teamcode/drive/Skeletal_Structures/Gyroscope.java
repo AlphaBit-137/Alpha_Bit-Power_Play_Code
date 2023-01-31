@@ -36,13 +36,11 @@ public class Gyroscope {
     
     AngularVelocity angularVelocity;
 
-    double updateInterval = 1;
-
 
     ElapsedTime oriUpdateTimer = new ElapsedTime();
 
     public void updateOrientation() {
-        if (oriUpdateTimer.milliseconds() > updateInterval) {
+        if (oriUpdateTimer.milliseconds() > 1) {
             angularOrientation = imu.getAngularOrientation();
             oriUpdateTimer.reset();
         }
@@ -50,12 +48,12 @@ public class Gyroscope {
 
 
 
-    ElapsedTime velUpdateTimer = new ElapsedTime();
+    ElapsedTime gyroVelTimer = new ElapsedTime();
 
     public void updateVelocity() {
-        if (velUpdateTimer.milliseconds() > updateInterval) {
+        if (gyroVelTimer.milliseconds() > 1) {
             angularVelocity = imu.getAngularVelocity();
-            velUpdateTimer.reset();
+            gyroVelTimer.reset();
         }
     }
 
@@ -77,16 +75,7 @@ public class Gyroscope {
         return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
     }
 
-    public void initFirstAngles() {
-        ElapsedTime initTime = new ElapsedTime();
-        while (firstHeading == firstLateral && firstLateral == firstForward && initTime.milliseconds() < 2000) {
-            updateOrientation();
-            firstAngles = true;
-            firstHeading = getHeading();
-            firstLateral = getLateralAngle();
-            firstForward = getForwardAngle();
-        }
-    }
+
 
 }
 

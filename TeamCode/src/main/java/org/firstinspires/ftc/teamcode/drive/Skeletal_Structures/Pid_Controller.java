@@ -8,6 +8,8 @@ public class Pid_Controller {
 
     boolean IsStarted = false;
 
+    double timp;
+
     public double LastError = 0;
     public double IntegralSum = 0;
     public double Last_Reference = 0;
@@ -25,37 +27,35 @@ public class Pid_Controller {
 
     public double returnPower(double reference, double state){
 
-        double time = returnTimer();
+        timp = returnTimer();
 
         double error = reference - state;
-
 
         if(Last_Reference != reference)
         {
             IntegralSum = 0;
         }
 
+        IntegralSum += error * timp;
 
-        IntegralSum += error * time;
-
-        double derivative = (error - LastError) / time;
+        double derivative = (error - LastError) / timp;
 
         LastError = error;
 
         double outpput = (error * Kp) + (derivative * Kd) + (IntegralSum * Ki);
 
-        timer.reset();
         Last_Reference = reference;
+
+        timer.reset();
 
         return outpput;
     }
 
     public double returnTimer()
     {
-        if(!IsStarted)
-        {
-            timer.reset();
+        if(!IsStarted) {
             IsStarted = true;
+            timer.reset();
         }
         double time = timer.seconds();
         return time;

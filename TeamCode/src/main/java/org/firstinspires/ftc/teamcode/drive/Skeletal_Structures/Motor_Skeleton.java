@@ -13,7 +13,7 @@ public class Motor_Skeleton {
         this.ThisMotor = ThisMotor;
     }
 
-    public void init(HardwareMap ahwMap,String MotorName,boolean IsReversed) {
+    public void init(HardwareMap ahwMap,String MotorName,boolean IsReversed,boolean using_encoders) {
 
         ThisMotor = ahwMap.get(DcMotorEx.class, MotorName);
 
@@ -21,7 +21,7 @@ public class Motor_Skeleton {
 
       //  ThisMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        ThisMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RUN_WITH_ENCODERS(using_encoders);
 
         IsReversed(IsReversed);
 
@@ -59,6 +59,14 @@ public class Motor_Skeleton {
         if(isreversed){
             ThisMotor.setDirection(DcMotor.Direction.REVERSE);
         }else ThisMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+    }
+
+    public void RUN_WITH_ENCODERS(boolean encoders)
+    {
+        if(encoders)
+        {
+            ThisMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }else ThisMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
 }

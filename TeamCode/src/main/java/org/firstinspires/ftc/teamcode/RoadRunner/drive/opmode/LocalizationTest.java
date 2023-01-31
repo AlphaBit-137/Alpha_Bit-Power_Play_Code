@@ -23,6 +23,8 @@ public class LocalizationTest extends LinearOpMode {
 
         Arm arm = new Arm();
 
+        arm.init(hardwareMap,gamepad2);
+
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         waitForStart();

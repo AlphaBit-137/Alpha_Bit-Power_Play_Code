@@ -49,8 +49,8 @@ public class Slider {
     public void init(HardwareMap ahwMap,Gamepad Slider_Gamepad) {
         this.Slider_Gamepad = Slider_Gamepad;
 
-        sliderMotor.init(ahwMap,"Slider",false);
-        sliderMotor2.init(ahwMap,"Slider2",true);
+        sliderMotor.init(ahwMap,"Slider",false,false);
+        sliderMotor2.init(ahwMap,"Slider2",false,false);
     }
 
     public double GetSliderPosition()
@@ -77,6 +77,12 @@ public class Slider {
         {
             Reference = 1500;
         }
+
+        if(Slider_Gamepad.dpad_down)
+        {
+            Reference = 0;
+        }
+
     }
 
     public void SetSliderPower(double power)
@@ -87,8 +93,9 @@ public class Slider {
 
     public void SetPidPower(double current_Reference)
     {
-        sliderMotor.SetPower(PID.returnPower(current_Reference,sliderMotor.MotorCurrentPosition()));
-        sliderMotor2.SetPower(sliderMotor.GetPower());
+        double power = PID.returnPower(current_Reference,sliderMotor.MotorCurrentPosition());
+        sliderMotor.SetPower(power);
+        sliderMotor2.SetPower(-power);
     }
 
 

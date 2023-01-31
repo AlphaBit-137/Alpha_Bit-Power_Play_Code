@@ -44,7 +44,7 @@ public class First extends LinearOpMode {
 
             telemetry.addData("Slider",slider.GetSliderPosition());
             telemetry.addData("ClawS1",claw.servo1.getPosition());
-            telemetry.addData("Slider",slider.sliderMotor.isBusy());
+            telemetry.addData("arm",arm.getArmPos());
 
 
 

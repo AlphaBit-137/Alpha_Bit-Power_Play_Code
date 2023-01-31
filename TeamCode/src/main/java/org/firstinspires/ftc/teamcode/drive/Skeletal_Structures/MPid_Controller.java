@@ -59,6 +59,17 @@ public class MPid_Controller {
         return outpput;
     }
 
+    public double returnPmotion(double reference,double state,double velocity)
+    {
+        double error = reference - state;
+
+        velocity = normalize(velocity);
+
+        double InstantError = MP.motion_profile(maxAccel,maxVel,error,error/velocity);
+
+        return InstantError;
+    }
+
     double normalize(double vel)
     {
         if(vel == 0)return 1;
