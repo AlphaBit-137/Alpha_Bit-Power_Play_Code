@@ -79,12 +79,12 @@ public class Pid_Motor extends LinearOpMode {
             packet.put("power", power);
             packet.put("position", state);
             packet.put("error", LastError);
-
-            telemetry.addData("state",TestMotor.getCurrentPosition());
-            telemetry.addData("error",getEror);
-            telemetry.addData("power",power);
-            telemetry.addData("time",time);
-            telemetry.addData("velocity",TestMotor.getVelocity());
+            packet.put("firstR",nmp.firstReturn);
+            packet.put("secondR",nmp.secondReturn);
+            packet.put("thirdR",nmp.thirdReturn);
+            packet.put("maxvel",nmp.max_vel);
+            packet.put("acc_dt", nmp.acc_dt);
+            packet.put("calc",nmp.calc);
 
             TestMotor.setPower(-power);
 
@@ -101,7 +101,7 @@ public class Pid_Motor extends LinearOpMode {
 
         if(velocity == 0)velocity = 1;
 
-        double InstantErrror = MP.motion_profile(maxAccel,maxVelocity,error,error/velocity);
+        double InstantErrror = nmp.motion_profile(maxAccel,maxVelocity,error,error/velocity);
 
         time = error/velocity;
 
