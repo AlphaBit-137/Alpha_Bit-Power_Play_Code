@@ -25,6 +25,11 @@ public class Pid_Controller {
         this.Kd = Kd;
     }
 
+
+   double a = 0.9;
+  double  previousFilterEstimate = 0;
+  double  currentFilterEstimate = 0;
+
     public double returnPower(double reference, double state){
 
         timp = returnTimer();
@@ -38,7 +43,12 @@ public class Pid_Controller {
 
         IntegralSum += error * timp;
 
-        double derivative = (error - LastError) / timp;
+       double errorChange = (error - LastError);
+
+        currentFilterEstimate = (a * previousFilterEstimate) + (1-a) * errorChange;
+        previousFilterEstimate = currentFilterEstimate;
+
+       double derivative = currentFilterEstimate / timp;
 
         LastError = error;
 

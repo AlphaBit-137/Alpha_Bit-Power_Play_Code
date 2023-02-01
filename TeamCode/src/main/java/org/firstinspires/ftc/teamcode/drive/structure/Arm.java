@@ -10,13 +10,13 @@ import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Pid_Controller;
 
 public class Arm {
 
-    double Kp = 0.035;
+    double Kp = 0.005;
     double Ki = 0.0;
     double Kd = 0.0;
 
-    double Reeference = -101;
+    double Reeference = 101;
 
-    Pid_Controller PID = new Pid_Controller(Kp,Ki,Kd);
+    Pid_Controller PID = new Pid_Controller(0.005,Ki,Kd);
     ADRC adrc = new ADRC(0.035,0,0,1,0.02,0.02);
 
     public DcMotorEx arm;
@@ -29,7 +29,7 @@ public class Arm {
 
         this.Arm_Gamepad = Arm_Gamepad;
 
-        ArmMotor.init(ahwMap,"Arm",true,true);
+        ArmMotor.init(ahwMap,"Arm",true,false);
     }
 
     public void update()
@@ -46,12 +46,12 @@ public class Arm {
 
         if(Arm_Gamepad.dpad_up)
         {
-            Reeference = -600;
+            Reeference = 2000;
         }
 
         if(Arm_Gamepad.dpad_down)
         {
-            Reeference = -200;
+            Reeference = 0;
         }
 
     }

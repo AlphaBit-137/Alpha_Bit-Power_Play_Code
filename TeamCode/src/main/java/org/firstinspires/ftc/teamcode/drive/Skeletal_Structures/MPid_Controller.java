@@ -30,6 +30,10 @@ public class MPid_Controller {
         this.maxVel = maxVel;
     }
 
+    double a = 0.8; //
+    double  previousFilterEstimate = 0;
+    double  currentFilterEstimate = 0;
+
     public double returnPower(double reference, double state , double velocity){
 
         double time = getTime();
@@ -47,7 +51,12 @@ public class MPid_Controller {
 
         IntegralSum += InstantError * time;
 
-        double derivative = (InstantError - LastError) / time;
+        double errorChange = (error - LastError);
+
+        currentFilterEstimate = (a * previousFilterEstimate) + (1-a) * errorChange;
+        previousFilterEstimate = currentFilterEstimate;
+
+        double derivative = currentFilterEstimate / time;
 
         LastError = InstantError;
         LastReference = reference;

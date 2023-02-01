@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.structure.Centric_Drive;
 import org.firstinspires.ftc.teamcode.drive.structure.ChasisInit;
-import org.firstinspires.ftc.teamcode.drive.structure.Robot_Centric_Drive;
 
 @TeleOp
 public class First_Chasis_Tests extends LinearOpMode {
@@ -14,23 +13,21 @@ public class First_Chasis_Tests extends LinearOpMode {
     ChasisInit cs = new ChasisInit();
     Centric_Drive CDrive = new Centric_Drive();
 
-    Robot_Centric_Drive RCDrive = new Robot_Centric_Drive();
+
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-       RCDrive.init(hardwareMap,gamepad1);
 
-        CDrive.Init(hardwareMap);
+
+        CDrive.Init(hardwareMap,gamepad1);
         cs.init(hardwareMap);
 
         waitForStart();
 
         while (opModeIsActive())
         {
-          //  CDrive.run(gamepad1.left_stick_x,gamepad1.right_stick_y,gamepad1.left_stick_y);
-            RCDrive.run();
-
+            CDrive.run();
 
             if(gamepad1.a){
                 cs.BackRight.setPower(1);

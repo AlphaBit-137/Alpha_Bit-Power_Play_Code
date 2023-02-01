@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive.structure;
 
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Gyroscope;
@@ -9,8 +10,11 @@ public class Centric_Drive {
     ChasisInit chasis = new ChasisInit();
     Gyroscope gyroscope= new Gyroscope();
 
-    public void Init(HardwareMap hwmap)
+    Gamepad gp;
+
+    public void Init(HardwareMap hwmap, Gamepad gp)
     {
+        this.gp = gp;
         gyroscope.Init(hwmap);
         chasis.init(hwmap);
     }
@@ -24,13 +28,13 @@ public class Centric_Drive {
     double rotatedY = 0;
 
 
-    public void run(double left_stick_x,double right_stick_y, double left_stick_y) {
+    public void run() {
 
         gyroscope.updateOrientation();
 
-        double x = left_stick_x;
-        double y = -right_stick_y;
-        double r = -left_stick_y;
+        double x = gp.left_stick_x;
+        double y = -gp.right_stick_y;
+        double r = -gp.left_stick_y;
 
         double neededOffset = -Math.toRadians(gyroscope.getHeading());
 

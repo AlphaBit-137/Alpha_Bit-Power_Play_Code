@@ -39,7 +39,7 @@ public class Pid_Motor extends LinearOpMode {
 
    public double encoder_direction = 1;
 
-   public static int targetPosition = -500;
+   public static int targetPosition = 500;
 
    public double getEror;
 
@@ -107,14 +107,13 @@ public class Pid_Motor extends LinearOpMode {
 
         getEror = InstantErrror;
 
-       /* if(state == reference || state > reference)IntegralSum = 0;
-        else{IntegralSum += InstantErrror * timer.seconds();}*/
+        if(state == reference || state > reference)IntegralSum = 0;
+        else{IntegralSum += InstantErrror * timer.seconds();}
 
 
+        double derivative = (InstantErrror - LastError) / timer.seconds();
 
-        double derivative = (error - LastError) / timer.seconds();
-
-        double outpput = (error * Kp) + (derivative * Kd) + (IntegralSum * Ki);
+        double outpput = (InstantErrror * Kp) + (derivative * Kd) + (IntegralSum * Ki);
 
 
         timer.reset();
