@@ -5,6 +5,8 @@ public class MotionProfile {
     public double math_normalizer;
     public double distance_normalizer;
 
+    public double reset;
+
     public double motion_profile(double max_acceleration, double max_velocity, double distance,double current_dt) {
 
         double acceleration_dt = max_velocity / max_acceleration;
