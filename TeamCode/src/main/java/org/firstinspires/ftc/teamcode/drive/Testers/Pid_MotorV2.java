@@ -67,13 +67,9 @@ public class Pid_MotorV2 extends LinearOpMode {
             packet.put("position", state);
             packet.put("error", LastError);
 
-            if (TestMotor.getCurrentPosition() >= 0 && state != reference) {
-                TestMotor.setPower(power);
-            } else
-            {
-                reference = 500;
-                sleep(10000);
-            }
+
+                TestMotor.setPower(-power);
+
 
             dashboard.sendTelemetryPacket(packet);
         }

@@ -27,6 +27,10 @@ public class Pid_Motor extends LinearOpMode {
     MotionProfile MP = new MotionProfile();
     NoPermaMP nmp = new NoPermaMP();
 
+    ElapsedTime VelocityTime = new ElapsedTime();
+
+    public double LastVelocity;
+
    private double LastError = 0;
    private double IntegralSum = 0;
 
@@ -75,19 +79,21 @@ public class Pid_Motor extends LinearOpMode {
             double state = TestMotor.getCurrentPosition() * encoder_direction;
             double power = encoder_direction * returnPower(reference, state);
 
+            double velocity = TestMotor.getVelocity();
+
+            if(velocity == 0)velocity = 1;
+            else if(velocity < 0)velocity *= -1;
+
             packet.put("encoderDirection", encoder_direction);
             packet.put("power", power);
             packet.put("position", state);
             packet.put("error", LastError);
-            packet.put("firstR",nmp.firstReturn);
-            packet.put("secondR",nmp.secondReturn);
-            packet.put("thirdR",nmp.thirdReturn);
-            packet.put("maxvel",nmp.max_vel);
-            packet.put("acc_dt", nmp.acc_dt);
-            packet.put("calc",nmp.calc);
+            packet.put("Motor_Velocity",velocity);
+            packet.put("MotorAccel",(velocity-LastVelocity) / VelocityTime.seconds());
 
-            TestMotor.setPower(-power);
-
+            LastVelocity = velocity;
+          VelocityTime.reset();
+        TestMotor.setPower(-power);
          telemetry.update();
           dashboard.sendTelemetryPacket(packet);
         }
