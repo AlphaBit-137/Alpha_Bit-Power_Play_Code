@@ -26,7 +26,6 @@ public class Robot_Drive {
 
         double Front, Turn, Sum, Diff, Side, Drive1, Drive2, Drive3, Drive4;
 
-
         Turn = Range.clip(gamepad.left_stick_x, -Limit, Limit);
         Front = Range.clip(gamepad.right_stick_y, -Limit, Limit);
         Side = Range.clip(gamepad.right_stick_x, -Limit, Limit);
