@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.drive.structure;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.Range;
 
 public class Robot_Drive {
 
@@ -21,25 +20,26 @@ public class Robot_Drive {
         csint.init(hwmap);
     }
 
+    double controllerDeadzone = 0.25;
+
     public void run()
     {
+        double y = -gamepad.left_stick_y; // Remember, this is reversed!
+        double x = gamepad.left_stick_x * 1.1; // Counteract imperfect strafing
+        double rx = gamepad.right_stick_x;
 
-        double Front, Turn, Sum, Diff, Side, Drive1, Drive2, Drive3, Drive4;
+        y = addons(y);
+        x = addons(x);
+        rx = addons(rx);
 
-        Turn = Range.clip(gamepad.left_stick_x, -Limit, Limit);
-        Front = Range.clip(gamepad.right_stick_y, -Limit, Limit);
-        Side = Range.clip(gamepad.right_stick_x, -Limit, Limit);
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
+        double frontLeftPower = (y + x + rx) / denominator;
+        double backLeftPower = (y - x + rx) / denominator;
+        double frontRightPower = (y - x - rx) / denominator;
+        double backRightPower = (y + x - rx) / denominator;
 
-        Sum = Range.clip(Front + Side, -1.0, 1.0);
-        Diff = Range.clip(Front - Side, -1.0, 1.0);
-
-        Drive1 = Range.clip(Sum - 2*Turn, -1.0, 1.0);
-        Drive2 = Range.clip(Sum + 2*Turn, -1.0, 1.0);
-        Drive3 = Range.clip(Diff - 2*Turn, -1.0, 1.0);
-        Drive4 = Range.clip(Diff + 2*Turn, -1.0, 1.0);
-
-        MS(Drive1, Drive2, Drive3, Drive4);
+        MS(backLeftPower, frontRightPower, frontLeftPower, backRightPower);
 
         if(gamepad.right_bumper) {
             if(Chose)Limit+=0.1;
@@ -52,6 +52,20 @@ public class Robot_Drive {
             if(Limit<0.1)Limit=0.1;
             Chose2 = false;
         } else {Chose2=true; }
+
+    }
+
+    public double addons(double ax)
+    {
+        if(Math.abs(ax) > controllerDeadzone)
+        {
+            ax = 0;
+        }
+
+        if(ax > Limit)ax = Limit;
+        else if(ax < -Limit)ax = -Limit;
+
+        return ax;
 
     }
 

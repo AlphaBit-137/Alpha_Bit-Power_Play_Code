@@ -9,17 +9,17 @@ public class Voltage_Sensor {
 
     public double normalizer;
 
-    public void init(HardwareMap ahwmap)
+    public void init(HardwareMap ahwmap,double normalizer)
     {
         Vsensor = ahwmap.voltageSensor.iterator().next();
-
+        this.normalizer = normalizer;
     }
 
     public double GetCompensation()
     {
-        if(Vsensor.getVoltage() > 12.65)
+        if(Vsensor.getVoltage() > normalizer)
         {
-            return 12.65/Vsensor.getVoltage();
+            return normalizer/Vsensor.getVoltage();
         }else return 1;
     }
 
