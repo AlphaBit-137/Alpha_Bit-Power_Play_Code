@@ -7,6 +7,7 @@ import android.view.View;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Color_Sensor {
 
@@ -42,25 +43,32 @@ public class Color_Sensor {
     float values[] = hsvValues;
 
 
+     ElapsedTime colorUpdateTimer = new ElapsedTime();
+
+    public double coloUpdateTime = 1;
+
     public void update() {
-        Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
-                (int) (sensorColor.green() * SCALE_FACTOR),
-                (int) (sensorColor.blue() * SCALE_FACTOR),
-                hsvValues);
 
-        relativeLayout.post(new Runnable() {
-            public void run() {
-                relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
-            }
-        });
+        if(colorUpdateTimer.milliseconds() > coloUpdateTime) {
+            Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
+                    (int) (sensorColor.green() * SCALE_FACTOR),
+                    (int) (sensorColor.blue() * SCALE_FACTOR),
+                    hsvValues);
 
-        saturation = hsvValues[1];
+            relativeLayout.post(new Runnable() {
+                public void run() {
+                    relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
+                }
+            });
 
-        green=sensorColor.green();
-        red = sensorColor.red();
-        blue = sensorColor.blue();
+            saturation = hsvValues[1];
 
+            green = sensorColor.green();
+            red = sensorColor.red();
+            blue = sensorColor.blue();
 
+            colorUpdateTimer.reset();
+        }
     }
 
     public int whatColorIsIt() {
