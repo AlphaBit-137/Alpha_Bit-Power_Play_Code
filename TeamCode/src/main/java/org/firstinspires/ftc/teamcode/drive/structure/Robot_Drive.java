@@ -20,52 +20,33 @@ public class Robot_Drive {
         csint.init(hwmap);
     }
 
-    double controllerDeadzone = 0.25;
-
     public void run()
     {
-        double y = -gamepad.left_stick_y; // Remember, this is reversed!
-        double x = gamepad.left_stick_x * 1.1; // Counteract imperfect strafing
-        double rx = gamepad.right_stick_x;
 
-        y = addons(y);
-        x = addons(x);
-        rx = addons(rx);
+        double y = -gamepad.left_stick_y;
+        double x = gamepad.left_stick_x * 1.1;
+        double rx = gamepad.right_stick_x;
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
-        double frontLeftPower = (y + x + rx) / denominator;
-        double backLeftPower = (y - x + rx) / denominator;
-        double frontRightPower = (y - x - rx) / denominator;
-        double backRightPower = (y + x - rx) / denominator;
+        double Drive3 = (y + x + rx) / denominator;
+        double Drive1 = (y - x + rx) / denominator;
+        double Drive2 = (y - x - rx) / denominator;
+        double Drive4 = (y + x - rx) / denominator;
 
-        MS(backLeftPower, frontRightPower, frontLeftPower, backRightPower);
+        MS(Drive1, Drive2, Drive3, Drive4);
 
         if(gamepad.right_bumper) {
-            if(Chose)Limit+=0.1;
+            if(Chose)Limit=Limit+0.1;
             if(Limit>1)Limit=1;
             Chose = false;
         } else Chose=true;
 
         if(gamepad.left_bumper) {
-            if(Chose2)Limit-=0.1;
+            if(Chose2)Limit=Limit-0.1;
             if(Limit<0.1)Limit=0.1;
             Chose2 = false;
         } else {Chose2=true; }
-
-    }
-
-    public double addons(double ax)
-    {
-        if(Math.abs(ax) > controllerDeadzone)
-        {
-            ax = 0;
-        }
-
-        if(ax > Limit)ax = Limit;
-        else if(ax < -Limit)ax = -Limit;
-
-        return ax;
 
     }
 
@@ -74,8 +55,8 @@ public class Robot_Drive {
         csint.FrontRight.setPower(x2);
         csint.FrontLeft.setPower(x3);
         csint.BackRight.setPower(x4);
-
     }
+
 
 
 }

@@ -18,43 +18,44 @@ public class Gyroscope {
     public double firstLateral = 0;
     public double firstForward = 0;
 
+    //servo ports facing up
+  //  double headingNormalizer = -97.5;
+
+    //servo ports facing down
+    //double headingNormalizer2 = 87.375;
 
     boolean firstAngles = false;
 
     public void Init(HardwareMap hwmap) {
-
         imu = hwmap.get(BNO055IMU.class, "imu");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         imu.initialize(parameters);
-
     }
 
 
     Orientation angularOrientation;
-    
+
     AngularVelocity angularVelocity;
 
-
-    ElapsedTime oriUpdateTimer = new ElapsedTime();
+    ElapsedTime angularTimer = new ElapsedTime();
 
     public void updateOrientation() {
-        if (oriUpdateTimer.milliseconds() > 1) {
+        if(angularTimer.milliseconds() > 1) {
             angularOrientation = imu.getAngularOrientation();
-            oriUpdateTimer.reset();
+            angularTimer.reset();
         }
     }
 
-
-
-    ElapsedTime gyroVelTimer = new ElapsedTime();
-
     public void updateVelocity() {
-        if (gyroVelTimer.milliseconds() > 1) {
-            angularVelocity = imu.getAngularVelocity();
-            gyroVelTimer.reset();
-        }
+        angularVelocity = imu.getAngularVelocity();
+    }
+
+    public double getRawHeading(){
+        return imu.getAngularOrientation().firstAngle;
     }
 
 
@@ -75,7 +76,15 @@ public class Gyroscope {
         return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
     }
 
-
-
+    public void initFirstAngles() {
+        ElapsedTime initTime = new ElapsedTime();
+        while (firstHeading == firstLateral && firstLateral == firstForward && initTime.milliseconds() < 2000) {
+            updateOrientation();
+            firstAngles = true;
+            firstHeading = getHeading();
+            firstLateral = getLateralAngle();
+            firstForward = getForwardAngle();
+        }
+    }
 }
 

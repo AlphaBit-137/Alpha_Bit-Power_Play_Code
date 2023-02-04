@@ -8,15 +8,14 @@ import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Gyroscope;
 public class Centric_Drive {
 
     ChasisInit chasis = new ChasisInit();
-    Gyroscope gyroscope= new Gyroscope();
+    Gyroscope gyroscope = new Gyroscope();
+    Gamepad chasis_gamepad;
 
-    Gamepad gp;
-
-    public void Init(HardwareMap hwmap, Gamepad gp)
+    public void Init(HardwareMap hwmap,Gamepad chasis_gamepad)
     {
-        this.gp = gp;
         gyroscope.Init(hwmap);
         chasis.init(hwmap);
+        this.chasis_gamepad = chasis_gamepad;
     }
 
 
@@ -32,9 +31,9 @@ public class Centric_Drive {
 
         gyroscope.updateOrientation();
 
-        double x = gp.left_stick_x;
-        double y = -gp.right_stick_y;
-        double r = -gp.left_stick_y;
+        double x = chasis_gamepad.right_stick_x * 1.1;
+        double y = -chasis_gamepad.right_stick_y;
+        double r = chasis_gamepad.left_stick_x;
 
         double neededOffset = -Math.toRadians(gyroscope.getHeading());
 

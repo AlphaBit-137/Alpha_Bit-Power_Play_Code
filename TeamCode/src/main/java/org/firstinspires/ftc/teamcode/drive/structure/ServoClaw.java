@@ -52,6 +52,11 @@ public class ServoClaw {
             timer.reset();
             Open();
         }
+
+        if(gamepad.a)
+        {
+            Closed();
+        }
     }
 
     public int returncolor()
