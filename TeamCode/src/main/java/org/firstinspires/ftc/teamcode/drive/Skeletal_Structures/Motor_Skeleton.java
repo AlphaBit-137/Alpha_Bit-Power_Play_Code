@@ -48,9 +48,9 @@ public class Motor_Skeleton {
         ThisMotor.setVelocity(velocity);
     }
 
-    public void GetVelocity()
+    public double GetVelocity()
     {
-        ThisMotor.getVelocity();
+       return ThisMotor.getVelocity();
     }
 
     public void IsReversed(boolean isreversed)

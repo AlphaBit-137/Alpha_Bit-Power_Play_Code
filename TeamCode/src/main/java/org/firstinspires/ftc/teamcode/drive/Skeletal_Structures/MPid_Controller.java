@@ -49,9 +49,10 @@ public class MPid_Controller {
             IntegralSum = 0;
         }
 
-        IntegralSum += InstantError * time;
+        if(state == reference || state > reference)IntegralSum = 0;
+        else{IntegralSum += InstantError * time;}
 
-        double errorChange = (error - LastError);
+        double errorChange = (InstantError - LastError);
 
         currentFilterEstimate = (a * previousFilterEstimate) + (1-a) * errorChange;
         previousFilterEstimate = currentFilterEstimate;
@@ -76,7 +77,7 @@ public class MPid_Controller {
 
         double InstantError = MP.motion_profile(maxAccel,maxVel,error,error/velocity);
 
-        return InstantError;
+        return InstantError * Kp;
     }
 
     double normalize(double vel)

@@ -6,17 +6,20 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Pid_Controller;
+import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.MPid_Controller;
 
 @Config
 @TeleOp
 public class Pid_MotorV2 extends LinearOpMode {
 
-    public DcMotor TestMotor;
+    public DcMotorEx TestMotor;
 
-    Pid_Controller PD = new Pid_Controller(Kp,Ki,Kd);
+//    Pid_Controller PD = new Pid_Controller(Kp,Ki,Kd);
+
+    MPid_Controller mpid = new MPid_Controller(Kp,Kd,Ki,max_accel,max_vel);
 
     private double LastError = 0;
     private double IntegralSum = 0;
@@ -24,6 +27,9 @@ public class Pid_MotorV2 extends LinearOpMode {
     public static double Kp = 0.0085;
     public static double Ki = 0.00002;
     public static double Kd = 0.0;
+
+    public static double max_accel;
+    public static double max_vel;
 
     public double encoder_direction = 1;
 
@@ -38,7 +44,7 @@ public class Pid_MotorV2 extends LinearOpMode {
         TelemetryPacket packet =new TelemetryPacket();
 
         dashboard.setTelemetryTransmissionInterval(25);
-        TestMotor = hardwareMap.get(DcMotor.class,"Slider");
+        TestMotor = hardwareMap.get(DcMotorEx.class,"Arm");
 
         TestMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         TestMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -60,7 +66,7 @@ public class Pid_MotorV2 extends LinearOpMode {
         while (opModeIsActive()) {
 
             double state = TestMotor.getCurrentPosition() * encoder_direction;
-            double power = encoder_direction * PD.returnPower(reference,state);
+            double power = encoder_direction * mpid.returnPower(targetPosition,state,TestMotor.getVelocity());
 
             packet.put("encoderDirection", encoder_direction);
             packet.put("power", power);

@@ -71,15 +71,12 @@ public class NoPermaMP {
         } else if (current_dt < deacceleration_time) {
             acceleration_distance = 0.5 * max_acceleration * Math.pow(acceleration_dt, 2);
             cruise_current_dt = current_dt - acceleration_dt;
-            secondReturn = acceleration_distance + max_acceleration + cruise_dt;
             return (acceleration_distance + max_velocity * cruise_current_dt) * getRekt;
         } else {
 
             acceleration_distance = 0.5 * max_acceleration * Math.pow(acceleration_dt, 2);
             cruise_distance = max_velocity * cruise_dt;
             deacceleration_time = current_dt - deacceleration_time;
-
-            thirdReturn =  /*cruise_distance +*/ max_velocity /** deacceleration_time*/;
 
             return (acceleration_distance + cruise_distance + max_velocity * deacceleration_time - 0.5 * max_acceleration * Math.pow(deacceleration_time,2)) * getRekt;
         }

@@ -77,7 +77,7 @@ public class Pid_Motor extends LinearOpMode {
         while (opModeIsActive()) {
 
             double state = TestMotor.getCurrentPosition() * encoder_direction;
-            double power = encoder_direction * returnPower(reference, state);
+            double power = encoder_direction * returnPower(targetPosition, state);
 
             double velocity = TestMotor.getVelocity();
 
@@ -107,7 +107,7 @@ public class Pid_Motor extends LinearOpMode {
 
         if(velocity == 0)velocity = 1;
 
-        double InstantErrror = nmp.motion_profile(maxAccel,maxVelocity,error,error/velocity);
+        double InstantErrror = MP.motion_profile(maxAccel,maxVelocity,error,error/velocity);
 
         time = error/velocity;
 
@@ -123,7 +123,7 @@ public class Pid_Motor extends LinearOpMode {
 
 
         timer.reset();
-        LastError = error;
+        LastError = InstantErrror;
 
         return outpput;
         }
