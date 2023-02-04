@@ -49,7 +49,6 @@ public class Color_Sensor {
 
     public void update() {
 
-        if(colorUpdateTimer.milliseconds() > coloUpdateTime) {
             Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                     (int) (sensorColor.green() * SCALE_FACTOR),
                     (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -67,8 +66,6 @@ public class Color_Sensor {
             red = sensorColor.red();
             blue = sensorColor.blue();
 
-            colorUpdateTimer.reset();
-        }
     }
 
     public int whatColorIsIt() {
@@ -88,6 +85,10 @@ public class Color_Sensor {
             else if(blue>red)return 2;
         }else return 3;
         return 0;
+    }
+
+    public double green(){
+        return green;
     }
 
 }

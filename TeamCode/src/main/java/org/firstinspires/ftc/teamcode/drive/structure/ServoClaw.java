@@ -30,7 +30,7 @@ public class ServoClaw {
     }
 
     public void Open(){
-        servo1.setPosition(0.7); open = true;
+        servo1.setPosition(0.5); open = true;
     }
 
     public void Closed(){
@@ -56,8 +56,9 @@ public class ServoClaw {
 
     public int returncolor()
     {
-        return cdetect.whatColorIsIt();
+        return cdetect.whatColorIsIt2();
     }
 
+    public double rg(){return cdetect.green;}
 
 }

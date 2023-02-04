@@ -6,27 +6,30 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class MidWay_Servos {
 
-    Servo upDownServo;
+    Servo centrationServo;
     Servo rotationServo;
 
     Gamepad mid_gamepad;
 
     public void init(HardwareMap hwmpa, Gamepad mid_gamepad)
     {
-        upDownServo = hwmpa.get(Servo.class, "UPServo");
-        rotationServo = hwmpa.get(Servo.class, "ROTServo");
+        this.mid_gamepad = mid_gamepad;
+        centrationServo = hwmpa.get(Servo.class, "CE_Servo");
+        rotationServo = hwmpa.get(Servo.class, "RO_Servo");
+
+        startPos();
     }
 
     public void startPos()
     {
-        upDownServo.setPosition(0);
-        rotationServo.setPosition(0);
+        centrationServo.setPosition(0.5);
+        rotationServo.setPosition(0.03);
     }
 
     public  void conePose()
     {
-        upDownServo.setPosition(0.5);
-        rotationServo.setPosition(0.5);
+        centrationServo.setPosition(0.7);
+        rotationServo.setPosition(0.75);
     }
 
     public void run()

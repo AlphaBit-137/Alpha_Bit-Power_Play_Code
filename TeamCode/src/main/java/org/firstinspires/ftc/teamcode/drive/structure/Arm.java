@@ -17,7 +17,9 @@ public class Arm {
     double max_accel = 1000;
     double max_vel = 1000;
 
-    double Reeference = 101;
+    double max_output = 0.9;
+
+    double Reeference = 75;
 
     double LastReference;
 
@@ -46,7 +48,7 @@ public class Arm {
         {
             SetPower(-0.3);
         }else{
-            SetMPidPower(Reeference);
+            SetPidPower(Reeference);
         }
 
         if(Arm_Gamepad.dpad_up)
@@ -56,7 +58,7 @@ public class Arm {
 
         if(Arm_Gamepad.dpad_down)
         {
-            Reeference = 0;
+            Reeference = 75;
         }
 
         LastReference = Reeference;
@@ -79,8 +81,19 @@ public class Arm {
 
     public void SetPidPower(double reference)
     {
-        ArmMotor.SetPower(-PID.returnPower(reference,ArmMotor.MotorCurrentPosition()));
+        double power = -PID.returnPower(reference,ArmMotor.MotorCurrentPosition());
+
+        power = addons(power);
+
+        ArmMotor.SetPower(power);
     }
 
+    double addons(double pow)
+    {
+        if(pow > max_output)pow = max_output;
+        else if(pow < -max_output)pow = -max_output;
+
+        return pow;
+    }
 
 }
