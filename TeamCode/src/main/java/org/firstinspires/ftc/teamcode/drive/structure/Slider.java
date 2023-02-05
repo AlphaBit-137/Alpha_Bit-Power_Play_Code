@@ -12,8 +12,10 @@ public class Slider {
     public double Reference;
 
     public static double Kp = 0.0085;
-    public static double Ki = 0.00002;
+    public static double Ki = 0.0;
     public static double Kd = 0.0;
+
+    public double max_output = 0.85;
 
     Pid_Controller PID = new Pid_Controller(Kp,Ki,Kd);
 
@@ -94,9 +96,24 @@ public class Slider {
     public void SetPidPower(double current_Reference)
     {
         double power = PID.returnPower(current_Reference,sliderMotor.MotorCurrentPosition());
+
+        power = addons(power);
+
         sliderMotor.SetPower(power);
         sliderMotor2.SetPower(-power);
     }
+
+    double addons(double pow)
+    {
+
+        if(pow > max_output)pow = max_output;
+        else if(pow < -max_output)pow = -max_output;
+
+
+        return pow;
+    }
+
+}
 
 
 }

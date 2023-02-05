@@ -17,9 +17,9 @@ public class Arm {
     double max_accel = 1000;
     double max_vel = 1000;
 
-    double max_output = 0.9;
+    double max_output = 0.85;
 
-    double Reeference = 75;
+    double Reeference = 89;
 
     double LastReference;
 
@@ -90,8 +90,15 @@ public class Arm {
 
     double addons(double pow)
     {
+        if((Math.abs(ArmMotor.MotorCurrentPosition()) < 800 && Reeference < 1000) || (Math.abs(ArmMotor.MotorCurrentPosition()) > 1500 && Reeference > 1000))
+        {
+            max_output = 0.4;
+        }else max_output = 0.9;
+
+
         if(pow > max_output)pow = max_output;
         else if(pow < -max_output)pow = -max_output;
+
 
         return pow;
     }

@@ -105,9 +105,9 @@ public class Pid_Motor extends LinearOpMode {
 
         double velocity = TestMotor.getVelocity();
 
-        if(velocity == 0)velocity = 1;
+        if(velocity == 0 )velocity = 1;
 
-        double InstantErrror = MP.motion_profile(maxAccel,maxVelocity,error,error/velocity);
+        double InstantErrror = nmp.motion_profile(maxAccel,maxVelocity,error,error/velocity);
 
         time = error/velocity;
 
