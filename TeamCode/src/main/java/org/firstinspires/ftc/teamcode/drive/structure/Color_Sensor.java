@@ -86,14 +86,31 @@ public class Color_Sensor {
     {
         if(green < red || green < blue)
         {
-            if(red>blue)return 1;
-            else if(blue>red)return 2;
+            if(red > blue)return 1;
+
+            else if(blue > red)return 2;
+
         }else return 3;
         return 0;
     }
 
     public double distance(){
         return distance;
+    }
+
+    public double blue()
+    {
+        return blue;
+    }
+
+    public double green()
+    {
+        return green;
+    }
+
+    public double red()
+    {
+        return red;
     }
 
 }

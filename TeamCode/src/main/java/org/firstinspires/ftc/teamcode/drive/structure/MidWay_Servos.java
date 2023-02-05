@@ -23,13 +23,13 @@ public class MidWay_Servos {
     public void startPos()
     {
         centrationServo.setPosition(0.5);
-        rotationServo.setPosition(0.03);
+        rotationServo.setPosition(0.01);
     }
 
     public  void conePose()
     {
         centrationServo.setPosition(0.7);
-        rotationServo.setPosition(0.75);
+        rotationServo.setPosition(0.69);
     }
 
     public void run()

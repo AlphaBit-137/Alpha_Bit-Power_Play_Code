@@ -19,7 +19,7 @@ public class Arm {
 
     double max_output = 0.85;
 
-    double Reeference = 89;
+    double Reeference = 75;
 
     double LastReference;
 
@@ -94,7 +94,7 @@ public class Arm {
     {
         if((Math.abs(ArmMotor.MotorCurrentPosition()) < 800 && Reeference < 1000) || (Math.abs(ArmMotor.MotorCurrentPosition()) > 1500 && Reeference > 1000))
         {
-            max_output = 0.4;
+            max_output = 0.2;
         }else max_output = 0.9;
 
 
