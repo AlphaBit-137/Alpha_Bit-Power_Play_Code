@@ -43,10 +43,12 @@ public class Arm {
     {
         if(Arm_Gamepad.right_trigger != 0 && Arm_Gamepad.left_trigger == 0)
         {
-            SetPower(0.3);
+            Reeference = ArmMotor.MotorCurrentPosition();
+            SetPower(0.7);
         }else if(Arm_Gamepad.left_trigger != 0 && Arm_Gamepad.right_trigger == 0)
         {
-            SetPower(-0.3);
+            Reeference = ArmMotor.MotorCurrentPosition();
+            SetPower(-0.7);
         }else{
             SetPidPower(Reeference);
         }
