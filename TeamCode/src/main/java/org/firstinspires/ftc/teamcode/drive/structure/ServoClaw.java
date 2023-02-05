@@ -41,7 +41,7 @@ public class ServoClaw {
     {
         cdetect.update();
 
-        if((cdetect.whatColorIsIt2() == 1 && timer.seconds() > 2) && open)
+        if((cdetect.whatColorIsIt2() == 1 && timer.seconds() > 0.6 && cdetect.distance <3) && open)
         {
             open = false;
             Closed();

@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 public class Color_Sensor {
 
     ColorSensor sensorColor;
@@ -23,6 +25,8 @@ public class Color_Sensor {
     int relativeLayoutId;
 
     int green, red, blue;
+
+    double distance;
 
     int cas = 3;
 
@@ -65,6 +69,7 @@ public class Color_Sensor {
             green = sensorColor.green();
             red = sensorColor.red();
             blue = sensorColor.blue();
+            distance = sensorDistance.getDistance(DistanceUnit.CM);
 
     }
 
@@ -87,8 +92,8 @@ public class Color_Sensor {
         return 0;
     }
 
-    public double green(){
-        return green;
+    public double distance(){
+        return distance;
     }
 
 }
