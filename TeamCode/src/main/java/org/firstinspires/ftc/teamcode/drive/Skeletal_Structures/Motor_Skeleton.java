@@ -19,7 +19,6 @@ public class Motor_Skeleton {
 
         ThisMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-
         RUN_WITH_ENCODERS(using_encoders);
 
         IsReversed(IsReversed);
