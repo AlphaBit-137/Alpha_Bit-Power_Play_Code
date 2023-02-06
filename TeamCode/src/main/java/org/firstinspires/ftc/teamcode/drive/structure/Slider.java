@@ -84,7 +84,7 @@ public class Slider {
 
         if (Slider_Gamepad.right_bumper) {
 
-           setReference(sliderMotor.MotorCurrentPosition());
+            setReference(sliderMotor.MotorCurrentPosition());
             SetSliderPower(1);
         } else if (Slider_Gamepad.left_bumper) {
 
@@ -100,9 +100,6 @@ public class Slider {
             SetPidPower(Reference);
         }
 
-
-        lastPosition= sliderMotor.MotorCurrentPosition();
-
         if (Slider_Gamepad.dpad_up) {
             setReference(1500);
         }
@@ -110,6 +107,8 @@ public class Slider {
         if (Slider_Gamepad.dpad_down) {
             setReference(0);
         }
+
+        lastPosition = sliderMotor.MotorCurrentPosition();
     }
 
     public void SetSliderPower(double power) {
@@ -131,10 +130,10 @@ public class Slider {
     }
 
     public void SetPidPower(double current_Reference) {
-        double power = PID.returnPower(current_Reference, sliderMotor.MotorCurrentPosition());
 
-        if(!checkSteady()) {
-            savedPower = power;
+        if(!checkSteady())
+        {
+            savedPower = PID.returnPower(current_Reference,sliderMotor.MotorCurrentPosition());;
         }
 
         sliderMotor.SetPower(savedPower);
@@ -142,7 +141,7 @@ public class Slider {
     }
 
     public boolean checkSteady() {
-        if((lastPosition-10 < sliderMotor.MotorCurrentPosition() && sliderMotor.MotorCurrentPosition() < lastPosition+10) && timer.seconds() > 1) {
+        if((lastPosition == sliderMotor.MotorCurrentPosition()) && timer.seconds() > 0.5) {
             return true;
         }
         else {

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.drive.structure;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.MPid_Controller;
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Motor_Skeleton;
@@ -21,7 +22,12 @@ public class Arm {
 
     double Reeference = 75;
 
-    double LastReference;
+    ElapsedTime timer = new ElapsedTime();
+
+    double savedPower = 0;
+    boolean firstTime = true;
+
+    double lastPosition;
 
     Pid_Controller PID = new Pid_Controller(Kp,Ki,Kd);
     MPid_Controller MPID = new MPid_Controller(Kp,Ki,Kd,max_accel,max_vel);
@@ -43,27 +49,33 @@ public class Arm {
     {
         if(Arm_Gamepad.right_trigger != 0 && Arm_Gamepad.left_trigger == 0)
         {
-            Reeference = ArmMotor.MotorCurrentPosition();
-            SetPower(0.7);
+            setReference(ArmMotor.MotorCurrentPosition());
+            SetPower(-0.7);
         }else if(Arm_Gamepad.left_trigger != 0 && Arm_Gamepad.right_trigger == 0)
         {
-            Reeference = ArmMotor.MotorCurrentPosition();
-            SetPower(-0.7);
+            setReference(ArmMotor.MotorCurrentPosition());
+            SetPower(0.7);
         }else{
+
+            if(firstTime) {
+                timer.reset();
+                firstTime = false;
+            }
+
             SetPidPower(Reeference);
         }
 
         if(Arm_Gamepad.dpad_up)
         {
-            Reeference = 2300;
+            setReference(2300);
         }
 
         if(Arm_Gamepad.dpad_down)
         {
-            Reeference = 75;
+            setReference(75);
         }
 
-        LastReference = Reeference;
+        lastPosition = ArmMotor.MotorCurrentPosition();
 
     }
 
@@ -83,11 +95,15 @@ public class Arm {
 
     public void SetPidPower(double reference)
     {
-        double power = -PID.returnPower(reference,ArmMotor.MotorCurrentPosition());
 
-        power = addons(power);
+        if(!checkSteady())
+        {
+            savedPower = -PID.returnPower(reference,ArmMotor.MotorCurrentPosition());;
+        }
 
-        ArmMotor.SetPower(power);
+        savedPower = addons(savedPower);
+
+        ArmMotor.SetPower(savedPower);
     }
 
     double addons(double pow)
@@ -103,6 +119,26 @@ public class Arm {
 
 
         return pow;
+    }
+
+    public double getArmPower()
+    {
+        return ArmMotor.GetPower();
+    }
+
+    public boolean checkSteady() {
+        if((lastPosition == ArmMotor.MotorCurrentPosition()) && timer.seconds() > 0.5) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public void setReference(double value)
+    {
+        Reeference = value;
+        firstTime = true;
     }
 
 }
