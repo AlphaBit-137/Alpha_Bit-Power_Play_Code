@@ -55,7 +55,7 @@ public class Arm {
 
         if(Arm_Gamepad.dpad_up)
         {
-            Reeference = 2000;
+            Reeference = 2300;
         }
 
         if(Arm_Gamepad.dpad_down)
@@ -94,7 +94,7 @@ public class Arm {
     {
         if((Math.abs(ArmMotor.MotorCurrentPosition()) < 800 && Reeference < 1000) || (Math.abs(ArmMotor.MotorCurrentPosition()) > 1500 && Reeference > 1000))
         {
-            max_output = 0.2;
+            max_output = 0.45;
         }else max_output = 0.9;
 
 

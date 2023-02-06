@@ -54,12 +54,16 @@ import java.util.List;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
+
+    /**
+     * Trans_Pid kp = 5
+     */
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(4, 0, 0);
 
     public static double LATERAL_MULTIPLIER = 1.53;
 
-    //turn error 6.229321263870247
+    //turn error 10
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -301,10 +305,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public void setMotorPowers(double v, double v1, double v2, double v3) {
-        leftFront.setPower(v);
-        leftRear.setPower(v1);
-        rightRear.setPower(v2);
-        rightFront.setPower(v3);
+        leftFront.setPower(v * VS.GetCompensation());
+        leftRear.setPower(v1 * VS.GetCompensation());
+        rightRear.setPower(v2 * VS.GetCompensation());
+        rightFront.setPower(v3 * VS.GetCompensation());
 
     }
 

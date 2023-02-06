@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive.opmodes;
 
+import com.outoftheboxrobotics.photoncore.PhotonCore;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -21,6 +23,7 @@ public class First extends LinearOpMode {
     Arm arm = new Arm();
     MidWay_Servos ms = new MidWay_Servos();
 
+    double loopTime;
 
     enum drivingCase{
        RobotCentric,
@@ -43,6 +46,12 @@ public class First extends LinearOpMode {
         claw.init(hardwareMap,gamepad2);
 
         ms.init(hardwareMap,gamepad2);
+
+
+        PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+        PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+        PhotonCore.experimental.setMaximumParallelCommands(5);
+        PhotonCore.enable();
 
         waitForStart();
 
@@ -70,9 +79,15 @@ public class First extends LinearOpMode {
             telemetry.addData("red",claw.rr());
             telemetry.addData("blue",claw.rb());
 
+            double loopT = System.nanoTime();
 
+            telemetry.addData("hz ", 1000000000 / (loopT - loopTime));
+            loopTime = loopT;
 
             telemetry.update();
+
+            PhotonCore.CONTROL_HUB.clearBulkCache();
+            PhotonCore.EXPANSION_HUB.clearBulkCache();
         }
     }
 

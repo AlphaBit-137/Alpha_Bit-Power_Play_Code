@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Motor_Skeleton;
-import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.OPid_Controller;
+import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Pid_Controller;
 
 public class Slider {
 
@@ -15,7 +15,7 @@ public class Slider {
     public static double Ki = 0.00002;
     public static double Kd = 0.0;
 
-    OPid_Controller PID = new OPid_Controller(Kp, Ki, Kd);
+    Pid_Controller PID = new Pid_Controller(Kp, Ki, Kd);
 
     public DcMotorEx slider;
     public DcMotorEx slider2;
