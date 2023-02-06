@@ -75,9 +75,8 @@ public class First extends LinearOpMode {
             telemetry.addData("Slider",slider.GetSliderPosition());
             telemetry.addData("ClawS1",claw.servo1.getPosition());
             telemetry.addData("arm",arm.getArmPos());
-            telemetry.addData("green",claw.rg());
-            telemetry.addData("red",claw.rr());
-            telemetry.addData("blue",claw.rb());
+            telemetry.addData("steady",slider.checkSteady());
+            telemetry.addData("sliderPower",slider.getSliderPower());
 
             double loopT = System.nanoTime();
 

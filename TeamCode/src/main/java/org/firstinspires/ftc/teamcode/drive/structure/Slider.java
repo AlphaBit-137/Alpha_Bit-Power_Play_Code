@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.drive.structure;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Motor_Skeleton;
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Pid_Controller;
@@ -14,6 +15,14 @@ public class Slider {
     public static double Kp = 0.0085;
     public static double Ki = 0.00002;
     public static double Kd = 0.0;
+
+    double savedPower = 0;
+    boolean firstTime = true;
+
+    double lastPosition;
+
+    ElapsedTime timer = new ElapsedTime();
+
 
     Pid_Controller PID = new Pid_Controller(Kp, Ki, Kd);
 
@@ -74,19 +83,32 @@ public class Slider {
 
 
         if (Slider_Gamepad.right_bumper) {
-            Reference = sliderMotor.MotorCurrentPosition();
+
+           setReference(sliderMotor.MotorCurrentPosition());
             SetSliderPower(1);
         } else if (Slider_Gamepad.left_bumper) {
-            Reference = sliderMotor.MotorCurrentPosition();
+
+            setReference(sliderMotor.MotorCurrentPosition());
             SetSliderPower(-1);
-        } else SetPidPower(Reference);
+        }else{
+
+            if(firstTime) {
+                timer.reset();
+                firstTime = false;
+            }
+
+            SetPidPower(Reference);
+        }
+
+
+        lastPosition= sliderMotor.MotorCurrentPosition();
 
         if (Slider_Gamepad.dpad_up) {
-            Reference = 1500;
+            setReference(1500);
         }
 
         if (Slider_Gamepad.dpad_down) {
-            Reference = 0;
+            setReference(0);
         }
     }
 
@@ -111,14 +133,29 @@ public class Slider {
     public void SetPidPower(double current_Reference) {
         double power = PID.returnPower(current_Reference, sliderMotor.MotorCurrentPosition());
 
-        sliderMotor.SetPower(power);
-        sliderMotor2.SetPower(-power);
+        if(!checkSteady()) {
+            savedPower = power;
+        }
+
+        sliderMotor.SetPower(savedPower);
+        sliderMotor2.SetPower(-savedPower);
     }
 
-    public boolean goingUpDirection() {
-        if (getSliderPower() > 0) return true;
-        else return false;
+    public boolean checkSteady() {
+        if((lastPosition-10 < sliderMotor.MotorCurrentPosition() && sliderMotor.MotorCurrentPosition() < lastPosition+10) && timer.seconds() > 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
+
+    public void setReference(double value)
+    {
+        Reference = value;
+        firstTime = true;
+    }
+
 }
 
 
