@@ -107,6 +107,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
                     if (profileTime > activeProfile.duration()) {
                         // generate a new profile
+
                         movingForwards = !movingForwards;
                         activeProfile = generateProfile(movingForwards);
                         profileStart = clock.seconds();
@@ -143,6 +144,8 @@ public class ManualFeedforwardTuner extends LinearOpMode {
                     );
                     break;
             }
+
+            telemetry.addData("problem",drive.powr_problem);
 
             telemetry.update();
             //arm.update();

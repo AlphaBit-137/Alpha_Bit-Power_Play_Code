@@ -60,7 +60,7 @@ public class Demo_Auto extends LinearOpMode{
         traj = drive.trajectorySequenceBuilder(startPose)
 
                 .lineTo(new Vector2d(parteAuto * 32, -15))
-                .splineToConstantHeading(new Vector2d(parteAuto * 24, -10), Math.toRadians(k * (schimbUnghi - 0) + angleAdd))
+                .splineToConstantHeading(new Vector2d(parteAuto * 24, -10), Math.toRadians(k * (schimbUnghi - 0) ))
                 .waitSeconds(0.3)
               //  .lineTo(new Vector2d(33, -12))
                 .setReversed(reverse)
