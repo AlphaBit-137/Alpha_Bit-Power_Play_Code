@@ -310,15 +310,15 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         powr_problem = v * VS.GetCompensation();
 
-    /*    leftFront.setPower(v * VS.GetCompensation());
+        leftFront.setPower(v * VS.GetCompensation());
         leftRear.setPower(v1 * VS.GetCompensation());
         rightRear.setPower(v2 * VS.GetCompensation());
-        rightFront.setPower(v3 * VS.GetCompensation()); */
+        rightFront.setPower(v3 * VS.GetCompensation());
 
-        leftFront.setPower(v);
+      /*  leftFront.setPower(v);
         leftRear.setPower(v1);
         rightRear.setPower(v2);
-        rightFront.setPower(v3);
+        rightFront.setPower(v3);*/
 
 
     }
