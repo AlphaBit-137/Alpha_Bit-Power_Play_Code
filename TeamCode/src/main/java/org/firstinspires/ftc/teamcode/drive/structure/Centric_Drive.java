@@ -31,9 +31,9 @@ public class Centric_Drive {
 
         gyroscope.updateOrientation();
 
-        double x = chasis_gamepad.right_stick_x * 1.1;
-        double y = -chasis_gamepad.right_stick_y;
-        double r = chasis_gamepad.left_stick_x;
+        double x = chasis_gamepad.left_stick_x * 1.1;
+        double y = chasis_gamepad.left_stick_y;
+        double r = chasis_gamepad.right_stick_x;
 
         double neededOffset = -Math.toRadians(gyroscope.getHeading());
 

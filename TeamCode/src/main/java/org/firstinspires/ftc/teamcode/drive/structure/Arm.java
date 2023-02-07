@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Motor_Skeleton;
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Pid_Controller;
 
 public class Arm {
-
     double Kp = 0.005;
     double Ki = 0.0;
     double Kd = 0.0;
@@ -20,7 +19,7 @@ public class Arm {
 
     double max_output = 0.85;
 
-    double Reeference = 75;
+    double Reeference = 0;
 
     ElapsedTime timer = new ElapsedTime();
 
@@ -127,7 +126,7 @@ public class Arm {
     }
 
     public boolean checkSteady() {
-        if((lastPosition == ArmMotor.MotorCurrentPosition()) && timer.seconds() > 0.5) {
+        if((lastPosition == ArmMotor.MotorCurrentPosition()) && timer.seconds() > 0.3) {
             return true;
         }
         else {
@@ -140,6 +139,7 @@ public class Arm {
         Reeference = value;
         firstTime = true;
     }
+
 
 
 }

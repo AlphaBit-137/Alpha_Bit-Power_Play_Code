@@ -35,6 +35,7 @@ public class ServoClaw {
 
     public void Closed(){
         servo1.setPosition(0);
+        open = false;
     }
 
     public void run()
@@ -42,8 +43,8 @@ public class ServoClaw {
         if(open) {
 
             cdetect.update();
+
             if (((cdetect.whatColorIsIt2() == 1 || cdetect.whatColorIsIt2() == 2) && timer.seconds() > 0.6 && cdetect.distance < 3) && open) {
-                open = false;
                 Closed();
             }
 

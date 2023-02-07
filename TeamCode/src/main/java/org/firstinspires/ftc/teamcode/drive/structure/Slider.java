@@ -9,8 +9,6 @@ import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Motor_Skeleton;
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Pid_Controller;
 
 public class Slider {
-
-
     public double Reference;
 
     public static double Kp = 0.0085;
@@ -155,7 +153,6 @@ public class Slider {
         Reference = value;
         firstTime = true;
     }
-
 
 }
 
