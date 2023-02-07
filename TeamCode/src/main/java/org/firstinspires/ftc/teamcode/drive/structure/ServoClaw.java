@@ -39,12 +39,14 @@ public class ServoClaw {
 
     public void run()
     {
-        cdetect.update();
+        if(open) {
 
-        if(((cdetect.whatColorIsIt2() == 1 || cdetect.whatColorIsIt2() == 2) && timer.seconds() > 0.6 && cdetect.distance <3) && open)
-        {
-            open = false;
-            Closed();
+            cdetect.update();
+            if (((cdetect.whatColorIsIt2() == 1 || cdetect.whatColorIsIt2() == 2) && timer.seconds() > 0.6 && cdetect.distance < 3) && open) {
+                open = false;
+                Closed();
+            }
+
         }
 
         if(gamepad.b)
