@@ -30,7 +30,7 @@ public class First extends LinearOpMode {
        FieldCentric
     }
 
-    drivingCase Cases = drivingCase.RobotCentric;
+    drivingCase Cases = drivingCase.FieldCentric;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -57,10 +57,10 @@ public class First extends LinearOpMode {
 
         while(opModeIsActive()){
 
-            if(gamepad1.back)
+            if(gamepad1.share)
             {
                 Cases = drivingCase.FieldCentric;
-            }else if(gamepad1.start)
+            }else if(gamepad1.options)
             {
                 Cases = drivingCase.RobotCentric;
             }
