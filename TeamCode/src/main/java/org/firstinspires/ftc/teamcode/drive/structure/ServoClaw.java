@@ -13,7 +13,6 @@ public class ServoClaw {
     public ElapsedTime timer = new ElapsedTime();
     public boolean open;
 
-
     Gamepad gamepad;
 
 
