@@ -19,7 +19,7 @@ public class Arm {
 
     double max_output = 0.85;
 
-   public double Reeference = 0;
+    public double Reeference = 0;
 
     ElapsedTime timer = new ElapsedTime();
 

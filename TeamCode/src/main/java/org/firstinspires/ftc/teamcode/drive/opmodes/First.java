@@ -37,15 +37,15 @@ public class First extends LinearOpMode {
 
         CDrive.Init(hardwareMap,gamepad1);
 
-        arm.init(hardwareMap,gamepad2);
+        arm.init(hardwareMap,gamepad1);
 
         RD.Init(hardwareMap,gamepad1);
 
-        slider.init(hardwareMap,gamepad2);
+        slider.init(hardwareMap,gamepad1);
 
-        claw.init(hardwareMap,gamepad2);
+        claw.init(hardwareMap,gamepad1);
 
-        ms.init(hardwareMap,gamepad2);
+        ms.init(hardwareMap,gamepad1);
 
 
         PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
@@ -79,6 +79,8 @@ public class First extends LinearOpMode {
             telemetry.addData("armSteady",arm.checkSteady());
             telemetry.addData("sliderPower",slider.getSliderPower());
             telemetry.addData("armPower",arm.getArmPower());
+
+            telemetry.addData("Ref",slider.Reference);
 
             telemetry.addData("slider ref",slider.Reference);
             telemetry.addData("arm ref",arm.Reeference);
