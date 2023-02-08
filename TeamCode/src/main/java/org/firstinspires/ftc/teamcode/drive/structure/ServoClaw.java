@@ -11,7 +11,7 @@ public class ServoClaw {
 
     Color_Sensor cdetect = new Color_Sensor();
     public ElapsedTime timer = new ElapsedTime();
-    public boolean open;
+    public boolean open = true;
 
     Gamepad gamepad;
 

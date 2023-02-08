@@ -66,12 +66,12 @@ public class Arm {
 
         if(Arm_Gamepad.dpad_up)
         {
-            setReference(2300);
+            setReference(2350);
         }
 
         if(Arm_Gamepad.dpad_down)
         {
-            setReference(75);
+            setReference(-50);
         }
 
         lastPosition = ArmMotor.MotorCurrentPosition();

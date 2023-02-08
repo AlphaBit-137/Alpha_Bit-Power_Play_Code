@@ -20,11 +20,13 @@ public class First_Chasis_Tests extends LinearOpMode {
     SampleMecanumDrive drive;
 
 
-    double Xposition;
-    double Yposition;
-    double Heading;
+    double Xposition =  50.36;
+    double Yposition = 4.47;
+    double Heading = 25;
 
     boolean toggle = false;
+
+    Pose2d startPose;
 
     Pose2d position;
 
@@ -38,12 +40,14 @@ public class First_Chasis_Tests extends LinearOpMode {
         CDrive.Init(hardwareMap,gamepad1);
         cs.init(hardwareMap);
 
-        position = new Pose2d(Xposition,Yposition,Heading);
+        position = new Pose2d(Xposition,Yposition);
 
         traj = drive.trajectoryBuilder(new Pose2d())
-            //    .splineTo(position)
+                .splineToSplineHeading(position,Math.toRadians(Heading))
                 .build();
+        startPose = new Pose2d( 40, -65, 1.6);
 
+        drive.setPoseEstimate(startPose);
         waitForStart();
 
         while (opModeIsActive())
@@ -52,13 +56,14 @@ public class First_Chasis_Tests extends LinearOpMode {
 
          if(gamepad1.a)
          {
-             if(toggle)
-             {
+
                  drive.followTrajectory(traj);
-             }
 
-         }else toggle = true;
 
+         }
+
+
+         drive.update();
         }
 
     }

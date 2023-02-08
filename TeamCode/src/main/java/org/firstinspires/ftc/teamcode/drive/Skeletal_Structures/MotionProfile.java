@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.drive.Skeletal_Structures;
 
 public class MotionProfile {
 
-
-    public double calc;
     public double distance_normnalizer = 1;
 
     public double motion_profile(double max_acceleration, double max_velocity, double distance,double current_dt) {

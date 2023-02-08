@@ -20,9 +20,14 @@ public class MidWay_Servos {
         startPos();
     }
 
+    public void pickedUpCone()
+    {
+        centrationServo.setPosition(0.27);
+    }
+
     public void startPos()
     {
-        centrationServo.setPosition(0.5);
+        centrationServo.setPosition(0.4);
         rotationServo.setPosition(0.01);
     }
 
@@ -34,6 +39,7 @@ public class MidWay_Servos {
 
     public void run()
     {
+
         if(mid_gamepad.dpad_up)
         {
             conePose();
@@ -41,6 +47,8 @@ public class MidWay_Servos {
         {
             startPos();
         }
+
+
 
     }
 

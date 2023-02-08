@@ -20,6 +20,8 @@ public class Slider {
 
     double lastPosition;
 
+    ServoClaw sclaw = new ServoClaw();
+
     ElapsedTime timer = new ElapsedTime();
 
 
@@ -66,17 +68,6 @@ public class Slider {
         return sliderMotor.MotorCurrentPosition();
     }
 
-    public double GetSlider2Position() {
-        return sliderMotor2.MotorCurrentPosition();
-    }
-
-    public boolean SliderBusy() {
-        return sliderMotor.isBusy();
-    }
-
-    public boolean Slider2Busy() {
-        return sliderMotor2.isBusy();
-    }
 
     public void update() {
 
@@ -108,7 +99,9 @@ public class Slider {
         }
 
         lastPosition = sliderMotor.MotorCurrentPosition();
+
     }
+
 
     public void SetSliderPower(double power) {
         sliderMotor.SetPower(power);
