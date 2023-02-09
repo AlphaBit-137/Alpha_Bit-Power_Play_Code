@@ -197,6 +197,16 @@ public class SampleMecanumDrive extends MecanumDrive {
         );
     }
 
+    public void breakFollowing() {
+        trajectorySequenceRunner.breakFollowing();
+    }
+
+    public void fullFollowingBreak()
+    {
+        breakFollowing();
+        setDrivePower(new Pose2d());
+    }
+
     public void turn(double angle) {
         turnAsync(angle);
         waitForIdle();
