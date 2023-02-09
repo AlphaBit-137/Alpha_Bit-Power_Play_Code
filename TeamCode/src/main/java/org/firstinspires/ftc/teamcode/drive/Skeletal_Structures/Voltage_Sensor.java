@@ -23,4 +23,9 @@ public class Voltage_Sensor {
         }else return 1;
     }
 
+    public double returnVoltage()
+    {
+        return Vsensor.getVoltage();
+    }
+
 }
