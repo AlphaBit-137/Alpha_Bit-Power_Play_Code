@@ -9,9 +9,9 @@ public class Motor_Skeleton {
 
     DcMotorEx ThisMotor;
 
-    double Kp;
-    double Kd;
-    double Ki;
+    double Kp = 0;
+    double Kd = 0;
+    double Ki = 0;
 
     public double ks;
     public double kg;
@@ -35,14 +35,6 @@ public class Motor_Skeleton {
 
     BusyStates bs = BusyStates.notBusy;
 
-    enum SteadyStates{
-        isSteady,
-        isSteady2,
-        notSteady
-    }
-
-    SteadyStates ss = SteadyStates.notSteady;
-
     Pid_Controller pid = new Pid_Controller(Kp,Kd,Ki);
     MPid_Controller mpid = new MPid_Controller(Kp,Kd,Ki,maxAccel,maxVel);
     FeedForward_Control ff = new FeedForward_Control(ks,kg,kv,ka);
@@ -65,7 +57,6 @@ public class Motor_Skeleton {
         IsReversed(IsReversed);
 
         ThisMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         ThisMotor.setPower(0);
     }
 
@@ -149,7 +140,7 @@ public class Motor_Skeleton {
 
     public double getPidPower(double Reference)
     {
-        return pid.returnPower(Reference,ThisMotor.getCurrentPosition());
+        return pid.returnPower(Reference,MotorCurrentPosition());
     }
 
     public void setMPidPower(double reference)
@@ -183,7 +174,7 @@ public class Motor_Skeleton {
     }
 
 
-    public boolean updateBusy(boolean Linear,double reference)
+    public boolean getBusy(boolean Linear,double reference)
     {
         if(Linear)bs = BusyStates.isBusy;
         else bs = BusyStates.isBusy2;
@@ -197,5 +188,10 @@ public class Motor_Skeleton {
         }
 
         return false;
+    }
+
+    public boolean isSteady(double lastPosition)
+    {
+                return Math.abs(ThisMotor.getCurrentPosition() - lastPosition) == 0;
     }
 }

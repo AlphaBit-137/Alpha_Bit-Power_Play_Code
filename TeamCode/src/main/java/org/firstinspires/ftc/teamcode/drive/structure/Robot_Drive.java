@@ -27,7 +27,6 @@ public class Robot_Drive {
         double y = gamepad.left_stick_y ;
         double rx = -gamepad.right_stick_x;
 
-
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
         double Drive3 = (y + x + rx) / denominator;
