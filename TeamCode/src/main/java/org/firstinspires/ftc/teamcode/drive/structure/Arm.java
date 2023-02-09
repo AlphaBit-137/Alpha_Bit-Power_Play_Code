@@ -55,12 +55,6 @@ public class Arm {
             setReference(ArmMotor.MotorCurrentPosition());
             SetPower(0.7);
         }else{
-
-            if(firstTime) {
-                timer.reset();
-                firstTime = false;
-            }
-
             SetPidPower(Reeference);
         }
 
@@ -94,6 +88,10 @@ public class Arm {
 
     public void SetPidPower(double reference)
     {
+        if(firstTime) {
+            timer.reset();
+            firstTime = false;
+        }
 
         if(!checkSteady())
         {

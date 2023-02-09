@@ -35,10 +35,7 @@ public class Slider {
 
     public enum Junctions {
 
-        High(3200),
-        Medium(7000),
-        Low(4000),
-        Ground(1000),
+        High(1500),
         Default(0);
 
         public int ThisPosition = 0;
@@ -81,21 +78,17 @@ public class Slider {
             setReference(sliderMotor.MotorCurrentPosition());
             SetSliderPower(-1);
         }else{
-
-            if(firstTime) {
-                timer.reset();
-                firstTime = false;
-            }
-
             SetPidPower(Reference);
         }
 
         if (Slider_Gamepad.dpad_up) {
-            setReference(1500);
+            current_junction = Junctions.High;
+            setReference(current_junction.ThisPosition);
         }
 
         if (Slider_Gamepad.dpad_down) {
-            setReference(0);
+            current_junction = Junctions.Default;
+            setReference(current_junction.ThisPosition);
         }
 
         lastPosition = sliderMotor.MotorCurrentPosition();
@@ -122,6 +115,11 @@ public class Slider {
     }
 
     public void SetPidPower(double current_Reference) {
+
+        if(firstTime) {
+            timer.reset();
+            firstTime = false;
+        }
 
         if(!checkSteady())
         {
