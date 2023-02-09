@@ -23,14 +23,12 @@ public class MotionProfile {
             acceleration_dt = Math.sqrt(Math.abs(distance/max_acceleration));
         }
 
-
         acceleration_distance = 0.5 * max_acceleration * Math.pow(acceleration_dt, 2);
-
 
         max_velocity = max_acceleration * acceleration_dt;
 
+        //stops the motion profile from going null when the velocity is at a minimum
         if(max_velocity == 0)max_velocity = 1;
-
 
         double deacceleration_dt;
         deacceleration_dt = acceleration_dt;

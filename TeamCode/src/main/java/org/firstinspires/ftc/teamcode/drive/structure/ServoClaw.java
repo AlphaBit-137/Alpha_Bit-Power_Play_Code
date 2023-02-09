@@ -8,9 +8,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class ServoClaw {
 
     public Servo servo1;
+    Servo centrationServo;
+    Servo rotationServo;
 
     Color_Sensor cdetect = new Color_Sensor();
     public ElapsedTime timer = new ElapsedTime();
+    public ElapsedTime close_time = new ElapsedTime();
     public boolean open = true;
 
     Gamepad gamepad;
@@ -22,10 +25,28 @@ public class ServoClaw {
         cdetect.init(ahwMap);
         Open();
         timer.reset();
-        //servo2 = hwMap.get(Servo.class, "Servo2");
-        //  Init();
-        //Open();
+        centrationServo = ahwMap.get(Servo.class, "CE_Servo");
+        rotationServo = ahwMap.get(Servo.class, "RO_Servo");
 
+        startPos();
+
+    }
+
+    public void pickedUpCone()
+    {
+        centrationServo.setPosition(0.27);
+    }
+
+    public void startPos()
+    {
+        rotationServo.setPosition(0.01);
+        centrationServo.setPosition(0.38);
+    }
+
+    public  void conePose()
+    {
+        rotationServo.setPosition(0.69);
+        centrationServo.setPosition(0.7);
     }
 
     public void Open(){
@@ -35,6 +56,7 @@ public class ServoClaw {
     public void Closed(){
         servo1.setPosition(0);
         open = false;
+        close_time.reset();
     }
 
     public void run()
@@ -47,6 +69,25 @@ public class ServoClaw {
                 Closed();
             }
 
+        }
+
+
+        if(rotationServo.getPosition() < 0.1) {
+            if (!open) {
+                if (close_time.seconds() > 0.3) pickedUpCone();
+            } else if (open) {
+                startPos();
+            }
+        }
+
+        if(gamepad.dpad_up)
+        {
+            conePose();
+        }
+
+        if(gamepad.dpad_down)
+        {
+            startPos();
         }
 
         if(gamepad.b)

@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.structure.Arm;
 import org.firstinspires.ftc.teamcode.drive.structure.Centric_Drive;
-import org.firstinspires.ftc.teamcode.drive.structure.MidWay_Servos;
 import org.firstinspires.ftc.teamcode.drive.structure.Robot_Drive;
 import org.firstinspires.ftc.teamcode.drive.structure.ServoClaw;
 import org.firstinspires.ftc.teamcode.drive.structure.Slider;
@@ -21,7 +20,6 @@ public class First extends LinearOpMode {
     ServoClaw claw = new ServoClaw();
     Slider slider = new Slider();
     Arm arm = new Arm();
-    MidWay_Servos ms = new MidWay_Servos();
 
     double loopTime;
 
@@ -45,7 +43,6 @@ public class First extends LinearOpMode {
 
         claw.init(hardwareMap,gamepad1);
 
-        ms.init(hardwareMap,gamepad1);
 
 
         PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
@@ -70,7 +67,6 @@ public class First extends LinearOpMode {
             slider.update();
             claw.run();
             arm.update();
-            ms.run();
 
             telemetry.addData("Slider",slider.GetSliderPosition());
             telemetry.addData("ClawS1",claw.servo1.getPosition());
