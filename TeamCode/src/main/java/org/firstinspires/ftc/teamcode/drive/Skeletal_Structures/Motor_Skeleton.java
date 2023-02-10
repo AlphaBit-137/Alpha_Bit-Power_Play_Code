@@ -65,8 +65,6 @@ public class Motor_Skeleton {
         return ThisMotor.getCurrentPosition();
     }
 
-    public boolean isBusy(){return ThisMotor.isBusy();}
-
     public void SetPower(double power)
     {
         ThisMotor.setPower(power);
@@ -174,7 +172,7 @@ public class Motor_Skeleton {
     }
 
 
-    public boolean getBusy(boolean Linear,double reference)
+    public boolean isBusy(boolean Linear,double reference)
     {
         if(Linear)bs = BusyStates.isBusy;
         else bs = BusyStates.isBusy2;

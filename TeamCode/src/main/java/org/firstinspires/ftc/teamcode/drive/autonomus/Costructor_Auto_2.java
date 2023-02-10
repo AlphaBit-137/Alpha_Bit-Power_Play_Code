@@ -192,7 +192,6 @@ public class Costructor_Auto_2 extends LinearOpMode {
 
             Update();
 
-            telemetry.addData("Is slider busy",sd.sliderMotor.isBusy());
             telemetry.addData("Slider's current posituion",sd.GetSliderPosition());
             telemetry.update();
 

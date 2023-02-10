@@ -82,8 +82,9 @@ public class MPid_Controller {
 
     double normalize(double vel)
     {
-        if(vel == 0)return 1;
-        else return vel;
+        if(vel == 0)vel = 1;
+
+        return vel;
     }
 
     double getTime()
