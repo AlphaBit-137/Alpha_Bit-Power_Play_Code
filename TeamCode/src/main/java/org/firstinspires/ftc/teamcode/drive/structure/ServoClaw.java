@@ -16,6 +16,8 @@ public class ServoClaw {
     public ElapsedTime close_time = new ElapsedTime();
     public boolean open = true;
 
+    public boolean toggle = true;
+
     Gamepad gamepad;
 
 
@@ -106,8 +108,11 @@ public class ServoClaw {
 
         if(gamepad.dpad_down)
         {
+            if(toggle)
             startPos();
-        }
+
+            toggle = false;
+        }else toggle = true;
 
         if(gamepad.dpad_left)
         {
