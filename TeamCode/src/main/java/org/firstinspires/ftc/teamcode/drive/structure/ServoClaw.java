@@ -43,14 +43,33 @@ public class ServoClaw {
         centrationServo.setPosition(0.38);
     }
 
+    public void lowPose()
+    {
+        rotationServo.setPosition(0.02);
+        centrationServo.setPosition(0.7);
+    }
+
+
+
     public  void conePose()
     {
         rotationServo.setPosition(0.69);
         centrationServo.setPosition(0.7);
     }
 
+    public void dropped()
+    {
+        rotationServo.setPosition(0.02);
+        centrationServo.setPosition(8);
+    }
+
     public void Open(){
         servo1.setPosition(0.5); open = true;
+    }
+
+    public void dClaw()
+    {
+        servo1.setPosition(0.7); open = true;
     }
 
     public void Closed(){
@@ -72,7 +91,7 @@ public class ServoClaw {
         }
 
 
-        if(rotationServo.getPosition() < 0.1) {
+        if(rotationServo.getPosition() < 0.02) {
             if (!open) {
                 if (close_time.seconds() > 0.3) pickedUpCone();
             } else if (open) {
@@ -80,7 +99,7 @@ public class ServoClaw {
             }
         }
 
-        if(gamepad.dpad_up)
+        if(gamepad.dpad_up || gamepad.dpad_right)
         {
             conePose();
         }
@@ -90,10 +109,21 @@ public class ServoClaw {
             startPos();
         }
 
+        if(gamepad.dpad_left)
+        {
+            lowPose();
+        }
+
         if(gamepad.b)
         {
             timer.reset();
             Open();
+        }
+
+        if(gamepad.x)
+        {
+            //dClaw();
+            //dropped();
         }
 
         if(gamepad.a)

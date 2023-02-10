@@ -9,6 +9,10 @@ public class Motor_Skeleton {
 
     DcMotorEx ThisMotor;
 
+    public Motor_Skeleton(DcMotorEx ThisMotor){
+        this.ThisMotor = ThisMotor;
+    }
+
     double Kp = 0;
     double Kd = 0;
     double Ki = 0;
@@ -39,10 +43,6 @@ public class Motor_Skeleton {
     MPid_Controller mpid = new MPid_Controller(Kp,Kd,Ki,maxAccel,maxVel);
     FeedForward_Control ff = new FeedForward_Control(ks,kg,kv,ka);
     Voltage_Sensor vs = new Voltage_Sensor();
-
-   public Motor_Skeleton(DcMotorEx ThisMotor){
-        this.ThisMotor = ThisMotor;
-    }
 
     public void init(HardwareMap ahwMap,String MotorName,boolean IsReversed,boolean using_encoders) {
 

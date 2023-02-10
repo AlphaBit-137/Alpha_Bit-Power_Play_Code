@@ -86,7 +86,7 @@ public class Slider {
             setReference(current_junction.ThisPosition);
         }
 
-        if (Slider_Gamepad.dpad_down) {
+        if (Slider_Gamepad.dpad_down || Slider_Gamepad.dpad_right || Slider_Gamepad.dpad_left) {
             current_junction = Junctions.Default;
             setReference(current_junction.ThisPosition);
         }

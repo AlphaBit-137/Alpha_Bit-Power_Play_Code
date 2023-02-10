@@ -23,14 +23,7 @@ public class DriveConstants {
     public static final double TICKS_PER_REV = 537.7;
     public static final double MAX_RPM = 312;
 
-    /*
-     * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.
-     * Set this flag to false if drive encoders are not present and an alternative localization
-     * method is in use (e.g., tracking wheels).
-     *
-     * If using the built-in motor velocity PID, update MOTOR_VELO_PID with the tuned coefficients
-     * from DriveVelocityPIDTuner.
-     */
+
     public static final boolean RUN_USING_ENCODER = false;
     public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,
             getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));

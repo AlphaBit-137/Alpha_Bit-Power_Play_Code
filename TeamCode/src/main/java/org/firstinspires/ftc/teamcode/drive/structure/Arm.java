@@ -10,6 +10,13 @@ import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Motor_Skeleton;
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Pid_Controller;
 
 public class Arm {
+
+    public DcMotorEx arm;
+
+    public Motor_Skeleton ArmMotor = new Motor_Skeleton(arm);
+
+    Gamepad Arm_Gamepad;
+
     double Kp = 0.005;
     double Ki = 0.0;
     double Kd = 0.0;
@@ -31,11 +38,6 @@ public class Arm {
     Pid_Controller PID = new Pid_Controller(Kp,Ki,Kd);
     MPid_Controller MPID = new MPid_Controller(Kp,Ki,Kd,max_accel,max_vel);
 
-    public DcMotorEx arm;
-
-    Gamepad Arm_Gamepad;
-
-    public Motor_Skeleton ArmMotor = new Motor_Skeleton(arm);
 
     public void init(HardwareMap ahwMap, Gamepad Arm_Gamepad) {
 
@@ -60,7 +62,22 @@ public class Arm {
 
         if(Arm_Gamepad.dpad_up)
         {
-            setReference(2350);
+            setReference(2200);
+        }
+
+        if(Arm_Gamepad.dpad_left)
+        {
+            setReference(900);
+        }
+
+        if(Arm_Gamepad.x)
+        {
+            //setReference(550);
+        }
+
+        if(Arm_Gamepad.dpad_right)
+        {
+            setReference(2000);
         }
 
         if(Arm_Gamepad.dpad_down)
@@ -107,7 +124,7 @@ public class Arm {
     {
         if((Math.abs(ArmMotor.MotorCurrentPosition()) < 800 && Reeference < 1000) || (Math.abs(ArmMotor.MotorCurrentPosition()) > 1500 && Reeference > 1000))
         {
-            max_output = 0.45;
+            max_output = 0.6;
         }else max_output = 0.9;
 
 
@@ -116,6 +133,11 @@ public class Arm {
 
 
         return pow;
+    }
+
+    public double getReference()
+    {
+        return Reeference;
     }
 
     public double getArmPower()
