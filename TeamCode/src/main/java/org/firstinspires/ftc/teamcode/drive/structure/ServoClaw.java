@@ -36,13 +36,13 @@ public class ServoClaw {
 
     public void pickedUpCone()
     {
-        centrationServo.setPosition(0.27);
+        centrationServo.setPosition(0.26);
     }
 
     public void startPos()
     {
         rotationServo.setPosition(0.01);
-        centrationServo.setPosition(0.38);
+        centrationServo.setPosition(0.35);
     }
 
     public void lowPose()
@@ -108,8 +108,9 @@ public class ServoClaw {
 
         if(gamepad.dpad_down)
         {
-            if(toggle)
-            startPos();
+            if(toggle) {
+                startPos();
+            }
 
             toggle = false;
         }else toggle = true;

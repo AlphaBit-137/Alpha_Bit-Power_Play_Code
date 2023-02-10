@@ -62,12 +62,12 @@ public class Arm {
 
         if(Arm_Gamepad.dpad_up)
         {
-            setReference(2200);
+            setReference(2270);
         }
 
         if(Arm_Gamepad.dpad_left)
         {
-            setReference(900);
+            setReference(1100);
         }
 
         if(Arm_Gamepad.x)
