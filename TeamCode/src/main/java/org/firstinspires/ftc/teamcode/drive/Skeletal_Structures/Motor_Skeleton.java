@@ -13,19 +13,7 @@ public class Motor_Skeleton {
         this.ThisMotor = ThisMotor;
     }
 
-    double Kp = 0;
-    double Kd = 0;
-    double Ki = 0;
-
-    public double ks;
-    public double kg;
-    public double kv;
-    public double ka;
-
     public double normalizer;
-
-    double maxAccel;
-    double maxVel;
 
     double minimum;
 
@@ -39,9 +27,9 @@ public class Motor_Skeleton {
 
     BusyStates bs = BusyStates.notBusy;
 
-    Pid_Controller pid = new Pid_Controller(Kp,Kd,Ki);
-    MPid_Controller mpid = new MPid_Controller(Kp,Kd,Ki,maxAccel,maxVel);
-    FeedForward_Control ff = new FeedForward_Control(ks,kg,kv,ka);
+    Pid_Controller pid;
+    MPid_Controller mpid;
+    FeedForward_Control ff ;
     Voltage_Sensor vs = new Voltage_Sensor();
 
     public void init(HardwareMap ahwMap,String MotorName,boolean IsReversed,boolean using_encoders) {
@@ -99,23 +87,12 @@ public class Motor_Skeleton {
 
     public void setPidCoefs(double Kp,double Kd,double Ki)
     {
-        this.Kp = Kp;
-        this.Kd = Kd;
-        this.Ki = Ki;
+        pid = new Pid_Controller(Kp,Kd,Ki);
     }
 
-    public void setMaxAccelandVel(double maxVel, double maxAccel)
+    public void setMaxAccelandVel(double maxVel, double maxAccel,double Kp,double Kd,double Ki)
     {
-        this.maxAccel = maxAccel;
-        this.maxVel = maxVel;
-    }
-
-    public void setFeedForwardCoefs(double ks,double ka, double kg, double kv)
-    {
-        this.ks = ks;
-        this.ka = ka;
-        this.kv = kv;
-        this.kg = kg;
+       mpid = new MPid_Controller(Kp,Ki,Kd,maxAccel,maxVel);
     }
 
     public double powerConstraints(double maxOutput,double power)

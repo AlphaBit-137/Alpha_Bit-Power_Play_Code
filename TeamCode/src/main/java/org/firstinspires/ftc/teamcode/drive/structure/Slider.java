@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Motor_Skeleton;
-import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Pid_Controller;
 
 public class Slider {
     public double Reference;
@@ -24,8 +23,6 @@ public class Slider {
 
     ElapsedTime timer = new ElapsedTime();
 
-
-    Pid_Controller PID = new Pid_Controller(Kp, Ki, Kd);
 
     public DcMotorEx slider;
     public DcMotorEx slider2;
@@ -47,8 +44,6 @@ public class Slider {
     }
 
     Gamepad Slider_Gamepad;
-    //   Pid_Controller PC = new Pid_Controller(0.0085,0.00002,0.0);
-
 
     public Motor_Skeleton sliderMotor = new Motor_Skeleton(slider);
     public Motor_Skeleton sliderMotor2 = new Motor_Skeleton(slider2);
@@ -59,6 +54,8 @@ public class Slider {
 
         sliderMotor.init(ahwMap, "Slider", false,false);
         sliderMotor2.init(ahwMap, "Slider2", false,false);
+
+        sliderMotor.setPidCoefs(Kp,Kd,Ki);
     }
 
     public double GetSliderPosition() {
@@ -123,7 +120,8 @@ public class Slider {
 
         if(!checkSteady())
         {
-            savedPower = PID.returnPower(current_Reference,sliderMotor.MotorCurrentPosition());;
+           // savedPower = PID.returnPower(current_Reference,sliderMotor.MotorCurrentPosition());
+            savedPower = sliderMotor.getPidPower(current_Reference);
         }
 
         sliderMotor.SetPower(savedPower);

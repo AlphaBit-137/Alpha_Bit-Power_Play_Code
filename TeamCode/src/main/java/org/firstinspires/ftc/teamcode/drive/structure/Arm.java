@@ -5,9 +5,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.MPid_Controller;
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Motor_Skeleton;
-import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Pid_Controller;
 
 public class Arm {
 
@@ -35,8 +33,6 @@ public class Arm {
 
     double lastPosition;
 
-    Pid_Controller PID = new Pid_Controller(Kp,Ki,Kd);
-    MPid_Controller MPID = new MPid_Controller(Kp,Ki,Kd,max_accel,max_vel);
 
 
     public void init(HardwareMap ahwMap, Gamepad Arm_Gamepad) {
@@ -44,6 +40,8 @@ public class Arm {
         this.Arm_Gamepad = Arm_Gamepad;
 
         ArmMotor.init(ahwMap,"Arm",true,false);
+
+        ArmMotor.setPidCoefs(Kp,Kd,Ki);
     }
 
     public void update()
@@ -98,10 +96,6 @@ public class Arm {
         ArmMotor.SetPower(power);
     }
 
-    public void SetMPidPower(double reference)
-    {
-        ArmMotor.SetPower(-MPID.returnPower(reference,ArmMotor.MotorCurrentPosition(),ArmMotor.GetVelocity()));
-    }
 
     public void SetPidPower(double reference)
     {
@@ -112,7 +106,8 @@ public class Arm {
 
         if(!checkSteady())
         {
-            savedPower = -PID.returnPower(reference,ArmMotor.MotorCurrentPosition());;
+          //  savedPower = -PID.returnPower(reference,ArmMotor.MotorCurrentPosition());;
+            savedPower = ArmMotor.getPidPower(reference);
         }
 
         savedPower = addons(savedPower);
