@@ -6,6 +6,12 @@ public class MotionProfile {
 
     public double motion_profile(double max_acceleration, double max_velocity, double distance,double current_dt) {
 
+        if(distance< 0){
+            distance_normnalizer = -1;
+        }else{
+            distance_normnalizer = 1;
+        }
+
         double acceleration_dt = max_velocity / max_acceleration;
 
         double halfway_distance = distance / 2;
@@ -13,12 +19,6 @@ public class MotionProfile {
         double acceleration_distance = 0.5 * max_acceleration * Math.pow(acceleration_dt, 2);
 
         if (acceleration_distance > halfway_distance) {
-
-            if(distance / max_acceleration < 0){
-                distance_normnalizer = -1;
-            }else{
-                distance_normnalizer = 1;
-            }
 
             acceleration_dt = Math.sqrt(Math.abs(distance/max_acceleration));
         }
