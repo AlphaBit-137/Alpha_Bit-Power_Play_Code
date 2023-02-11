@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.MotionProfile;
-import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.NoPermaMP;
 
 /*
 *
@@ -25,7 +24,7 @@ public class Pid_Motor extends LinearOpMode {
 
     ElapsedTime timer = new ElapsedTime();
     MotionProfile MP = new MotionProfile();
-    NoPermaMP nmp = new NoPermaMP();
+  //  NoPermaMP nmp = new NoPermaMP();
 
     ElapsedTime VelocityTime = new ElapsedTime();
 
@@ -107,7 +106,7 @@ public class Pid_Motor extends LinearOpMode {
 
         if(velocity == 0 )velocity = 1;
 
-        double InstantErrror = nmp.motion_profile(maxAccel,maxVelocity,error,error/velocity);
+        double InstantErrror = MP.motion_profile(maxAccel,maxVelocity,error,error/velocity);
 
         time = error/velocity;
 
