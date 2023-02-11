@@ -112,8 +112,7 @@ public class Pid_Motor extends LinearOpMode {
 
         getEror = InstantErrror;
 
-        if(state == reference || state > reference)IntegralSum = 0;
-        else{IntegralSum += InstantErrror * timer.seconds();}
+        IntegralSum += InstantErrror * timer.seconds();
 
 
         double derivative = (InstantErrror - LastError) / timer.seconds();

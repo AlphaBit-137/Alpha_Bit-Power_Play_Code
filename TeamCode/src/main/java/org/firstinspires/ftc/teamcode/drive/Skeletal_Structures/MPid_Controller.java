@@ -48,9 +48,7 @@ public class MPid_Controller {
         {
             IntegralSum = 0;
         }
-
-        if(state == reference || state > reference)IntegralSum = 0;
-        else{IntegralSum += InstantError * time;}
+        IntegralSum += InstantError * time;
 
         double errorChange = (InstantError - LastError);
 
