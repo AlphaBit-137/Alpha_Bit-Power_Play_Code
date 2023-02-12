@@ -120,7 +120,6 @@ public class Slider {
 
         if(!checkSteady())
         {
-           // savedPower = PID.returnPower(current_Reference,sliderMotor.MotorCurrentPosition());
             savedPower = sliderMotor.getPidPower(current_Reference);
         }
 

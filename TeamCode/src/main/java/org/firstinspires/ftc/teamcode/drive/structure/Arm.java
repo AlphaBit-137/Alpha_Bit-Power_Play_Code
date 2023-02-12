@@ -106,7 +106,6 @@ public class Arm {
 
         if(!checkSteady())
         {
-          //  savedPower = -PID.returnPower(reference,ArmMotor.MotorCurrentPosition());;
             savedPower = ArmMotor.getPidPower(reference);
         }
 

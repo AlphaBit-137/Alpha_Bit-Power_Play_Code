@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.MotionProfile;
+import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Pid_Controller;
 
 /*
 *
@@ -36,6 +37,8 @@ public class Pid_Motor extends LinearOpMode {
    public static double Kp = 0.035;
    public static double Ki = 0.0;
    public static double Kd = 0.0;
+
+   Pid_Controller pid = new Pid_Controller(Kp,Kd,Ki);
 
    public static double maxAccel = 100;
    public static double maxVelocity = 100;
@@ -86,7 +89,7 @@ public class Pid_Motor extends LinearOpMode {
             double output = Kp * (referenceSpeed - currentSpeed) + Kv * (referenceSpeed);
 
             double state = TestMotor.getCurrentPosition() * encoder_direction;
-            double power = encoder_direction * returnPower(targetPosition, state);
+            double power = pid.returnPower(reference,state);
 
             double velocity = TestMotor.getVelocity();
 
