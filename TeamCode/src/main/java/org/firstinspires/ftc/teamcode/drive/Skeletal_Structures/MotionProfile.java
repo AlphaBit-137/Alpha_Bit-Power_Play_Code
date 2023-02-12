@@ -4,6 +4,7 @@ public class MotionProfile {
 
     public double distance_normnalizer = 1;
 
+
     public double motion_profile(double max_acceleration, double max_velocity, double distance,double current_dt) {
 
         if(distance< 0){
