@@ -48,6 +48,11 @@ public class Pid_Motor extends LinearOpMode {
 
    double time;
 
+   double velocityReference;
+   double accelerationReference;
+   double Ka;
+   double Kv;
+
    private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     @Override
@@ -70,10 +75,15 @@ public class Pid_Motor extends LinearOpMode {
         telemetry.addData("Encoder_Direction",encoder_direction);
 
         double reference = targetPosition * encoder_direction;
+        double referenceSpeed = 0;
+        double currentSpeed = 0;
+        
 
         waitForStart();
 
         while (opModeIsActive()) {
+
+            double output = Kp * (referenceSpeed - currentSpeed) + Kv * (referenceSpeed);
 
             double state = TestMotor.getCurrentPosition() * encoder_direction;
             double power = encoder_direction * returnPower(targetPosition, state);
