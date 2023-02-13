@@ -20,11 +20,11 @@ public class MPid_Controller {
     double LastError = 0.0;
     double LastReference = 0.0;
 
-    public MPid_Controller(double Kp, double Ki, double Kd,double maxAccel,double maxVel)
+    public MPid_Controller(double Kp, double Kd, double Ki,double maxAccel,double maxVel)
     {
         this.Kp = Kp;
-        this.Ki = Ki;
         this.Kd = Kd;
+        this.Ki = Ki;
 
         this.maxAccel = maxAccel;
         this.maxVel = maxVel;
@@ -48,6 +48,7 @@ public class MPid_Controller {
         {
             IntegralSum = 0;
         }
+
         IntegralSum += InstantError * time;
 
         double errorChange = (InstantError - LastError);
@@ -80,9 +81,8 @@ public class MPid_Controller {
 
     double normalize(double vel)
     {
-        if(vel == 0)vel = 1;
-
-        return vel;
+        if(vel == 0)return 1;
+        else return vel;
     }
 
     double getTime()

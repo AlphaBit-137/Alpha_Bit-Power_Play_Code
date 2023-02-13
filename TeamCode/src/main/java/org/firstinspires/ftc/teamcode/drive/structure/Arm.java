@@ -41,6 +41,7 @@ public class Arm {
 
         ArmMotor.init(ahwMap,"Arm",true,false);
 
+        ArmMotor.setMaxAccelandVel(Kp,Kd,Ki,max_accel,max_vel);
         ArmMotor.setPidCoefs(Kp,Kd,Ki);
     }
 
@@ -106,10 +107,9 @@ public class Arm {
 
         if(!checkSteady())
         {
-            savedPower = ArmMotor.getPidPower(reference);
+            savedPower = -ArmMotor.returnMpidPower(reference);
         }
 
-        savedPower = addons(savedPower);
 
         ArmMotor.SetPower(savedPower);
     }

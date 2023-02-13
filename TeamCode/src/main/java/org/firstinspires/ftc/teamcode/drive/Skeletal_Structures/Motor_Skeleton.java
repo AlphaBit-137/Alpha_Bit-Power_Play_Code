@@ -90,9 +90,9 @@ public class Motor_Skeleton {
         pid = new Pid_Controller(Kp,Kd,Ki);
     }
 
-    public void setMaxAccelandVel(double maxVel, double maxAccel,double Kp,double Kd,double Ki)
+    public void setMaxAccelandVel(double Kp, double Kd, double Ki, double maxAccel, double maxVel)
     {
-       mpid = new MPid_Controller(Kp,Ki,Kd,maxAccel,maxVel);
+       mpid = new MPid_Controller(Kp,Kd,Ki,maxAccel,maxVel);
     }
 
     public double powerConstraints(double maxOutput,double power)
@@ -109,7 +109,7 @@ public class Motor_Skeleton {
 
     public void setPidPower(double Reference)
     {
-        double power = pid.returnPower(Reference,ThisMotor.getCurrentPosition());
+        double power = pid.returnPower(Reference,MotorCurrentPosition());
         ThisMotor.setPower(power);
     }
 
@@ -120,13 +120,13 @@ public class Motor_Skeleton {
 
     public void setMPidPower(double reference)
     {
-        double power = mpid.returnPower(reference,ThisMotor.getCurrentPosition(),ThisMotor.getVelocity());
+        double power = mpid.returnPower(reference,MotorCurrentPosition(),GetVelocity());
         ThisMotor.setPower(power);
     }
 
     public double returnMpidPower(double reference)
     {
-        return mpid.returnPower(reference,ThisMotor.getCurrentPosition(),ThisMotor.getVelocity());
+        return mpid.returnPower(reference,MotorCurrentPosition(), GetVelocity());
     }
 
      /** Voltage related stuff*/
