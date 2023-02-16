@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class ServoClaw {
 
     public Servo servo1;
-    Servo centrationServo;
-    Servo rotationServo;
+    public Servo centrationServo;
+    public Servo rotationServo;
 
     Color_Sensor cdetect = new Color_Sensor();
     public ElapsedTime timer = new ElapsedTime();
@@ -138,6 +138,13 @@ public class ServoClaw {
         }
     }
 
+
+    public void stackPose()
+    {
+        rotationServo.setPosition(0.01);
+        centrationServo.setPosition(0.5);
+    }
+
     public int returncolor()
     {
         return cdetect.whatColorIsIt2();
@@ -148,5 +155,6 @@ public class ServoClaw {
     public double rr(){return cdetect.red;}
 
     public double rb(){return cdetect.blue;}
+
 
 }

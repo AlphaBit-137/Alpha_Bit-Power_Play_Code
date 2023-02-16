@@ -19,8 +19,8 @@ public class Arm {
     double Ki = 0.0;
     double Kd = 0.0;
 
-    double max_accel = 1000;
-    double max_vel = 1000;
+    double max_accel = 1500;
+    double max_vel = 1500;
 
     double max_output = 0.85;
 
@@ -61,12 +61,12 @@ public class Arm {
 
         if(Arm_Gamepad.dpad_up)
         {
-            setReference(2270);
+            setReference(2530);
         }
 
         if(Arm_Gamepad.dpad_left)
         {
-            setReference(1100);
+            setReference(1000);
         }
 
         if(Arm_Gamepad.x)
@@ -76,7 +76,7 @@ public class Arm {
 
         if(Arm_Gamepad.dpad_right)
         {
-            setReference(2000);
+            setReference(2428);
         }
 
         if(Arm_Gamepad.dpad_down)
@@ -86,6 +86,12 @@ public class Arm {
 
         lastPosition = ArmMotor.MotorCurrentPosition();
 
+    }
+
+    public void autoUpdate()
+    {
+        SetPidPower(Reeference);
+        lastPosition = ArmMotor.MotorCurrentPosition();
     }
 
     public double getArmPos()

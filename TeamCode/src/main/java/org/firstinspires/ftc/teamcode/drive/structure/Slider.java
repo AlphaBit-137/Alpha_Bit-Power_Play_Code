@@ -98,6 +98,12 @@ public class Slider {
         sliderMotor2.SetPower(-power);
     }
 
+    public void autoUpdate()
+    {
+        SetPidPower(Reference);
+        lastPosition = sliderMotor.MotorCurrentPosition();
+    }
+
     public double getSlider2Power() {
         return sliderMotor2.GetPower();
     }
