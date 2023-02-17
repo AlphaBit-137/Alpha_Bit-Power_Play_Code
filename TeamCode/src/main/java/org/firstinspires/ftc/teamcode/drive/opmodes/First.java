@@ -5,6 +5,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Gyro_Save;
 import org.firstinspires.ftc.teamcode.drive.structure.Arm;
 import org.firstinspires.ftc.teamcode.drive.structure.Centric_Drive;
 import org.firstinspires.ftc.teamcode.drive.structure.Robot_Drive;
@@ -28,7 +29,7 @@ public class First extends LinearOpMode {
        FieldCentric
     }
 
-    drivingCase Cases = drivingCase.FieldCentric;
+    drivingCase Cases = drivingCase.RobotCentric;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -80,6 +81,8 @@ public class First extends LinearOpMode {
 
             telemetry.addData("slider ref",slider.Reference);
             telemetry.addData("arm ref",arm.Reeference);
+
+            telemetry.addData("gyro's save", Gyro_Save.Gyro_heading);
 
             telemetry.addData("red",claw.rr());
 

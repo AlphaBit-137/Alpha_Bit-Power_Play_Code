@@ -29,6 +29,8 @@ public class LocalizationTest extends LinearOpMode {
 
         waitForStart();
 
+        drive.setPoseEstimate(new Pose2d( -35.5, -56, Math.toRadians(90)));
+
         while (!isStopRequested()) {
 
             arm.update();
