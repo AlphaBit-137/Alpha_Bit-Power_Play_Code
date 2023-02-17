@@ -21,7 +21,8 @@ import org.firstinspires.ftc.teamcode.drive.structure.Slider;
 
 
 @Autonomous
-public class Auto_lEFT extends LinearOpMode {
+public class Auto_Right extends LinearOpMode {
+
     ElapsedTime stimer = new ElapsedTime();
 
     Arm arm = new Arm();
@@ -48,7 +49,7 @@ public class Auto_lEFT extends LinearOpMode {
     double arm_ref = 410;
     double servo_position = 0.53;
 
-    Pose2d startPose = new Pose2d( 35.5, -56, Math.toRadians(90));
+    Pose2d startPose = new Pose2d( -35.5, -56, Math.toRadians(90));
 
 
     /**
@@ -59,18 +60,18 @@ public class Auto_lEFT extends LinearOpMode {
 
     //  Pose2d case1 = new Pose2d(14.442408343868342,-10.603328049212077, Math.toRadians( 178.2355014527972));
 
-    Pose2d case1 = new Pose2d(13.442408343868342,-12.603328049212077, Math.toRadians( 178.2355014527972));
+    Pose2d case1 = new Pose2d(-13.442408343868342,-12.603328049212077, Math.toRadians( 180-178.2355014527972));
 
-    Pose2d case2 = new Pose2d(34.30768651317242,-12.541090024383394,Math.toRadians( 182.30987321724987));
+    Pose2d case2 = new Pose2d(-34.30768651317242,-12.541090024383394,Math.toRadians(182.30987321724987-180));
 
-    Pose2d case3 = new Pose2d(59.10302904448052,-10.39709841950815,Math.toRadians(185.2383304842712));
+    Pose2d case3 = new Pose2d(-59.10302904448052,-10.39709841950815,Math.toRadians(185.2383304842712-180));
 
     TrajectorySequence case_1,case_2,case_3;
 
     Vector2d Park1, Park2, Park3;
 
-    Vector2d line = new Vector2d( 36.86593279210669,-24.608077437197178);
-    Vector2d poleFirst = new Vector2d(24.197146082134117,-12.039688813835287);
+    Vector2d line = new Vector2d( -36.86593279210669,-24.608077437197178);
+    Vector2d poleFirst = new Vector2d(-24.197146082134117,-12.039688813835287);
     TrajectorySequence traj;
 
 
@@ -97,7 +98,7 @@ public class Auto_lEFT extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    Paths paths = Paths.FirstCone;
+    Auto_lEFT.Paths paths = Auto_lEFT.Paths.FirstCone;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -119,7 +120,7 @@ public class Auto_lEFT extends LinearOpMode {
 
         traj = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(line)
-                .splineToConstantHeading(poleFirst,Math.toRadians(92.92843015970804))
+                .splineToConstantHeading(poleFirst,Math.toRadians(180-92.92843015970804))
                 .build();
 
 
@@ -129,16 +130,16 @@ public class Auto_lEFT extends LinearOpMode {
             {
                 angleAdd=0;
 
-                x_add += 1.3;
+                x_add -= 1.3;
 
                 y_add += 1.5;
 
-                stack_x_add = 0.8;
+                stack_x_add = -0.8;
 
                 stack_angle_add = 0;
 
                 // angleAdd += 10;
-                angleAdd += 7;
+                angleAdd -= 7;
 
 
                 //cresc x scad y
@@ -146,13 +147,13 @@ public class Auto_lEFT extends LinearOpMode {
                 //    x_add += 0.5; y_add -= 0.5; angleAdd += 1.2; stack_x_add +=1;
                 //  x_add += 0.3; y_add -= 0.4; angleAdd += 1; stack_x_add +=0.8;
                 //   x_add += 0.3; y_add -= 0.4; angleAdd += 1; stack_x_add +=0.8; y_pole_add -= 0;
-                x_add += 1; y_add -= 1.5 ; angleAdd += 2; y_pole_add -= 0.5; stack_angle_add -= 1;
+                x_add -= 1; y_add -= 1.5 ; angleAdd -= 2; y_pole_add -= 0.5; stack_angle_add -= 1;
                 //   x_add += 0.8; y_add -= 1.5 ; angleAdd += 3; y_pole_add -= 0.45; stack_angle_add -= 1;
 
                 if(i < 2)
                 {
-                    stack_x_add +=0.2;
-                }else stack_x_add += 0.1;
+                    stack_x_add -=0.2;
+                }else stack_x_add -= 0.1;
 
             }
 
@@ -160,11 +161,11 @@ public class Auto_lEFT extends LinearOpMode {
             //  coords_stack[i] = new Pose2d(53.47516145341139-0.3 + stack_x_add,-13.069087565956906 + y_add,3.176351446923455);
 
             if(i < 2) {
-                coords_stack[i] = new Pose2d(51.57516145341139 - 0.3 + stack_x_add, -13.009087565956906 + y_add, Math.toRadians(180 + stack_angle_add));
-            }else coords_stack[i] = new Pose2d(50.67516145341139 - 0.3 + stack_x_add, -13.009087565956906 + y_add, Math.toRadians(180 + stack_angle_add));
+                coords_stack[i] = new Pose2d(-51.57516145341139 - 0.3 + stack_x_add, -13.009087565956906 + y_add, Math.toRadians(stack_angle_add));
+            }else coords_stack[i] = new Pose2d(-50.67516145341139 - 0.3 + stack_x_add, -13.009087565956906 + y_add, Math.toRadians(stack_angle_add));
 
             //  coords_pole[i] =  new Pose2d(35.27549268087416 + x_add,-12.547379192844328 + y_add,Math.toRadians(125.08902579940354+angleAdd));
-            coords_pole[i] =  new Pose2d(34.27549268087416 + x_add,-13.547379192844328 + y_pole_add,Math.toRadians(125.08902579940354+angleAdd));
+            coords_pole[i] =  new Pose2d(-34.27549268087416 + x_add,-13.547379192844328 + y_pole_add,Math.toRadians(180-125.08902579940354+angleAdd));
 
             if(i == 0)
             {
@@ -222,7 +223,7 @@ public class Auto_lEFT extends LinearOpMode {
 
         PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
         PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
-        PhotonCore.experimental.setMaximumParallelCommands(4);
+        PhotonCore.experimental.setMaximumParallelCommands(8);
         PhotonCore.enable();
 
         while(!opModeIsActive())
@@ -257,7 +258,7 @@ public class Auto_lEFT extends LinearOpMode {
 
                     if (reference_timer.seconds() > 0.5){
                         sclaw.centrationServo.setPosition(0.43);
-                        sclaw.rotationServo.setPosition(0.75);
+                        sclaw.rotationServo.setPosition(0.73);
                         lift.setReference(700);
                         arm.setReference(1850);
                     }
@@ -272,7 +273,7 @@ public class Auto_lEFT extends LinearOpMode {
                         drive.followTrajectorySequenceAsync(stack_traj[i]);
                         i++;
                         rise_boolean = !rise_boolean;
-                        paths = Paths.Stack_second_cone;
+                        paths = Auto_lEFT.Paths.Stack_second_cone;
 
 
 
@@ -292,7 +293,6 @@ public class Auto_lEFT extends LinearOpMode {
 
                         sclaw.startPos();
                         sclaw.centrationServo.setPosition(servo_position);
-                      //  sclaw.centrationServo.setPosition(0.53);
 
                         /**
                          lift.setReference(320);
@@ -307,7 +307,7 @@ public class Auto_lEFT extends LinearOpMode {
                     if(!drive.isBusy())
                     {
                         sclaw.Closed();
-                          lift.setReference(750);
+                        lift.setReference(750);
 
                         sleep(500);
 
@@ -330,7 +330,7 @@ public class Auto_lEFT extends LinearOpMode {
 
 
                         // paths = Paths.idle;
-                        paths = Paths.Pole_second_cone;
+                        paths = Auto_lEFT.Paths.Pole_second_cone;
 
                     }
 
@@ -361,14 +361,14 @@ public class Auto_lEFT extends LinearOpMode {
                             i++;
                             armAdd-=50;
                             slider_ref -= 110;
-                            paths = Paths.Stack_second_cone;
+                            paths = Auto_lEFT.Paths.Stack_second_cone;
                         }else{
                             lift.setReference(0);
                             arm.setReference(0);
                             sclaw.Open();
                             // sclaw.stackPose();
-                            sclaw.stackPose();
                             sclaw.pickedUpCone();
+                            sclaw.stackPose();
 
                             if(caz == 1) {
                                 drive.followTrajectorySequenceAsync(caseOne[i - 1]);
@@ -376,7 +376,7 @@ public class Auto_lEFT extends LinearOpMode {
                             {
                                 drive.followTrajectorySequenceAsync(caseTwo[i-1]);
                             }else drive.followTrajectorySequenceAsync(caseThree[i-1]);
-                            paths = Paths.idle;
+                            paths = Auto_lEFT.Paths.idle;
                         }
 
 
@@ -405,7 +405,7 @@ public class Auto_lEFT extends LinearOpMode {
 
                     if(!drive.isBusy())
                     {
-                        paths = Paths.idle;
+                        paths = Auto_lEFT.Paths.idle;
                     }
 
                     break;
@@ -438,4 +438,5 @@ public class Auto_lEFT extends LinearOpMode {
             lift.autoUpdate();
         }
     }
+
 }

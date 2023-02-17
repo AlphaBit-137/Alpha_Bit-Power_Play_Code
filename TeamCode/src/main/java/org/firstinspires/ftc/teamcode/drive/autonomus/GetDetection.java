@@ -16,10 +16,15 @@ public class GetDetection {
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
     public int caz = 2;
 
-    double fx = 202;
-    double fy = 226;
-    double cx = 137;
-    double cy = 183;
+//    double fx = 202;
+  //  double fy = 226;
+   // double cx = 137;
+   // double cy = 183;
+
+    double fx = 166;
+    double fy = 237;
+    double cx = 236;
+    double cy = 139;
 
     int LEFT = 11;
     int MIDDLE = 2;
