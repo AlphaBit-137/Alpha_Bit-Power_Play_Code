@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityCons
 import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityConstraint;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -15,23 +16,26 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Gyro_Save;
+import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Gyroscope;
 import org.firstinspires.ftc.teamcode.drive.structure.Arm;
 import org.firstinspires.ftc.teamcode.drive.structure.ServoClaw;
 import org.firstinspires.ftc.teamcode.drive.structure.Slider;
 
 
-
+@Autonomous
 public class Auto_Right extends LinearOpMode {
 
     ElapsedTime stimer = new ElapsedTime();
 
-    Gyro_Save gr = new Gyro_Save();
+    Gyroscope gyro = new Gyroscope();
 
     Arm arm = new Arm();
     Slider lift = new Slider();
     ServoClaw sclaw = new ServoClaw();
     GetDetection camera = new GetDetection();
     SampleMecanumDrive drive;
+
+    Gyro_Save gr = new Gyro_Save();
 
     int caz = 1;
 
@@ -51,7 +55,7 @@ public class Auto_Right extends LinearOpMode {
     double arm_ref = 410;
     double servo_position = 0.53;
 
-    Pose2d startPose = new Pose2d( -35.5, -56, Math.toRadians(90));
+    Pose2d startPose = new Pose2d( -35.163856131106684, -61.63587957569113, Math.toRadians(180-89.94482209000643));
 
 
     /**
@@ -62,18 +66,18 @@ public class Auto_Right extends LinearOpMode {
 
     //  Pose2d case1 = new Pose2d(14.442408343868342,-10.603328049212077, Math.toRadians( 178.2355014527972));
 
-    Pose2d case1 = new Pose2d(-13.442408343868342,-12.603328049212077, Math.toRadians( 180-178.2355014527972));
+    Pose2d case3 = new Pose2d(-13.442408343868342,-12.603328049212077, Math.toRadians( 180-178.2355014527972));
 
-    Pose2d case2 = new Pose2d(-33.30768651317242,-12.541090024383394,Math.toRadians(182.30987321724987-180));
+    Pose2d case2 = new Pose2d(-34.30768651317242,-12.541090024383394,Math.toRadians( 182.30987321724987-180));
 
-    Pose2d case3 = new Pose2d(-59.10302904448052,-10.39709841950815,Math.toRadians(185.2383304842712-180));
+    Pose2d case1 = new Pose2d(-59.10302904448052,-10.39709841950815,Math.toRadians(185.2383304842712-1180));
 
     TrajectorySequence case_1,case_2,case_3;
 
     Vector2d Park1, Park2, Park3;
 
     Vector2d line = new Vector2d( -36.86593279210669,-24.608077437197178);
-    Vector2d poleFirst = new Vector2d(-23.497146082134117,-12.039688813835287);
+    Vector2d poleFirst = new Vector2d(-23.797146082134117,-12.639688813835287);
     TrajectorySequence traj;
 
 
@@ -113,6 +117,9 @@ public class Auto_Right extends LinearOpMode {
         lift.init(hardwareMap,Null);
         arm.init(hardwareMap,Null);
         camera.initCamera(hardwareMap);
+        gyro.Init(hardwareMap);
+
+        sclaw.centrationServo.setPosition(0);
 
         drive = new SampleMecanumDrive(hardwareMap);
 
@@ -130,18 +137,18 @@ public class Auto_Right extends LinearOpMode {
         {
             if(i == 0)
             {
-                angleAdd=0;
+                angleAdd -= 7;
 
-                x_add -= 1.3;
+                x_add += 1.3;
 
-                y_add += 1.5;
+                y_add += 1;
 
-                stack_x_add = -0.8;
+                stack_x_add = 1;
 
                 stack_angle_add = 0;
 
                 // angleAdd += 10;
-                angleAdd -= 7;
+                angleAdd += 10;
 
 
                 //cresc x scad y
@@ -149,24 +156,23 @@ public class Auto_Right extends LinearOpMode {
                 //    x_add += 0.5; y_add -= 0.5; angleAdd += 1.2; stack_x_add +=1;
                 //  x_add += 0.3; y_add -= 0.4; angleAdd += 1; stack_x_add +=0.8;
                 //   x_add += 0.3; y_add -= 0.4; angleAdd += 1; stack_x_add +=0.8; y_pole_add -= 0;
-                 y_add -= 1.5 ;  stack_angle_add -= 1;
+                x_add += 1;  y_pole_add -= 0.5; stack_angle_add -= 1;
                 //   x_add += 0.8; y_add -= 1.5 ; angleAdd += 3; y_pole_add -= 0.45; stack_angle_add -= 1;
 
                 if(i < 2)
                 {
-                    stack_x_add -=0.2;
-                }else stack_x_add -= 0.1;
+                    stack_x_add +=0.2;
+                }else stack_x_add += 0.1;
 
                 if(i == 2)
                 {
-                    angleAdd -=3;
-                    x_add -= 1.3;
-                    y_pole_add += 0.4;
-                }else {
-                    x_add -= 1;
-                    y_pole_add += 0.5;
-                    angleAdd -= 2.1;
-                }
+                    angleAdd -= 1.2;
+                }else angleAdd -= 2;
+
+                if(i == 2)
+                {
+                    y_add -= 2.3;
+                }else y_add -=1.8;
 
             }
 
@@ -178,7 +184,7 @@ public class Auto_Right extends LinearOpMode {
             }else coords_stack[i] = new Pose2d(-50.67516145341139 - 0.3 + stack_x_add, -13.009087565956906 + y_add, Math.toRadians(stack_angle_add));
 
             //  coords_pole[i] =  new Pose2d(35.27549268087416 + x_add,-12.547379192844328 + y_add,Math.toRadians(125.08902579940354+angleAdd));
-            coords_pole[i] =  new Pose2d(-34.27549268087416 + x_add,-13.547379192844328 + y_pole_add,Math.toRadians(180-125.08902579940354+angleAdd));
+            coords_pole[i] =  new Pose2d(-34.27549268087416 + x_add,-13.547379192844328 + y_pole_add,Math.toRadians(180-125.08902579940354 + angleAdd));
 
             if(i == 0)
             {
@@ -230,13 +236,14 @@ public class Auto_Right extends LinearOpMode {
                 .lineToLinearHeading(case3)
                 .build();
 
-        sclaw.startPos();
+
+        sclaw.centrationServo.setPosition(0);
         sclaw.Closed();
 
 
         PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
         PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
-        PhotonCore.experimental.setMaximumParallelCommands(8);
+        PhotonCore.experimental.setMaximumParallelCommands(4);
         PhotonCore.enable();
 
         while(!opModeIsActive())
@@ -261,6 +268,8 @@ public class Auto_Right extends LinearOpMode {
         while(!isStopRequested() && opModeIsActive())
         {
 
+            gyro.updateOrientation();
+
             switch (paths) {
                 case FirstCone:
 
@@ -271,9 +280,9 @@ public class Auto_Right extends LinearOpMode {
 
                     if (reference_timer.seconds() > 0.5){
                         sclaw.centrationServo.setPosition(0.43);
-                        sclaw.rotationServo.setPosition(0.73);
-                        lift.setReference(700);
-                        arm.setReference(1850);
+                        sclaw.rotationServo.setPosition(0.65);
+                        lift.setReference(670);
+                        arm.setReference(1870);
                     }
 
                     if(!drive.isBusy())
@@ -306,6 +315,7 @@ public class Auto_Right extends LinearOpMode {
 
                         sclaw.startPos();
                         sclaw.centrationServo.setPosition(servo_position);
+                        //  sclaw.centrationServo.setPosition(0.53);
 
                         /**
                          lift.setReference(320);
@@ -319,6 +329,7 @@ public class Auto_Right extends LinearOpMode {
 
                     if(!drive.isBusy())
                     {
+
                         sclaw.Closed();
                         lift.setReference(750);
 
@@ -327,14 +338,14 @@ public class Auto_Right extends LinearOpMode {
                         sliderRun();
                         sleep(500);
                         sclaw.conePose();
-                        sclaw.centrationServo.setPosition(0.65);
+                        sclaw.centrationServo.setPosition(0.6);
 
                         drive.followTrajectorySequenceAsync(pole_traj[j]);
 
 
                         j++;
 
-                        slider_ref -= 23;
+                        slider_ref -= 15;
                         arm_ref -= 10;
                         servo_position -= 0.01;
 
@@ -380,8 +391,7 @@ public class Auto_Right extends LinearOpMode {
                             arm.setReference(0);
                             sclaw.Open();
                             // sclaw.stackPose();
-                            sclaw.pickedUpCone();
-                            sclaw.stackPose();
+                            sclaw.centrationServo.setPosition(0);
 
                             if(caz == 1) {
                                 drive.followTrajectorySequenceAsync(caseOne[i - 1]);
@@ -435,6 +445,7 @@ public class Auto_Right extends LinearOpMode {
 
             telemetry.update();
 
+            Gyro_Save.Gyro_heading = gyro.getHeading();
 
             PhotonCore.CONTROL_HUB.clearBulkCache();
             PhotonCore.EXPANSION_HUB.clearBulkCache();

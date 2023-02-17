@@ -76,7 +76,7 @@ public class Auto_lEFT extends LinearOpMode {
     Vector2d Park1, Park2, Park3;
 
     Vector2d line = new Vector2d( 36.86593279210669,-24.608077437197178);
-    Vector2d poleFirst = new Vector2d(23.797146082134117,-11.339688813835287);
+    Vector2d poleFirst = new Vector2d(23.797146082134117,-11.639688813835287);
     TrajectorySequence traj;
 
 
@@ -136,13 +136,13 @@ public class Auto_lEFT extends LinearOpMode {
         {
             if(i == 0)
             {
-                angleAdd=0;
+                angleAdd = -1;
 
                 x_add += 1.3;
 
-                y_add += 2;
+                y_add -= 1;
 
-                stack_x_add = 2;
+                stack_x_add = 1;
 
                 stack_angle_add = 0;
 
@@ -155,13 +155,18 @@ public class Auto_lEFT extends LinearOpMode {
                 //    x_add += 0.5; y_add -= 0.5; angleAdd += 1.2; stack_x_add +=1;
                 //  x_add += 0.3; y_add -= 0.4; angleAdd += 1; stack_x_add +=0.8;
                 //   x_add += 0.3; y_add -= 0.4; angleAdd += 1; stack_x_add +=0.8; y_pole_add -= 0;
-                x_add += 1;  angleAdd += 3; y_pole_add -= 0.5; stack_angle_add -= 1;
+                x_add += 1;  y_pole_add -= 0.5; stack_angle_add -= 1;
                 //   x_add += 0.8; y_add -= 1.5 ; angleAdd += 3; y_pole_add -= 0.45; stack_angle_add -= 1;
 
                 if(i < 2)
                 {
                     stack_x_add +=0.2;
                 }else stack_x_add += 0.1;
+
+                if(i == 2)
+                {
+                    angleAdd += 1.2;
+                }else angleAdd += 2;
 
                 if(i == 2)
                 {
@@ -274,9 +279,9 @@ public class Auto_lEFT extends LinearOpMode {
 
                     if (reference_timer.seconds() > 0.5){
                         sclaw.centrationServo.setPosition(0.43);
-                        sclaw.rotationServo.setPosition(0.7);
-                        lift.setReference(700);
-                        arm.setReference(1850);
+                        sclaw.rotationServo.setPosition(0.65);
+                        lift.setReference(670);
+                        arm.setReference(1875);
                     }
 
                     if(!drive.isBusy())
@@ -332,7 +337,7 @@ public class Auto_lEFT extends LinearOpMode {
                         sliderRun();
                         sleep(500);
                         sclaw.conePose();
-                        sclaw.centrationServo.setPosition(0.5);
+                        sclaw.centrationServo.setPosition(0.6);
 
                         drive.followTrajectorySequenceAsync(pole_traj[j]);
 
