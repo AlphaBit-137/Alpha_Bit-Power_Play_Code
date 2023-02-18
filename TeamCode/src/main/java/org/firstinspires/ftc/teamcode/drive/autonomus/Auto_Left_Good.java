@@ -141,7 +141,7 @@ public class Auto_Left_Good extends LinearOpMode {
 
                 x_add += 1.3;
 
-                y_add -= 1;
+                y_add -= 0.5;
 
                 stack_x_add = 1;
 
@@ -161,8 +161,8 @@ public class Auto_Left_Good extends LinearOpMode {
 
                 if(i < 2)
                 {
-                    stack_x_add +=0.2;
-                }else stack_x_add += 0.1;
+                    stack_x_add +=0.5;
+                }else stack_x_add += 0.4;
 
                 if(i == 2)
                 {
@@ -171,8 +171,8 @@ public class Auto_Left_Good extends LinearOpMode {
 
                 if(i == 2)
                 {
-                    y_add -= 2.3;
-                }else y_add -=1.8;
+                    y_add -= 1.3;
+                }else y_add -=1;
 
             }
 
@@ -282,7 +282,7 @@ public class Auto_Left_Good extends LinearOpMode {
                         sclaw.centrationServo.setPosition(0.43);
                         sclaw.rotationServo.setPosition(0.65);
                         lift.setReference(650);
-                        arm.setReference(1846);
+                        arm.setReference(1845);
                     }
 
                     if(!drive.isBusy())
