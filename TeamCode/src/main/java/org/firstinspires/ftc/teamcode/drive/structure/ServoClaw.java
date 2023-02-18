@@ -21,16 +21,21 @@ public class ServoClaw {
     Gamepad gamepad;
 
 
-    public void init(HardwareMap ahwMap, Gamepad gamepad) {
+    public void init(HardwareMap ahwMap, Gamepad gamepad,boolean isAuto) {
         this.gamepad = gamepad;
         servo1 = ahwMap.get(Servo.class, "Servo1");
         cdetect.init(ahwMap);
-        Open();
+        
+            Open();
+
+
         timer.reset();
         centrationServo = ahwMap.get(Servo.class, "CE_Servo");
         rotationServo = ahwMap.get(Servo.class, "RO_Servo");
 
-        startPos();
+        if (isAuto) {
+            startPos();
+    }
 
     }
 

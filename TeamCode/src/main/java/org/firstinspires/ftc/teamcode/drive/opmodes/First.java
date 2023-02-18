@@ -42,7 +42,7 @@ public class First extends LinearOpMode {
 
         slider.init(hardwareMap,gamepad1);
 
-        claw.init(hardwareMap,gamepad1);
+        claw.init(hardwareMap,gamepad1,false);
 
 
 

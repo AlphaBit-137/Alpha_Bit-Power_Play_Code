@@ -69,7 +69,7 @@ public class Auto_lEFT extends LinearOpMode {
 
     Pose2d case2 = new Pose2d(34.30768651317242,-12.541090024383394,Math.toRadians( 182.30987321724987));
 
-    Pose2d case3 = new Pose2d(59.10302904448052,-10.39709841950815,Math.toRadians(185.2383304842712));
+    Pose2d case3 = new Pose2d(59.10302904448052,-11.39709841950815,Math.toRadians(185.2383304842712));
 
     TrajectorySequence case_1,case_2,case_3;
 
@@ -112,7 +112,7 @@ public class Auto_lEFT extends LinearOpMode {
 
         dashboard.setTelemetryTransmissionInterval(25);
 
-        sclaw.init(hardwareMap,Null);
+        sclaw.init(hardwareMap,Null,true);
         lift.init(hardwareMap,Null);
         arm.init(hardwareMap,Null);
         camera.initCamera(hardwareMap);
@@ -144,10 +144,10 @@ public class Auto_lEFT extends LinearOpMode {
 
                 stack_x_add = 1;
 
-                stack_angle_add = 0;
+                stack_angle_add -= 1.3;
 
                 // angleAdd += 10;
-                angleAdd += 10;
+                angleAdd += 7.5;
 
 
                 //cresc x scad y
@@ -280,8 +280,8 @@ public class Auto_lEFT extends LinearOpMode {
                     if (reference_timer.seconds() > 0.5){
                         sclaw.centrationServo.setPosition(0.43);
                         sclaw.rotationServo.setPosition(0.65);
-                        lift.setReference(670);
-                        arm.setReference(1875);
+                        lift.setReference(650);
+                        arm.setReference(1862);
                     }
 
                     if(!drive.isBusy())
@@ -313,8 +313,8 @@ public class Auto_lEFT extends LinearOpMode {
                     {
 
                         sclaw.startPos();
-                        sclaw.centrationServo.setPosition(servo_position);
-                      //  sclaw.centrationServo.setPosition(0.53);
+                        //sclaw.centrationServo.setPosition(servo_position);
+                        sclaw.centrationServo.setPosition(0.51);
 
                         /**
                          lift.setReference(320);
@@ -368,7 +368,7 @@ public class Auto_lEFT extends LinearOpMode {
                     }
                     if(reference_timer.seconds() > 0.2)
                     {
-                        arm.setReference(2200);
+                        arm.setReference(2150);
                     }
 
                     if(!drive.isBusy()) {
@@ -390,6 +390,7 @@ public class Auto_lEFT extends LinearOpMode {
                             arm.setReference(0);
                             sclaw.Open();
                             // sclaw.stackPose();
+                            sclaw.stackPose();
                           sclaw.centrationServo.setPosition(0);
 
                             if(caz == 1) {

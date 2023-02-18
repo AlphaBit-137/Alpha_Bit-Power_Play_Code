@@ -98,7 +98,7 @@ public class Auto_Test_Arm extends LinearOpMode {
 
         dashboard.setTelemetryTransmissionInterval(25);
 
-        sclaw.init(hardwareMap,Null);
+        sclaw.init(hardwareMap,Null,true);
         lift.init(hardwareMap,Null);
         arm.init(hardwareMap,Null);
         camera.initCamera(hardwareMap);

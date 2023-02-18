@@ -8,7 +8,6 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityCons
 import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityConstraint;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -22,7 +21,7 @@ import org.firstinspires.ftc.teamcode.drive.structure.ServoClaw;
 import org.firstinspires.ftc.teamcode.drive.structure.Slider;
 
 
-@Autonomous
+
 public class Auto_Right extends LinearOpMode {
 
     ElapsedTime stimer = new ElapsedTime();
@@ -113,7 +112,7 @@ public class Auto_Right extends LinearOpMode {
 
         dashboard.setTelemetryTransmissionInterval(25);
 
-        sclaw.init(hardwareMap,Null);
+        sclaw.init(hardwareMap,Null,true);
         lift.init(hardwareMap,Null);
         arm.init(hardwareMap,Null);
         camera.initCamera(hardwareMap);

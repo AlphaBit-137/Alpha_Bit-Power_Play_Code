@@ -111,7 +111,7 @@ public class Auto_old_right extends LinearOpMode {
 
         dashboard.setTelemetryTransmissionInterval(25);
 
-        sclaw.init(hardwareMap,Null);
+        sclaw.init(hardwareMap,Null,true);
         lift.init(hardwareMap,Null);
         arm.init(hardwareMap,Null);
         camera.initCamera(hardwareMap);
