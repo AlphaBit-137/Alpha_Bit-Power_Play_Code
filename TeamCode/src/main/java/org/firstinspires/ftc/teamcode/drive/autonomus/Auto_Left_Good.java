@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityCons
 import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityConstraint;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -21,7 +22,9 @@ import org.firstinspires.ftc.teamcode.drive.structure.ServoClaw;
 import org.firstinspires.ftc.teamcode.drive.structure.Slider;
 
 
-public class Auto_lEFT extends LinearOpMode {
+@Autonomous
+public class Auto_Left_Good extends LinearOpMode {
+
     ElapsedTime stimer = new ElapsedTime();
 
     Gyroscope gyro = new Gyroscope();
@@ -279,12 +282,12 @@ public class Auto_lEFT extends LinearOpMode {
                         sclaw.centrationServo.setPosition(0.43);
                         sclaw.rotationServo.setPosition(0.65);
                         lift.setReference(650);
-                        arm.setReference(1862);
+                        arm.setReference(1846);
                     }
 
                     if(!drive.isBusy())
                     {
-                        sleep(300);
+                        sleep(500);
                         sclaw.Open();
                         sleep(100);
 
@@ -328,7 +331,7 @@ public class Auto_lEFT extends LinearOpMode {
                     {
 
                         sclaw.Closed();
-                          lift.setReference(750);
+                        lift.setReference(750);
 
                         sleep(500);
 
@@ -389,7 +392,7 @@ public class Auto_lEFT extends LinearOpMode {
                             sclaw.Open();
                             // sclaw.stackPose();
                             sclaw.stackPose();
-                          sclaw.centrationServo.setPosition(0);
+                            sclaw.centrationServo.setPosition(0);
 
                             if(caz == 1) {
                                 drive.followTrajectorySequenceAsync(caseOne[i - 1]);
@@ -460,4 +463,5 @@ public class Auto_lEFT extends LinearOpMode {
             lift.autoUpdate();
         }
     }
+
 }
