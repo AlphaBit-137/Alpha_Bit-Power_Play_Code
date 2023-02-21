@@ -31,7 +31,9 @@ public class MotionProfile {
 
         max_velocity = max_acceleration * acceleration_dt;
 
-       if(max_velocity == 0)max_velocity = 1;
+       if(max_velocity == 0){
+           max_velocity = 1;
+       }
 
         double deacceleration_dt;
         deacceleration_dt = acceleration_dt;
