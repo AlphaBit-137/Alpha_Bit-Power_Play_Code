@@ -156,13 +156,23 @@ public class Auto_Left_Good extends LinearOpMode {
                 //    x_add += 0.5; y_add -= 0.5; angleAdd += 1.2; stack_x_add +=1;
                 //  x_add += 0.3; y_add -= 0.4; angleAdd += 1; stack_x_add +=0.8;
                 //   x_add += 0.3; y_add -= 0.4; angleAdd += 1; stack_x_add +=0.8; y_pole_add -= 0;
-                x_add += 1;  y_pole_add -= 0.5; stack_angle_add -= 1;
+                  stack_angle_add -= 1;
                 //   x_add += 0.8; y_add -= 1.5 ; angleAdd += 3; y_pole_add -= 0.45; stack_angle_add -= 1;
+
+                if(i == 2)
+                {
+                    y_pole_add -= 0.7;
+                }else y_pole_add-= 0.5;
 
                 if(i < 2)
                 {
                     stack_x_add +=0.5;
                 }else stack_x_add += 0.4;
+
+                if(i==2)
+                {
+                    x_add += 0.5;
+                }else x_add += 1;
 
                 if(i == 2)
                 {
@@ -180,11 +190,11 @@ public class Auto_Left_Good extends LinearOpMode {
             //  coords_stack[i] = new Pose2d(53.47516145341139-0.3 + stack_x_add,-13.069087565956906 + y_add,3.176351446923455);
 
             if(i < 2) {
-                coords_stack[i] = new Pose2d(51.57516145341139 - 0.3 + stack_x_add, -13.009087565956906 + y_add, Math.toRadians(180 + stack_angle_add));
+                coords_stack[i] = new Pose2d(51.57516145341139  - 0.3 + stack_x_add, -13.009087565956906 + y_add, Math.toRadians(180 + stack_angle_add));
             }else coords_stack[i] = new Pose2d(50.67516145341139 - 0.3 + stack_x_add, -13.009087565956906 + y_add, Math.toRadians(180 + stack_angle_add));
 
             //  coords_pole[i] =  new Pose2d(35.27549268087416 + x_add,-12.547379192844328 + y_add,Math.toRadians(125.08902579940354+angleAdd));
-            coords_pole[i] =  new Pose2d(34.27549268087416 + x_add,-13.547379192844328 + y_pole_add,Math.toRadians(125.08902579940354+angleAdd));
+            coords_pole[i] =  new Pose2d(34.27549268087416-0.5 + x_add,-13.547379192844328+0.5 + y_pole_add,Math.toRadians(125.08902579940354+angleAdd));
 
             if(i == 0)
             {

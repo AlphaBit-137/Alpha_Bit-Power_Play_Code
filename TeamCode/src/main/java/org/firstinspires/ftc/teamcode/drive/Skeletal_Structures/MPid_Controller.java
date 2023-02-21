@@ -60,7 +60,6 @@ public class MPid_Controller {
 
         LastError = InstantError;
         LastReference = reference;
-        timer.reset();
 
         double outpput = (InstantError * Kp) + (derivative * Kd) + (IntegralSum * Ki);
 
@@ -93,6 +92,7 @@ public class MPid_Controller {
             IsStarted = true;
         }
         double time = timer.seconds();
+        timer.reset();
         return time;
     }
 

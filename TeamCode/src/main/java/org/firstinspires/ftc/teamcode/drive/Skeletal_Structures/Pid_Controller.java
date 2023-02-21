@@ -56,7 +56,6 @@ public class Pid_Controller {
 
         Last_Reference = reference;
 
-        timer.reset();
 
         return outpput;
     }
@@ -68,6 +67,7 @@ public class Pid_Controller {
             timer.reset();
         }
         double time = timer.seconds();
+        timer.reset();
         return time;
     }
 
