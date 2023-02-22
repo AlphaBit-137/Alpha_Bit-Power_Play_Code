@@ -90,5 +90,17 @@ public class Gyroscope {
             firstForward = getForwardAngle();
         }
     }
+
+    public void updateFirstAngles() {
+        firstForward = getHeading();
+    }
+
+    public void updateFirstForward() {
+        firstLateral = getForwardAngle();
+    }
+
+    public void updateFirstLateral() {
+        firstForward = getForwardAngle();
+    }
 }
 
