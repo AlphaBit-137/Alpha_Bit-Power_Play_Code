@@ -10,19 +10,21 @@ import static org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants.kV;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.drive.DriveSignal;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.kinematics.Kinematics;
 import com.acmerobotics.roadrunner.profile.MotionProfile;
 import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
 import com.acmerobotics.roadrunner.profile.MotionState;
 import com.acmerobotics.roadrunner.util.NanoClock;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.RoadRunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.drive.structure.Arm;
 
 import java.util.Objects;
 
@@ -42,11 +44,9 @@ import java.util.Objects;
  * Pressing B/O (Xbox/PS4) will cede control back to the tuning process.
  */
 @Config
-@TeleOp
+@Autonomous(group = "drive")
 public class ManualFeedforwardTuner extends LinearOpMode {
     public static double DISTANCE = 72; // in
-
-    Arm arm = new Arm();
 
     private FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -75,6 +75,8 @@ public class ManualFeedforwardTuner extends LinearOpMode {
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
 
         drive = new SampleMecanumDrive(hardwareMap);
+
+        final VoltageSensor voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
         mode = Mode.TUNING_MODE;
 
@@ -107,7 +109,6 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
                     if (profileTime > activeProfile.duration()) {
                         // generate a new profile
-
                         movingForwards = !movingForwards;
                         activeProfile = generateProfile(movingForwards);
                         profileStart = clock.seconds();
@@ -116,7 +117,9 @@ public class ManualFeedforwardTuner extends LinearOpMode {
                     MotionState motionState = activeProfile.get(profileTime);
                     double targetPower = Kinematics.calculateMotorFeedforward(motionState.getV(), motionState.getA(), kV, kA, kStatic);
 
-                    drive.setDrivePower(new Pose2d(targetPower, 0, 0));
+                    final double NOMINAL_VOLTAGE = 12.0;
+                    final double voltage = voltageSensor.getVoltage();
+                    drive.setDrivePower(new Pose2d(NOMINAL_VOLTAGE / voltage * targetPower, 0, 0));
                     drive.updatePoseEstimate();
 
                     Pose2d poseVelo = Objects.requireNonNull(drive.getPoseVelocity(), "poseVelocity() must not be null. Ensure that the getWheelVelocities() method has been overridden in your localizer.");
@@ -145,10 +148,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
                     break;
             }
 
-            telemetry.addData("problem",drive.powr_problem);
-
             telemetry.update();
-            //arm.update();
         }
     }
 }
