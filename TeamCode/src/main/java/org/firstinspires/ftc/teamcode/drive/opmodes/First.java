@@ -5,11 +5,10 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Gyro_Save;
-import org.firstinspires.ftc.teamcode.drive.structure.Arm;
 import org.firstinspires.ftc.teamcode.drive.structure.Centric_Drive;
 import org.firstinspires.ftc.teamcode.drive.structure.Robot_Drive;
 import org.firstinspires.ftc.teamcode.drive.structure.ServoClaw;
+import org.firstinspires.ftc.teamcode.drive.structure.Servo_Arm;
 import org.firstinspires.ftc.teamcode.drive.structure.Slider;
 
 @TeleOp
@@ -20,7 +19,7 @@ public class First extends LinearOpMode {
     Robot_Drive RD = new Robot_Drive();
     ServoClaw claw = new ServoClaw();
     Slider slider = new Slider();
-    Arm arm = new Arm();
+    Servo_Arm sarm = new Servo_Arm();
 
     double loopTime;
 
@@ -36,15 +35,13 @@ public class First extends LinearOpMode {
 
         CDrive.Init(hardwareMap,gamepad1);
 
-        arm.init(hardwareMap,gamepad1);
-
         RD.Init(hardwareMap,gamepad1);
 
         slider.init(hardwareMap,gamepad1);
 
         claw.init(hardwareMap,gamepad1,false);
 
-
+        sarm.init(hardwareMap,gamepad1);
 
         PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
         PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
@@ -67,24 +64,10 @@ public class First extends LinearOpMode {
 
             slider.update();
             claw.run();
-            arm.update();
+            sarm.run();
 
             telemetry.addData("Slider",slider.GetSliderPosition());
             telemetry.addData("ClawS1",claw.servo1.getPosition());
-            telemetry.addData("arm",arm.getArmPos());
-            telemetry.addData("steady",slider.checkSteady());
-            telemetry.addData("armSteady",arm.checkSteady());
-            telemetry.addData("sliderPower",slider.getSliderPower());
-            telemetry.addData("armPower",arm.getArmPower());
-
-            telemetry.addData("Ref",slider.Reference);
-
-            telemetry.addData("slider ref",slider.Reference);
-            telemetry.addData("arm ref",arm.Reeference);
-
-            telemetry.addData("gyro's save", Gyro_Save.Gyro_heading);
-
-            telemetry.addData("red",claw.rr());
 
             double loopT = System.nanoTime();
 
