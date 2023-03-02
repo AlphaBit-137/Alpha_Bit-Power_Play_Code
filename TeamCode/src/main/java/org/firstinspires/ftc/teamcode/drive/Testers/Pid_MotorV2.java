@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Experminetal;
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.MPid_Controller;
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Pid_Controller;
 
@@ -22,7 +21,7 @@ public class Pid_MotorV2 extends LinearOpMode {
     Pid_Controller PD = new Pid_Controller(Kp,Ki,Kd);
 
     MPid_Controller mpid = new MPid_Controller(Kp,Kd,Ki,max_accel,max_vel);
-    Experminetal exp = new Experminetal(Kp,Kd,Ki,max_accel,max_vel);
+    //Experminetal exp = new Experminetal(Kp,Kd,Ki,max_accel,max_vel);
 
     private double LastError = 0;
     private double IntegralSum = 0;

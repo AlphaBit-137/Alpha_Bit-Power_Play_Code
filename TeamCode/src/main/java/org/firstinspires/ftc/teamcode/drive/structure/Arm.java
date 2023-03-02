@@ -56,7 +56,8 @@ public class Arm {
             setReference(ArmMotor.MotorCurrentPosition());
             SetPower(0.7);
         }else{
-            SetPidPower(Reeference);
+          //  SetPidPower(Reeference);
+            SetPower(0);
         }
 
         if(Arm_Gamepad.dpad_up)

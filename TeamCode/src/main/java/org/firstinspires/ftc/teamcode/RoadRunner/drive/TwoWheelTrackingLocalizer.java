@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.RoadRunner.drive;
 
 import androidx.annotation.NonNull;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.localization.TwoTrackingWheelLocalizer;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -13,24 +14,29 @@ import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Useful_Methods;
 import java.util.Arrays;
 import java.util.List;
 
+
+@Config
 public class  TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
 
     public static double TICKS_PER_REV = 8192;
-    public static double WHEEL_RADIUS = 0.885; // in
+    public static double WHEEL_RADIUS = 0.68897637795; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double PARALLEL_X =Useful_Methods.CmToInch(-12); // X is the up and down direction
-    public static double PARALLEL_Y = Useful_Methods.CmToInch(7.45); // Y is the strafe direction
+  /*  public static double PARALLEL_X = Useful_Methods.CmToInch(-1.7); // X is the up and down direction
+    public static double PARALLEL_Y = Useful_Methods.CmToInch(-9.6); // Y is the strafe direction
 
-    public static double PERPENDICULAR_X = Useful_Methods.CmToInch(11.9);
-    public static double PERPENDICULAR_Y = 0;
+    public static double PERPENDICULAR_X = Useful_Methods.CmToInch(-6.6);
+    public static double PERPENDICULAR_Y = Useful_Methods.CmToInch(-0.1);*/
 
-    public static double X_MULTIPLIER = 1.329405314745742; // Multiplier in the X direction
-    public static double Y_MULTIPLIER = 1.329405314745742; // Multiplier in the Y direction
+    public static double PARALLEL_X = Useful_Methods.CmToInch(1.7); // X is the up and down direction
+    public static double PARALLEL_Y = Useful_Methods.CmToInch(-9.6); // Y is the strafe direction
 
-    // Parallel/Perpendicular to the forward axis
-    // Parallel wheel is parallel to the forward axis
-    // Perpendicular is perpendicular to the forward axis
+    public static double PERPENDICULAR_X = Useful_Methods.CmToInch(6.6);
+    public static double PERPENDICULAR_Y = Useful_Methods.CmToInch(0.1);
+
+    public static double X_MULTIPLIER = 1; // Multiplier in the X direction
+    public static double Y_MULTIPLIER = 1; // Multiplier in the Y direction
+
     private Encoder parallelEncoder, perpendicularEncoder;
 
     private List<Integer> lastEncPositions, lastEncVels;
@@ -48,16 +54,26 @@ public class  TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
         lastEncPositions = lastTrackingEncPositions;
         lastEncVels = lastTrackingEncVels;
 
-        parallelEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Front_Left"));
-        perpendicularEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Front_Right"));
+        parallelEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Front_Right"));
+        perpendicularEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Front_Left"));
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
-        parallelEncoder.setDirection(Encoder.Direction.REVERSE);
-        perpendicularEncoder.setDirection(Encoder.Direction.REVERSE);
+       // perpendicularEncoder.setDirection(Encoder.Direction.REVERSE);
+      //  parallelEncoder.setDirection(Encoder.Direction.REVERSE);
     }
 
     public static double encoderTicksToInches(double ticks) {
         return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;
+    }
+
+    public double getParallelPosition()
+    {
+        return parallelEncoder.getCurrentPosition();
+    }
+
+    public double getPerpendicularPoition()
+    {
+        return perpendicularEncoder.getCurrentPosition();
     }
 
     @Override

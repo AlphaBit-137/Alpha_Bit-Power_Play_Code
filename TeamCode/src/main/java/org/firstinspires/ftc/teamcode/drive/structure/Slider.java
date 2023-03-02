@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive.structure;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -7,12 +8,17 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Motor_Skeleton;
 
+
+@Config
 public class Slider {
     public double Reference;
 
-    public static double Kp = 0.0085;
-    public static double Ki = 0.00002;
+    public static double Kp = 0.01;
+    public static double Ki = 0.00;
     public static double Kd = 0.0;
+
+    double max_vel = 2000;
+    double max_accel = 2000;
 
     double savedPower = 0;
     boolean firstTime = true;
@@ -23,16 +29,14 @@ public class Slider {
 
     ElapsedTime timer = new ElapsedTime();
 
-
     public DcMotorEx slider;
     public DcMotorEx slider2;
-
 
     Junctions current_junction = Junctions.Default;
 
     public enum Junctions {
 
-        High(1500),
+        High(-1300),
         Default(0);
 
         public int ThisPosition = 0;
@@ -56,25 +60,28 @@ public class Slider {
         sliderMotor2.init(ahwMap, "Slider2", false,false);
 
         sliderMotor.setPidCoefs(Kp,Kd,Ki);
+        sliderMotor2.setPidCoefs(Kp,Kd,Ki);
+
+        sliderMotor.setMaxAccelandVel(Kp,Kd,Ki,max_accel,max_vel);
     }
 
     public double GetSliderPosition() {
-        return sliderMotor.MotorCurrentPosition();
+        return sliderMotor2.MotorCurrentPosition();
     }
 
+    public double GetSliderPower(){return sliderMotor2.GetPower();}
 
     public void update() {
 
-
-        if (Slider_Gamepad.right_bumper) {
-
-            setReference(sliderMotor.MotorCurrentPosition());
+        if(Slider_Gamepad.right_bumper)
+        {
+            setReference(sliderMotor2.MotorCurrentPosition());
             SetSliderPower(1);
-        } else if (Slider_Gamepad.left_bumper) {
-
-            setReference(sliderMotor.MotorCurrentPosition());
+        }else if(Slider_Gamepad.left_bumper)
+        {
+            setReference(sliderMotor2.MotorCurrentPosition());
             SetSliderPower(-1);
-        }else{
+        }else {
             SetPidPower(Reference);
         }
 
@@ -104,14 +111,6 @@ public class Slider {
         lastPosition = sliderMotor.MotorCurrentPosition();
     }
 
-    public double getSlider2Power() {
-        return sliderMotor2.GetPower();
-    }
-
-    public double getSliderPower() {
-        return sliderMotor.GetPower();
-    }
-
     public int checker() {
         if (sliderMotor.MotorCurrentPosition() < 0) return 1;
         else return 0;
@@ -124,17 +123,17 @@ public class Slider {
             firstTime = false;
         }
 
-        if(!checkSteady())
-        {
-            savedPower = sliderMotor.getPidPower(current_Reference);
-        }
+//        if(!checkSteady())
 
-        sliderMotor.SetPower(savedPower);
-        sliderMotor2.SetPower(-savedPower);
+        savedPower = sliderMotor2.getPidPower(current_Reference);
+
+
+        sliderMotor.SetPower(-savedPower);
+        sliderMotor2.SetPower(savedPower);
     }
 
     public boolean checkSteady() {
-        if((lastPosition == sliderMotor.MotorCurrentPosition()) && timer.seconds() > 0.5) {
+        if((lastPosition == sliderMotor2.MotorCurrentPosition()) && timer.seconds() > 0.5) {
             return true;
         }
         else {
