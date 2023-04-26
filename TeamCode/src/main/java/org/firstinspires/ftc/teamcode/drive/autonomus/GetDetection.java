@@ -21,10 +21,10 @@ public class GetDetection {
    // double cx = 137;
    // double cy = 183;
 
-    double fx = 166;
-    double fy = 237;
-    double cx = 236;
-    double cy = 139;
+    double fx = 121;
+    double fy = 130;
+    double cx = 86;
+    double cy = 93;
 
     int LEFT = 11;
     int MIDDLE = 2;
@@ -44,7 +44,7 @@ public class GetDetection {
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                camera.startStreaming(320, 240, OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override

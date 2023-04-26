@@ -20,6 +20,8 @@ public class Slider {
     double max_vel = 2000;
     double max_accel = 2000;
 
+    double max_output = 0.55;
+
     double savedPower = 0;
     boolean firstTime = true;
 
@@ -36,7 +38,7 @@ public class Slider {
 
     public enum Junctions {
 
-        High(-1300),
+        High(-1500),
         Default(0);
 
         public int ThisPosition = 0;
@@ -73,17 +75,8 @@ public class Slider {
 
     public void update() {
 
-        if(Slider_Gamepad.right_bumper)
-        {
-            setReference(sliderMotor2.MotorCurrentPosition());
-            SetSliderPower(1);
-        }else if(Slider_Gamepad.left_bumper)
-        {
-            setReference(sliderMotor2.MotorCurrentPosition());
-            SetSliderPower(-1);
-        }else {
-            SetPidPower(Reference);
-        }
+
+        SetPidPower(Reference);
 
         if (Slider_Gamepad.dpad_up) {
             current_junction = Junctions.High;
@@ -123,13 +116,21 @@ public class Slider {
             firstTime = false;
         }
 
-//        if(!checkSteady())
-
         savedPower = sliderMotor2.getPidPower(current_Reference);
 
+       savedPower = addons(savedPower);
 
         sliderMotor.SetPower(-savedPower);
         sliderMotor2.SetPower(savedPower);
+    }
+
+    public double addons(double power)
+    {
+        if(power > max_output)power = max_output;
+        else if(power < -max_output)power = - max_output;
+
+
+        return power;
     }
 
     public boolean checkSteady() {

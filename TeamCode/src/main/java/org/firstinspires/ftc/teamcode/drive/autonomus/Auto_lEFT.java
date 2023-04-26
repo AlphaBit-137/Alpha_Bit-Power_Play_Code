@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive.autonomus;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -8,6 +9,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityCons
 import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityConstraint;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -19,7 +21,10 @@ import org.firstinspires.ftc.teamcode.drive.Skeletal_Structures.Gyroscope;
 import org.firstinspires.ftc.teamcode.drive.structure.Arm;
 import org.firstinspires.ftc.teamcode.drive.structure.ServoClaw;
 import org.firstinspires.ftc.teamcode.drive.structure.Slider;
+import org.opencv.imgproc.Imgproc;
 
+@Autonomous
+@Config
 
 public class Auto_lEFT extends LinearOpMode {
     ElapsedTime stimer = new ElapsedTime();
@@ -52,7 +57,7 @@ public class Auto_lEFT extends LinearOpMode {
     double arm_ref = 410;
     double servo_position = 0.53;
 
-    Pose2d startPose = new Pose2d( 35.163856131106684, -61.63587957569113, Math.toRadians(89.94482209000643));
+    Pose2d startPose = new Pose2d( -35, -61, Math.toRadians(90));
 
 
     /**
@@ -63,18 +68,23 @@ public class Auto_lEFT extends LinearOpMode {
 
     //  Pose2d case1 = new Pose2d(14.442408343868342,-10.603328049212077, Math.toRadians( 178.2355014527972));
 
-    Pose2d case1 = new Pose2d(13.442408343868342,-12.603328049212077, Math.toRadians( 178.2355014527972));
+    Pose2d case1 = new Pose2d(-56.982434848,-17.575238+0.5, Math.toRadians( 178.2355014527972));
 
-    Pose2d case2 = new Pose2d(34.30768651317242,-12.541090024383394,Math.toRadians( 182.30987321724987));
+    Pose2d case2 = new Pose2d(-32.375723,-14.84677,Math.toRadians( 182.30987321724987));
 
-    Pose2d case3 = new Pose2d(59.10302904448052,-11.39709841950815,Math.toRadians(185.2383304842712));
+    Pose2d case3 = new Pose2d(-9.177935,-14.28739,Math.toRadians(185.2383304842712));
 
     TrajectorySequence case_1,case_2,case_3;
 
     Vector2d Park1, Park2, Park3;
 
-    Vector2d line = new Vector2d( 36.86593279210669,-24.608077437197178);
-    Vector2d poleFirst = new Vector2d(23.797146082134117,-11.639688813835287);
+/*    Vector2d line = new Vector2d( 36.86593279210669,-24.608077437197178);
+    Vector2d poleFirst = new Vector2d(23.797146082134117,-11.639688813835287);*/
+
+    Vector2d polePose = new Vector2d(-29.879331291204394,-7.720607292638253);
+    Vector2d polePose1 = new Vector2d(-35,-20);
+
+
     TrajectorySequence traj;
 
 
@@ -111,12 +121,13 @@ public class Auto_lEFT extends LinearOpMode {
         dashboard.setTelemetryTransmissionInterval(25);
 
         sclaw.init(hardwareMap,Null,true);
+        sleep(1000);
+        sclaw.Closed();
         lift.init(hardwareMap,Null);
         arm.init(hardwareMap,Null);
         camera.initCamera(hardwareMap);
         gyro.Init(hardwareMap);
 
-        sclaw.centrationServo.setPosition(0);
 
         drive = new SampleMecanumDrive(hardwareMap);
 
@@ -124,9 +135,14 @@ public class Auto_lEFT extends LinearOpMode {
 
         TrajectoryVelocityConstraint vc  = new TranslationalVelocityConstraint(60);
 
-        traj = drive.trajectorySequenceBuilder(startPose)
+       /* traj = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(line)
                 .splineToConstantHeading(poleFirst,Math.toRadians(92.92843015970804))
+                .build();*/
+
+        traj = drive.trajectorySequenceBuilder(startPose)
+                .lineTo(polePose1)
+                .splineTo(polePose, Math.toRadians(45.61800932884264-5))
                 .build();
 
 
@@ -221,21 +237,21 @@ public class Auto_lEFT extends LinearOpMode {
 
         }
 
-        case_1 = drive.trajectorySequenceBuilder(pole_traj[0].end())
+        case_1 = drive.trajectorySequenceBuilder(traj.end())
                 .lineToLinearHeading(case1)
                 .build();
 
-        case_2 = drive.trajectorySequenceBuilder(pole_traj[0].end())
+        case_2 = drive.trajectorySequenceBuilder(traj.end())
                 .lineToLinearHeading(case2)
                 .build();
 
-        case_3 = drive.trajectorySequenceBuilder(pole_traj[0].end())
+        case_3 = drive.trajectorySequenceBuilder(traj.end())
                 .lineToLinearHeading(case3)
                 .build();
 
 
-        sclaw.centrationServo.setPosition(0);
-        sclaw.Closed();
+      //  sclaw.centrationServo.setPosition(0);
+       // sclaw.Closed();
 
 
         PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
@@ -248,6 +264,7 @@ public class Auto_lEFT extends LinearOpMode {
             camera.Detect();
             caz = camera.getCase();
             packet.put("case",caz);
+            dashboard.startCameraStream(camera.camera,60);
             telemetry.addData("case",caz);
             dashboard.sendTelemetryPacket(packet);
             telemetry.update();
@@ -276,24 +293,36 @@ public class Auto_lEFT extends LinearOpMode {
                     }
 
                     if (reference_timer.seconds() > 0.5){
-                        sclaw.centrationServo.setPosition(0.43);
-                        sclaw.rotationServo.setPosition(0.65);
-                        lift.setReference(650);
-                        arm.setReference(1862);
+                    //   arm.setReference(1850);
+                      // lift.setReference(-1500);
+                       //sclaw.conePose();
                     }
 
                     if(!drive.isBusy())
                     {
-                        sleep(300);
+
+
+                     //   drive.followTrajectorySequenceAsync(stack_traj[i]);
+
+                        //De testa cu case 1,2,3
+                        sclaw.startPos();
                         sclaw.Open();
-                        sleep(100);
-
-
-                        drive.followTrajectorySequenceAsync(stack_traj[i]);
                         i++;
                         rise_boolean = !rise_boolean;
-                        paths = Paths.Stack_second_cone;
+                     //   paths = Paths.Stack_second_cone;
 
+                        arm.setReference(1750);
+                        lift.setReference(0);
+
+                        if(caz==3) {
+                            drive.followTrajectorySequenceAsync(case_3);
+                        }else if(caz == 2)
+                        {
+                            drive.followTrajectorySequenceAsync(case_2);
+                        }else drive.followTrajectorySequenceAsync(case_1);
+
+
+                        paths = Paths.idle;
 
 
                     }
@@ -311,13 +340,7 @@ public class Auto_lEFT extends LinearOpMode {
                     {
 
                         sclaw.startPos();
-                        //sclaw.centrationServo.setPosition(servo_position);
-                        sclaw.centrationServo.setPosition(0.51);
 
-                        /**
-                         lift.setReference(320);
-                         arm.setReference(280);
-                         */
 
                         lift.setReference(slider_ref);
                         arm.setReference(arm_ref);
@@ -327,15 +350,6 @@ public class Auto_lEFT extends LinearOpMode {
                     if(!drive.isBusy())
                     {
 
-                        sclaw.Closed();
-                          lift.setReference(750);
-
-                        sleep(500);
-
-                        sliderRun();
-                        sleep(500);
-                        sclaw.conePose();
-                        sclaw.centrationServo.setPosition(0.6);
 
                         drive.followTrajectorySequenceAsync(pole_traj[j]);
 
@@ -344,7 +358,6 @@ public class Auto_lEFT extends LinearOpMode {
 
                         slider_ref -= 15;
                         arm_ref -= 10;
-                        servo_position -= 0.01;
 
                         rise_boolean = !rise_boolean;
                         reference_timer.reset();
@@ -380,16 +393,16 @@ public class Auto_lEFT extends LinearOpMode {
                         if(Loops > 0) {
                             drive.followTrajectorySequenceAsync(stack_traj[i]);
                             i++;
-                            armAdd-=50;
-                            slider_ref -= 110;
+                         //   armAdd-=50;
+                           // slider_ref -= 110;
                             paths = Paths.Stack_second_cone;
                         }else{
                             lift.setReference(0);
                             arm.setReference(0);
-                            sclaw.Open();
+                            //sclaw.Open();
                             // sclaw.stackPose();
-                            sclaw.stackPose();
-                          sclaw.centrationServo.setPosition(0);
+                            //sclaw.stackPose();
+                          //sclaw.centrationServo.setPosition(0);
 
                             if(caz == 1) {
                                 drive.followTrajectorySequenceAsync(caseOne[i - 1]);
@@ -409,9 +422,9 @@ public class Auto_lEFT extends LinearOpMode {
 
                 case Park:
 
-                    sclaw.Open();
-                    sclaw.stackPose();
-                    arm.setReference(0);
+                    //sclaw.Open();
+                    //sclaw.stackPose();
+                    arm.setReference(1568);
                     lift.setReference(0);
 
                     if(caz==1) {

@@ -36,7 +36,7 @@ public class Motor_Skeleton {
 
         ThisMotor = ahwMap.get(DcMotorEx.class, MotorName);
 
-        ThisMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+      //  ThisMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         vs.init(ahwMap,normalizer);
 

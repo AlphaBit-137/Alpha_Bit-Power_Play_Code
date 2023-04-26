@@ -26,44 +26,44 @@ public class ServoClaw {
         servo1 = ahwMap.get(Servo.class, "Servo1");
         // cdetect.init(ahwMap);
         
-            Open();
-
-
+        Open();
         timer.reset();
         centrationServo = ahwMap.get(Servo.class, "CE_Servo");
         rotationServo = ahwMap.get(Servo.class, "RO_Servo");
 
-        if (isAuto) {
-            startPos();
-    }
-        rotationServo.setPosition(0);
-        centrationServo.setPosition(0);
 
+         if(!isAuto) {
+             startPos();
+         }
+
+         if(isAuto) {
+             centrationServo.setPosition(0.6);
+            //servo1.setPosition(0.2);
+         }
     }
 
     public void pickedUpCone()
     {
-        centrationServo.setPosition(0.26);
+        centrationServo.setPosition(0.36);
     }
 
     public void startPos()
     {
-        rotationServo.setPosition(0.01);
-        centrationServo.setPosition(0.35);
+        rotationServo.setPosition(1);
+        centrationServo.setPosition(0.25);
     }
 
     public void lowPose()
     {
-        rotationServo.setPosition(0.02);
+        rotationServo.setPosition(1-0.02);
         centrationServo.setPosition(0.7);
     }
 
 
-
     public  void conePose()
     {
-        rotationServo.setPosition(0.69);
-        centrationServo.setPosition(0.7);
+        rotationServo.setPosition(0);
+        centrationServo.setPosition(0);
     }
 
     public void dropped()
@@ -73,7 +73,8 @@ public class ServoClaw {
     }
 
     public void Open(){
-        servo1.setPosition(0); open = true;
+        servo1.setPosition(0.5);
+        open = true;
     }
 
     public void dClaw()
@@ -82,14 +83,14 @@ public class ServoClaw {
     }
 
     public void Closed(){
-        servo1.setPosition(0.5);
+        servo1.setPosition(0);
         open = false;
         close_time.reset();
     }
 
     public void run()
     {
-    /*    if(open) {
+      /*  if(open) {
 
             cdetect.update();
 
@@ -113,43 +114,36 @@ public class ServoClaw {
             conePose();
         }
 
-        if(gamepad.dpad_down)
-        {
-            if(toggle) {
-                startPos();
-            }
-
-            toggle = false;
-        }else toggle = true;
+    if(gamepad.dpad_down)
+    {
+        startPos();
+    }
 
         if(gamepad.dpad_left)
         {
             lowPose();
         }
 
-        if(gamepad.b)
-        {
-            timer.reset();
-            Open();
-        }
+     if(gamepad.b)
+     {
+         if(toggle)
+         {
+             if(open)
+             {
+                 Closed();
+             }else Open();
+         }
+         toggle = false;
+     }else toggle = true;
 
-        if(gamepad.x)
-        {
-            //dClaw();
-            //dropped();
-        }
 
-        if(gamepad.a)
-        {
-            Closed();
-        }
     }
 
 
     public void stackPose()
     {
-        rotationServo.setPosition(0.01);
-        centrationServo.setPosition(0.5);
+        rotationServo.setPosition(0.63);
+        centrationServo.setPosition(0.3);
     }
 
     public int returncolor()

@@ -22,7 +22,7 @@ public class Arm {
     double max_accel = 1500;
     double max_vel = 1500;
 
-    double max_output = 0.85;
+    double max_output = 0.55;
 
     public double Reeference = 0;
 
@@ -47,42 +47,19 @@ public class Arm {
 
     public void update()
     {
-        if(Arm_Gamepad.right_trigger != 0 && Arm_Gamepad.left_trigger == 0)
-        {
-            setReference(ArmMotor.MotorCurrentPosition());
-            SetPower(-0.7);
-        }else if(Arm_Gamepad.left_trigger != 0 && Arm_Gamepad.right_trigger == 0)
-        {
-            setReference(ArmMotor.MotorCurrentPosition());
-            SetPower(0.7);
-        }else{
-          //  SetPidPower(Reeference);
-            SetPower(0);
-        }
+
+           SetPidPower(Reeference);
+
 
         if(Arm_Gamepad.dpad_up)
         {
-            setReference(2530);
+            setReference(2100);
         }
 
-        if(Arm_Gamepad.dpad_left)
-        {
-            setReference(1000);
-        }
-
-        if(Arm_Gamepad.x)
-        {
-            //setReference(550);
-        }
-
-        if(Arm_Gamepad.dpad_right)
-        {
-            setReference(2428);
-        }
 
         if(Arm_Gamepad.dpad_down)
         {
-            setReference(-50);
+            setReference(-2);
         }
 
         lastPosition = ArmMotor.MotorCurrentPosition();
@@ -114,7 +91,11 @@ public class Arm {
 
         if(!checkSteady())
         {
-            savedPower = -ArmMotor.returnMpidPower(reference);
+           // savedPower = -ArmMotor.returnMpidPower(reference);
+
+            savedPower = -ArmMotor.getPidPower(reference);
+
+            savedPower = addons(savedPower);
         }
 
 
@@ -123,11 +104,6 @@ public class Arm {
 
     double addons(double pow)
     {
-        if((Math.abs(ArmMotor.MotorCurrentPosition()) < 800 && Reeference < 1000) || (Math.abs(ArmMotor.MotorCurrentPosition()) > 1500 && Reeference > 1000))
-        {
-            max_output = 0.6;
-        }else max_output = 0.9;
-
 
         if(pow > max_output)pow = max_output;
         else if(pow < -max_output)pow = -max_output;

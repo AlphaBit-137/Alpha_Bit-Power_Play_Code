@@ -18,7 +18,6 @@ public class First extends LinearOpMode {
 
 
     Robot_Drive RD = new Robot_Drive();
-    ServoClaw claw = new ServoClaw();
     Slider slider = new Slider();
     Arm arm = new Arm();
 
@@ -38,9 +37,7 @@ public class First extends LinearOpMode {
 
         slider.init(hardwareMap,gamepad1);
 
-        claw.init(hardwareMap,gamepad1,false);
-
-        arm.init(hardwareMap,gamepad2);
+        arm.init(hardwareMap,gamepad1);
 
         PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
         PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
@@ -52,14 +49,16 @@ public class First extends LinearOpMode {
         while(opModeIsActive()){
 
             arm.update();
-
             slider.update();
-            //claw.run();
-            //RD.run();
+            arm.update();
+            RD.run();
+
             double loopT = System.nanoTime();
 
             telemetry.addData("hz ", 1000000000 / (loopT - loopTime));
             telemetry.addData("ArmPosition",arm.getArmPos());
+
+            telemetry.addData("sliderEnc",slider.GetSliderPosition());
 
             loopTime = loopT;
 
@@ -70,17 +69,6 @@ public class First extends LinearOpMode {
         }
     }
 
-    public void updateDriving()
-    {
-        switch(Cases)
-        {
-            case FieldCentric:
-          //      CDrive.run();
-                break;
-            case RobotCentric:
-            //    RD.run();
-                break;
-        }
-    }
+
 
 }

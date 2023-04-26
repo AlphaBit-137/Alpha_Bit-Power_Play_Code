@@ -45,10 +45,26 @@ public class Gyroscope {
     ElapsedTime angularTimer = new ElapsedTime();
 
     public void updateOrientation() {
+
         if(angularTimer.milliseconds() > 1) {
+
+
+
             angularOrientation = imu.getAngularOrientation();
+
+
+
             angularTimer.reset();
         }
+
+
+    }
+
+    public void updateAxis()
+    {
+        updateFirstAngles();
+        updateFirstForward();
+        updateFirstLateral();
     }
 
     public void updateVelocity() {
